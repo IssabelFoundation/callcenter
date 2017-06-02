@@ -15,7 +15,6 @@ Requires: issabelPBX
 Requires: php-mbstring
 
 Obsoletes: elastix-callcenter
-Provides: elastix-callcenter
 
 %description
 Issabel Call Center
