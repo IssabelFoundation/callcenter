@@ -1,0 +1,120 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Outgoing Campaigns" => "Исходящие Кампании",
+    "Campaigns" => "Кампании",
+    "Campaign state" => "Статус Кампании",
+    "New Campaign" => "Новая Кампания",
+    "Campaigns List" => "Список Кампаний",
+    "View Campaign" => "Просмотр Кампании",
+    "Create New Campaign" => "Создать Новую Кампанию",
+    "Name Campaign" => "Название",
+    "Start Date" => "Начальная Дата",
+    "End Date" => "Конечная Дата",
+    "Start Time" => "Начальное Время",
+    "End Time" => "Конечное Время",
+    "Retries" => "Повторные попытки",
+    "Trunk" => "Транк",
+    "Queue" => "Очередь",
+    "Context" => "Контекст",
+    "Script" => "Сценарий",
+    "Form" => "Форма",
+    "Completed Calls" => "Завершённые Вызовы",
+    "Average Time" => "Среднее время",
+    "File name" => "Имя файла",
+    "Campaign ID is not valid" => "Недействительный ID Кампании",
+    "Name Campaign can't be empty" => "Название Кампании не может быть пустым",
+    "Trunk can't be empty" => "Поле 'Транк' не может быть пустым",
+    "Context can't be empty" => "Контекст не может быть пустым",
+    "Retries must be numeric" => "Повторные попытки должны быть числом",
+    "Queue can't be empty" => "Поле 'Очередь' не может быть пустым",
+    "Invalid Start Date" => "Недействительная Начальная Дата",
+    "Invalid End Date" => "Недействительная Конечная дата",
+    "Invalid Start Time" => "Недействительноe Начальное Время",
+    "Invalid End Time" => "Недействительное Конечное Время",
+    "Start Date must be greater than End Date" => "Начальная Дата не может быть позже чем Конечная Дата",
+    "Name Campaign already exists" => "Название Кампании уже существует",
+    "Invalid Campaign ID" => "Недействительный ID Кампании",
+    "Element without phone number" => "Элемент без телефонного номера",
+    "Edit Campaign" => "Редактировать Кампанию",
+    "Error when Activating the Campaign" => "Ошибка активирования Кампании",
+    "Start Time must be greater than End Time" => "Начальное Время не должно быть позже Конечного Времени",
+    "CSV Data" => "CSV Данные",
+    "Phone Customer" => "Телефон",
+    "Name Customer" => "Имя Клиента",
+    "Status Call" => "Статус Вызова",
+    "Status" => "Статус",
+    "Options" => "Опции",
+    "Success" => "Успешный",
+    "Failure" => "Неудачный",
+    "ShortCall" => "Короткий Вызов",
+    "Error when deleting the Campaign" => "Ошибка удаления Кампании",
+    "This campaign have calls done" => "Эта кампания выполнила все вызовы",
+    "Delete Error" => "Ошибка Удаления",
+    "There aren't form selected" => "Нет выбранной формы",
+    "To rapair is necesary delete agent from configuration file. Do you want to continue?" => "Для восстановления необходимо удалить агента из конфигурационного файла. Вы хотите продолжить?",
+    "To rapair is necesary add an agent in configuration file. Do you want to continue?" => "Для восстановления необходимо добавить агента в конфигурационный файл. Вы хотите продолжить?",
+    "Error when desactivating the Campaign" => "Ошибка во время деактивации Кампании",
+    "Desactivate" => "Деактивировать",
+    "Activate" => "Активировать",
+    "Activate Error" => "Ошибка Активации",
+    "Desactivate Error" => "Ошибка Деактивации",
+    "Queue must be numeric" => "Очередь должна быть числом",
+    "Queue is being used, choose other one" => "Эта Очередь уже используется, выберите другую",
+    "Address" => "Адрес",
+    "Date & Time" => "Дата и Время",
+    "Duration" => "Длительность(сек.)",
+    "Are you sure you wish to delete campaign?" => "Вы уверены, что хотите удалить кампанию?",
+    "Finish" => "Завершённая",
+    "Active" => "Активная",
+    "All" => "Все",
+    "Inactive" => "Неактивная",
+    "Range Date" => "Диапазон Дат",
+    "Start" => "Начало",
+    "End" => "Конец",
+    "Schedule per Day" => "Расписание на День",
+    "Start time" => "Начальное время",
+    "End time" => "Конечное время",
+    "Max. used channels" => "Макс. используемых каналов",
+    "Show Filter" => "Показать Фильтр",
+    "Hide Filter" => "Скрыть Фильтр",
+    "Page" => "Страница",
+    "records" => "записей",
+    "Change Status" => "Изменить Статус",
+    "Filter applied " => "Текущий фильтр: ",
+    "Manage Forms" => "Управление Формами",
+    "External URLs" => "Внешние URL",
+    "Manage External URLs" => "Управление Внешними URL",
+    "Manage Trunks" => "Управление Транками",
+    "Manage Queues" => "Упраление Очередями",
+    "(No external URL)" => "(Нет внешнего URL)",
+    "(Leave as 0 to disable channel limit)" => "(Оставьте 0, чтобы отключить ограничение каналов)",
+);
+?>

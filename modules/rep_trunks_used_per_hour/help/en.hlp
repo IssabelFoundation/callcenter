@@ -1,0 +1,12 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+<h1>{$node_name}</h1>
+<p align="Justify">This option lets us check the use of the trunks in Issabel that have been configured in the campaigns for the call center. Here we can see the number of entered calls, answered, abandoned, in queue and without monitoring per hour in a range of time regarding a trunk. Use the filter to select the trunk and the range of time that will be checked.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_rep_trunks_hour.png" border="0" />
+<p>Figure 1</p></div><br />
+</body>
+</html>

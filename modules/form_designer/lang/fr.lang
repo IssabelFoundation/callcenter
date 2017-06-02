@@ -1,0 +1,92 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Desactivate" => "D&eacute;sactiver",
+    "New Field" => "Nouveau champ",
+    "Add Field" => "Ajouter",
+    "Update Field" => "Mettre &agrave; jour le champ",
+    "Are you sure you wish to delete form?" => "Etes-vous s&ucirc;r de vouloir effacer le formulaire?",
+    "Form Name" => "Nom",
+    "Field Name" => "Nom du champ",
+    "CSV Column" => "Colonne CSV",
+    "Column Number" => "Nombre de colonnes",
+    "Lines Number" => "Nombre de lignes",
+    "Field Validation" => "Validation du champ",
+    "Order" => "Ordre",
+    "List Item" => "Lister un objet",
+    "Add Item" => "Ajouter",
+    "Remove Item" => "Enlever",
+    "New Form" => "Nouveau Formulaire",
+    "View Form" => "Voir le Formulaire",
+    "Edit Form" => "Editer le Formulaire",
+    "Activate" => "Activer",
+    "Form List" => "Liste des Formulaires",
+    "Create New Form" => "Cr&eacute;er",
+    "Activate Error" => "Erreur d'activation",
+    "Error when Activating the form" => "Erreur en activant le formulaire",
+    "Error when deleting the Form" => "Erreur en supprimant le formulaire",
+    "This field is been used by any campaign" => "Ce champ est utilis&eacute; par n'importe quelle campagne",
+    "This form is been used by any campaign" => "Ce formulaire est utilis&eacute; par n'importe quelle campagne",
+    "Add Field Successfully" => "Champ ajout&eacute; correctement",
+    "Field could not be added in the Form" => "Le Champ n'a pu &ecirc;tre ajout&eacute; dans le formulaire",
+    "Form could not be added" => "Le Formulaire n'a pu &ecirc;tre ajout&eacute;",
+    "Values Field" => "Valeurs",
+    "Form could not be cancelled" => "Le Formulaire n'a pu &ecirc;tre annul&eacute;",
+    "Error Id Form" => "Erreur Id Formulaire",
+    "Error Form Name is empty" => "Erreur: Le nom du formulaire est vide!",
+    "Error Field Name is empty" => "Erreur: Le nom du champ est vide!",
+    "Error List is empty" => "Erreur: La liste est vide!",
+    "Error in Order is empty or is not numeric" => "Erreur: L'ordre est vide ou n'est pas num&eacute;rique!",
+    "Order already exists" => "L'ordre existe d&eacute;j&agrave;!",
+    "Edit Field" => "Editer le champ",
+    "Update Field Successfully" => "Champ mis &agrave; jour correctement",
+    "Field could not be updated in the Form" => "Le champ n'a pas pu &ecirc;tre mis &agrave; jour dans le formulaire",
+    "Form could not be updated" => "Le formulaire n'a pas pu &ecirc;tre mis &agrave; jour",
+    "Desactivate Error" => "Erreur de d&eacute;sactivation",
+    "Error when eliminating the form" => "Erreur en supprimant le formulaire",
+    "Delete Field Successfully" => "Champ effac&eacute; correctement",
+    "Type Label" => "Label",
+    "TEXT" => "Texte",
+    "TEXTAREA" => "Zone Text",
+    "LIST" => "Liste",
+    "Type Text" => "Texte",
+    "Type List" => "Liste",
+    "Type Date" => "Date",
+    "Type Text Area" => "Zone Texte",
+    "Estado" => "Etat",
+    "Status" => "Etat",
+    "Active" => "Actif",
+    "Inactive" => "Inactif",
+    "View" => "Voir",
+    "All" => "Tout",
+    "Form Designer" => "Concepteur du formulaire",
+    "No Data Found" => "Aucune donnée trouvée",
+);
+?>

@@ -1,0 +1,59 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Configuration" => "Настройка",
+    "Password and confirmation do not match." => "Пароль и подтверждение не совпадают.",
+    "Could not save changes!" => "Не удалось сохранить изменения!",
+    "Could not commit changes!" => "Не удалось применить изменения!",
+    "Asterisk Connection" => "Соединение с Asterisk",
+    "Asterisk Server" => "Сервер Asterisk",
+    "Asterisk Login" => "Логин Asterisk",
+    "Asterisk Password" => "Пароль Asterisk",
+    "Asterisk Password (confirm)" => "Пароль Asterisk (подтвердить)",
+    "Short Call Threshold" => "Порог Короткого Вызова",
+    "Answering delay" => "Задержка ответа",
+    "Enable dialer debug" => "Разрешить режим отладки наборщика",
+    "Dump all received Asterisk events" => "Сбор всех принятых событий Asterisk",
+    "Running" => "Работает",
+    "Stopped" => "Остановлен",
+    "Start" => "Пуск",
+    "Stop" => "Стоп",
+    "Internal DB error" => "Внутренняя ошибка БД",
+    "Dialer Status" => "Статус Наборщика",
+    "Current Status" => "Текущий Статус",
+    "Enable overcommit of outgoing calls" => "Разрешить превышение количества исходящих вызовов",
+    "AMI Session Duration" => "Длительность AMI сессии (0 для постоянного соединения)",
+    "Service percent" => "Процент обслуживания",
+    "Enable predictive dialer behavior" => "Разрешить прогностическое (predictive) поведение наборщика",
+    "Per-call dial timeout" => "Тайм-аут перед набором",
+    "Agent inactivity timeout" => "Тайм-аут бездействия Агента",
+    "Dialer Parameters" => "Параметры Наборщика",
+);
+?>

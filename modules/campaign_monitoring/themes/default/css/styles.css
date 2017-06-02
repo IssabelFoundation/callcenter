@@ -1,0 +1,64 @@
+#campaignMonitoringApplication
+{
+	font-size: 10pt;
+}
+
+#campaignMonitoringApplication table
+{
+    font-size: 10pt;
+}
+div.registro
+{
+	overflow-y: auto;
+	/* width: 100%; */
+	height: 200px;
+	background-color: #ffffff;
+	border: 1px solid #999999;
+}
+div.registro table 
+{
+	width: 100%;
+}
+
+table.titulo
+{
+	width: 100%;
+	color: #eeeeee;
+    border-left: 1px solid #999999;
+    border-top: 1px solid #999999;
+    border-right: 1px solid #999999;
+    border-bottom: 0px;
+    background-color: #555555;
+	height: 32px;
+}
+table.titulo > tbody > tr > td
+{
+    padding: 6px;
+}
+div.llamadas
+{
+    overflow-y: auto;
+    /*width: 100%;*/
+    background-color: #f0f0f0;
+    border: 1px solid #999999;
+}
+div.llamadas table 
+{
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+div.llamadas table > tbody > tr:hover 
+{
+    background-color: #e0e0e0;
+}
+div.llamadas table > tbody > tr > td
+{
+	padding: 6px;
+	color: #555555;
+	border-bottom: 1px #b6b6b6 solid;
+}
+.reciente
+{
+	font-weight: bold;
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+  <menulist>
+    <menuitem menuid="call_center"            desc="Call Center"            parent=""                     module="no"  link="" order="9"></menuitem>
+
+    <menuitem menuid="agent_console"          desc="Agent Console"          parent="call_center"          module="yes" link="" order="1"></menuitem>
+
+    <menuitem menuid="outgoing_calls"         desc="Outgoing Calls"         parent="call_center"          module="no"  link="" order="2"></menuitem>
+    <menuitem menuid="campaign_out"           desc="Campaigns"              parent="outgoing_calls"       module="yes" link="" order="21"></menuitem>
+    <menuitem menuid="dont_call_list"         desc="Do not Call List"       parent="outgoing_calls"       module="yes" link="" order="22"></menuitem>
+    <menuitem menuid="external_url"           desc="External URLs"          parent="outgoing_calls"       module="yes" link="" order="23"></menuitem>
+
+    <menuitem menuid="ingoing_calls"          desc="Ingoing Calls"          parent="call_center"          module="no"  link="" order="3"></menuitem>
+    <menuitem menuid="queues"                 desc="Queues"                 parent="ingoing_calls"        module="yes" link="" order="31"></menuitem>
+    <menuitem menuid="client"                 desc="Clients"                parent="ingoing_calls"        module="yes" link="" order="32"></menuitem>
+    <menuitem menuid="campaign_in"            desc="Ingoing Campaigns"      parent="ingoing_calls"        module="yes" link="" order="33"></menuitem>
+
+    <menuitem menuid="agentoptions"           desc="Agent Options"          parent="call_center"          module="yes" link="" order="4"></menuitem>
+    <menuitem menuid="agents"                 desc="Agents"                 parent="agentoptions"         module="yes" link="" order="4"></menuitem>
+    <menuitem menuid="eccp_users"             desc="ECCP Users"             parent="agentoptions"         module="yes" link="" order="4"></menuitem>
+    <menuitem menuid="cb_extensions"          desc="Callback Extensions"    parent="agentoptions"         module="yes" link="" order="4"></menuitem>
+
+    <menuitem menuid="break_administrator"    desc="Breaks"                 parent="call_center"          module="yes" link="" order="5"></menuitem>
+
+    <menuitem menuid="forms"                  desc="Forms"                  parent="call_center"          module="no"  link="" order="6"></menuitem>
+    <menuitem menuid="form_designer"          desc="Form Designer"          parent="forms"                module="yes" link="" order="61"></menuitem>
+    <menuitem menuid="form_list"              desc="Form Preview"           parent="forms"                module="yes" link="" order="62"></menuitem>
+
+    <menuitem menuid="reports_ingoing_call"   desc="Reports"                parent="call_center"          module="no"  link="" order="7"></menuitem>
+    <menuitem menuid="reports_break"          desc="Reports Break"          parent="reports_ingoing_call" module="yes" link="" order="71"></menuitem>
+    <menuitem menuid="calls_detail"           desc="Calls Detail"           parent="reports_ingoing_call" module="yes" link="" order="72"></menuitem>
+    <menuitem menuid="calls_per_hour"         desc="Calls per hour"         parent="reports_ingoing_call" module="yes" link="" order="73"></menuitem>
+    <menuitem menuid="calls_per_agent"        desc="Calls per Agent"        parent="reports_ingoing_call" module="yes" link="" order="74"></menuitem>
+    <menuitem menuid="hold_time"              desc="Hold Time"              parent="reports_ingoing_call" module="yes" link="" order="75"></menuitem>
+    <menuitem menuid="login_logout"           desc="Login Logout"           parent="reports_ingoing_call" module="yes" link="" order="76"></menuitem>
+    <menuitem menuid="ingoings_calls_success" desc="Ingoing Calls Success"  parent="reports_ingoing_call" module="yes" link="" order="77"></menuitem>
+    <menuitem menuid="graphic_calls"          desc="Graphic Calls per hour" parent="reports_ingoing_call" module="yes" link="" order="78"></menuitem>
+    <menuitem menuid="rep_agent_information"  desc="Agent Information"      parent="reports_ingoing_call" module="yes" link="" order="710"></menuitem>
+    <menuitem menuid="rep_agents_monitoring"  desc="Agents Monitoring"      parent="reports_ingoing_call" module="yes" link="" order="711"></menuitem>
+    <menuitem menuid="rep_trunks_used_per_hour" desc="Trunks used per hour" parent="reports_ingoing_call" module="yes" link="" order="712"></menuitem>
+    <menuitem menuid="rep_incoming_calls_monitoring" desc="Incoming calls monitoring" parent="reports_ingoing_call" module="yes" link="" order="714"></menuitem>
+    <menuitem menuid="campaign_monitoring" desc="Campaign monitoring" parent="reports_ingoing_call" module="yes" link="" order="715"></menuitem>
+
+    <menuitem menuid="callcenter_config"      desc="Configuration"          parent="call_center"          module="yes" link="" order="8"></menuitem>
+  </menulist>
+</module>

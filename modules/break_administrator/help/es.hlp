@@ -1,0 +1,19 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+
+<h1>{$node_name}</h1>
+<p align="Justify">Esta opción permite crear recesos para horas de almuerzo, descanso entre otros. Durante este tiempo el agente no estará disponible para hacer o recibir llamadas. Esto es importante para determinar la productividad del agente registrando los momentos en que no está atendiendo llamadas en el Call Center. La figura 1 muestra una lista de recesos existentes. 
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_break_list.png" border="0" />
+<p>Figura 1</p></div><br/>
+Usted puede <b>Activar</b> o <b>Desactivar</b> los recesos seleccionándolos y haciendo click en el botón correspondiente.</p>
+<h2>Nuevo Receso</h2>
+<p align="Justify">Para crear un receso haga click en el enlace "Crear Nuevo Receso" ubicado en la sección de Filtro. Luego llene el formulario con el nombre y una breve descripción.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_break_new.png" border="0" />
+<p>Figura 2</p></div><br/>
+
+</body>
+</html>

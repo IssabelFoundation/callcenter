@@ -1,0 +1,100 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Agent Console" => "代理控制台",
+    "Hangup" => "挂断电话",
+    "Tranfer" => "转接",
+    "Call" => "呼叫",
+    "Script" => "脚本",
+    "Form" => "表格",
+    "Agent" => "代理",
+    "Agent Number" => "号码",
+    "Take Break" => "暂停",
+    "Fill the fields" => "请填写信息",
+    "Break" => "暂停",
+    "UnBreak" => "不暂停",
+    "In Break" => "暂停中",
+    "Welcome to Console Agent" => "欢迎进入代理控制台",
+    "Please enter your number agent" => "请输入你的代理号码和分机号",
+    "Number Agent" => "代理号码",
+    "Enter Agent" => "进入",
+    "Extension" => "扩展名",
+    "Error when connecting to Asterisk Manager" => "连接Asterisk时出现错误",
+    "Unable to add Agent to queue: No such queue" => "不能加入队列: 没有该队列",
+    "Error when consulting Agent in Asterisk Manager" => "查阅Asterisk代理时出现错误",
+    "Agent isn't in Queue Asterisk" => "代理不在Asterisk队列中",
+    "Unable to pause Agent to queue: No such queue" => "不能中止代理到队列中:没有该队列",
+    "Audit Error" => "审查错误",
+    "Number Agent already connected with extension" => "代理号码已经与分机连接",
+    "Agent Error" => "代理错误",
+    "Audit of break could not be inserted" => "审查暂停无法插入",
+    "Id of the agent could not be obtained" => "代理ID无法获取",
+    "Number of audit nonassigned" => "审查号码未被指派",
+    "Error saving client information" => "储存顾客信息时错误",
+    "Information was saved" => "信息已储存",
+    "Call no active" => "没有可用呼叫",
+    "Error when connecting to database Call Center" => "连接到呼叫中心数据库时出现错误",
+    "Calling" => "呼叫",
+    "Forms Nondefined" => "格式无定义",
+    "Call Number" => "呼叫号码",
+    "Name" => "名字",
+    "Last Name" => "姓氏",
+    "Error when consulting contact information" => "查阅联络信息时出现错误",
+    "Phone" => "电话",
+    "Contacts" => "联络",
+    "Number Phone not Registered" => "电话号码没有注册",
+    "Contact Basic Information" => "联络基本信息",
+    "Number Identification" => "号码识别",
+    "Error when updating call information" => "更新呼叫信息时出现错误",
+    "Id call or Id contact have format invalid" => "ID呼叫和ID联络时有无效格式",
+    "Confirm" => "确认",
+    "Add Client" => "增加客户",
+    "View Client" => "查看客户",
+    "Call can't be closed, channel is empty" => "呼叫不能结束,通道为空",
+    "Accept" => "接收",
+    "error when creating new object" => "创建新任务时出现错误",
+    "No call" => "无呼叫",
+    "transfer_error" => "转接错误",
+    "Success" => "转接成功",
+    "Error when connecting to Call Center" => "连接呼叫中心时出现错误",
+    "Error query" => "队列错误",
+    "select extension" => "选择任何分机",
+    "consultar_llamada" => "转接？",
+    "Hold" => "等待",
+    "Unhold" => "不等待",
+    "Marcar" => "呼叫",
+    "Cancel" => "取消",
+    "Marked Error" => "记号错误",
+    "Success Marked" => "呼叫标记成功",
+    "Please enter a number to mark" => "请输入号码标记",
+    "vtigercrm" => "vTiger CRM",
+    "Agent disconnected" => "Agente desconectado",
+);
+?>

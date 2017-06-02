@@ -1,0 +1,62 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+   Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 1.2                                                  |
+  | http://www.elastix.org                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on "AS IS"     |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  |                                                                      |
+  | Translate by: Alex Villacís Lasso                                    |
+  | Email: a_villacis@palosanto.com                                      |
+  +----------------------------------------------------------------------+
+  $Id: en.lang,v 1.7 2008/02/18 09:49:00 a_villacis Exp $ */
+global $arrLangModule;
+$arrLangModule=array(
+"Configuration" => "Ayarlar",
+'Password and confirmation do not match.' => 'Parolalar aynı değil.',
+'Could not save changes!' => 'Değişiklikler kaydedilemedi!',
+'Could not commit changes!' => 'Değişiklikler işleme alınamadı!',
+'Asterisk Connection' => 'Asterisk Bağlantı Ayarları',
+'Asterisk Server' => 'Asterisk Sunucusu',
+'Asterisk Login' => 'Asterisk Kullanıcısı',
+'Asterisk Password' => 'Asterisk Parolası',
+'Asterisk Password (confirm)' => 'Asterisk Parolası (onayla)',
+'Dialer Parameters' => 'Arama Parametre Ayarları',
+'Short Call Threshold' => 'Kısa Çağrı Eşiği',
+'Answering delay' => 'Cevaplama Gecikmesi',
+'Enable dialer debug' => 'Arama hata loglamasını etkinleştir',
+'Dump all received Asterisk events' => 'Tüm Asterisk günlüklerini biriktir',
+'Running' => 'Çalışıyor',
+'Stopped' => 'Durduruldu',
+'Start' => 'Başlat',
+'Stop' => 'Durdur',
+'Internal DB error' => 'Sunucu veritabanı hatası',
+'Dialer Status' => 'Arama Durumu',
+'Current Status' => 'Şimdiki Durum',
+'Enable overcommit of outgoing calls' => 'Yapılan aramaların üzerine yazmayı etkinleştir',
+'AMI Session Duration' => 'AMI Oturum Süresi (Kalıcı olması için: 0)',
+'Service percent' => 'Servis yüzdesi',
+'Enable predictive dialer behavior' => 'Akıllı otomatik arama özelliğini etkinleştir',
+'Per-call dial timeout' => 'Arama başına yapılan zaman aşımı süresi',
+'Agent inactivity timeout' => 'Pasif Agent otomatik çıkartma süresi',
+);
+?>

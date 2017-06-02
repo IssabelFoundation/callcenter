@@ -1,0 +1,29 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+
+<h1>{$node_name}</h1>
+<p align="Justify">This option allows assigning the queues that will be intended for the reception of calls in the call center. This makes it easy to monitor the received calls by an agent to determine which ones were successful and unsuccessful.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_queue_list.png" border="0" />
+<p>Figure 1</p></div>
+<h2> Select Queue</h2>
+<p align="Justify">Click on the blue link "Select Queue" to choose the queue that will be used for the call center. Also you can create a script that will be shown to the agent. These queues must exist before you select them in this module. If you don't have a queue you can create one from the PBX module.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_queue_select.png" border="0" />
+<p>Figure 2</p></div>
+<h2>Create a queue</h2>
+<p>To create a queue, go to "PBX => PBX Configuration => Queues". The configuration of a queue for the call center is pretty different than the regular ones. You can create a queue for <b>Standard Configuration</b> and <b>Dynamic Configuration</b>.</p>
+<h3>Queue for Standard Configuration</h3>
+<p>In Standard Configuration you have to add the agent number in the Static Agents field as shown in Figure 3. Notice that there's the letter A before the numbers.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_queue_standard.png" border="0" />
+<p>Figure 3</p></div>
+<h3>Queue for Dynamic Configuration</h3>
+<p>In Dynamic Configuration you have to add the extension number in the Dynamic Agents field as shown in Figure 4. Notice that there's the letter S before the numbers.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_queue_dynamic.png" border="0" />
+<p>Figure 4</p></div>
+<p>For more information about Standard and Dynamic Configuration please refer to the help section of the Agent Console module.</p>
+<br />
+</body>
+</html>

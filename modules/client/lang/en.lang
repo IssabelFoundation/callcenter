@@ -1,0 +1,28 @@
+<?php
+global $arrLangModule;
+$arrLangModule=array(
+
+"client"=>"client",
+"fileCRM"=>"fileCRM",
+"Select file upload"=>"Select file to Upload",
+"Result"=>"Result",
+"Load File"=>"Upload File",
+"Format File"=>"Format File",
+"Upload"=>"Upload",
+"File"=>"File",
+"Error"=>"Error",
+"Error while loading file"=>"Error while loading file",
+'Invalid CSV File' => 'Invalid CSV File',
+'Invalid phone number'=>'Invalid phone number',
+'Line'=>'Line',
+'Unsupported attribute'=>'Unsupported attribute',
+'Invalid Cedula/RUC'=>'Invalid Identification Card',
+'Missing or empty name'=>'Missing or empty name',
+'Missing or empty surname'=>'Missing or empty surname',
+'Download contacts'=>'Download contacts',
+'Inserted records'=>'Inserted records',
+'Updated records'=>'Updated records',
+'Detected charset'=>'Detected charset',
+'"Phone","Identification Card","Name","Last Name"' => '"Phone","Identification Card","Name","Last Name"'
+);
+?>

@@ -1,0 +1,20 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+<h1>{$node_name}</h1>
+<p align="Justify">This module shows in real time the activity of any campaign  with information like general status, agent status, call status and logs. In the header of the module you can select the campaign that you want to monitor (see Figure 1).</p>
+<p align="Justify">There are three sections: </p>
+<ul>
+<li><b>The header:</b> This shows the general status of the campaign like the Queue's number, Total calls, Abandoned calls, Start Date, End Date, Schedule, Connected calls, Finished calls, etc.</li>
+<li><b>Placing calls:</b> For outgoing campaigns here are the calls processed by the dialer that are waiting for being assigned to an agent. For ingoing campaigns here are the calls that are waiting for being attended by an agent.</li>
+<li><b>Agents:</b> Here are the static and dynamic agents of the campaign with the status and call that are attending in that moment.</li>
+<li><b>Campaign logs:</b> This shows a registry of the actions done by the dialer when it places, attends, or ends a call.</li>
+</ul>
+<br />
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_campaign_monitoring.png" border="0" />
+<p>Figure 1</p></div><br />
+</body>
+</html>

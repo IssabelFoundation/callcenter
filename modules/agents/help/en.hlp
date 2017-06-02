@@ -1,0 +1,59 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+
+<h1>{$node_name}</h1>
+<p align="Justify">This option shows a list of all the agents created in the call center that will operate the system. Here we can also modify and create new agents. Each agent has a number and password so that he can log in to the agent console and make or receive calls. The figure 1 shows a list of existing agents.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_agent_list.png" border="0" />
+<p>Figure 1</p></div><br />
+<table class="inline">
+  <tr>
+    <th>Field</th><th>Description</th>
+  </tr>
+  <tr>
+    <td>Disconnect</td><td>Close the session of an agent that has an active session in the console.
+</td>
+  </tr>
+  <tr>
+    <td>Delete</td><td>Delete an existing agent.
+</td>
+  </tr>
+  <tr>
+    <td>Configure</td><td><img src="../modules/{$node_id}/images/agent_list_ok.jpg" border="0">The agent is registered in the database and the configuration file of Asterisk.<br/><br/>
+        <img src="../modules/{$node_id}/images/agent_list_error.jpg" border="0">This means there's something wrong with the agent. The errors can be the following:
+        <ul>
+              <li>The agent is registered in the database but not in the configuration file.</li>
+              <li>The agent is registered in the configuration file but not in the database.</li>
+        </ul>
+            The option "By repair" will fix the errors detailed above. This option will perform the following actions: 
+        <ul>
+              <li>If the agent is not registered in the configuration file, the option By Repair will add the agent into the file from the database. </li>
+              <li>If the agent is not registered in the database, the agent will be deleted of the configuration file.</li>
+        </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>Number</td ><td align="Justify">This number identifies the agent. This is the number that will be entered in the agent console for login.</td>
+  </tr>
+  <tr>
+    <td>Name</td><td align="Justify">The name of the agent.</td>
+  </tr>
+<tr>
+    <td>Status</td><td align="Justify">Off Line / On line. It shows whether the agent is logged in to agent console or not.</td>
+  </tr>
+<tr>
+    <td>Options</td><td align="Justify"><strong>Edit: </strong>The agent information can be modified with this option.<br/>
+    </td>
+</tr>
+</table>
+
+<h2>New Agent</h2>
+<p>To create a new agent, click on the blue link "New Agent". Here you have to fill out the form with a number for the agent, the name and password that will be used for logging in the agent console. It's not necessary to set the ECCP password since if it is left in blank the system set one randomly.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_agent_new.png" border="0" />
+<p>Figure 2</p></div><br />
+
+</body>
+</html>

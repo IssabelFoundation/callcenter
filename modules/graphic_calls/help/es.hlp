@@ -1,0 +1,22 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+<h1>{$node_name}</h1>
+
+<p align="Justify">Esta opción muestra gráficamente información acerca de llamadas entrantes y salientes por hora clasificadas por cola. Aquí usted puede ver la cantidad de llamadas por cada hora (24 horas) para cualquier cola en un rango determinado de tiempo. Use el filtro para obtener resultados más específicos (Ver Figura 1). </p>
+<p>Usted puede descargar este reporte en diferentes formatos tales como CSV, XLS y PDF.</p>
+<p>
+Línea azul: Todas las llamadas (completadas y abandonadas)<br />
+Línea roja: Llamadas completadas<br/>
+Línea amarilla: Llamadas abandonadas<br /><br />
+Eje X: Hora del día (Hora)<br/>
+Eje Y: Número de llamadas.
+</p>
+
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_call_x_hour_g.png" border="0" />
+<p>Figura 1</p></div><br />
+</body>
+</html>

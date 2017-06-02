@@ -1,0 +1,129 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Agent Console" => "کنسول اپراتور",
+    "Hangup" => "قطع تماس",
+    "Tranfer" => "انتقال تماس",
+    "Call" => "تماس",
+    "Script" => "اسکريپت",
+    "Form" => "فرم",
+    "Agent" => "اپراتور",
+    "Agent Number" => "شماره",
+    "Take Break" => "تنفس گرفتن",
+    "Fill the fields" => "لطفا فيلدها را کامل کنيد",
+    "Break" => "تنفس",
+    "UnBreak" => "در حال کار",
+    "In Break" => "در حال تنفس",
+    "Welcome to Console Agent" => "به کنسول اپراتور خوش آمديد",
+    "Please enter your number agent" => "لطفا شماره اپراتوري و داخلي خود را وارد کنيد",
+    "Number Agent" => "شماره اپراتور",
+    "Enter Agent" => "ورود",
+    "Extension" => "داخلي",
+    "Error when connecting to Asterisk Manager" => "خطا در هنگام اتصال به مدير استريسک",
+    "Unable to add Agent to queue: No such queue" => "خطا در اضافه کردن اپراتور به صف: چنين صفي وجود ندارد",
+    "Error when consulting Agent in Asterisk Manager" => "خطا در هنگام مشورت ",
+    "Agent isn't in Queue Asterisk" => "اپراتور در صف استريسک نيست",
+    "Unable to pause Agent to queue: No such queue" => "خطا در متوقف کردن اپراتور در صف: چنين صفي وجود ندارد",
+    "Audit Error" => "خطاي حسابرسي",
+    "Number Agent already connected with extension" => "شماره اپراتور از پيش با شماره داخلي مرتبط شده",
+    "Agent Error" => "خطاي اپراتور",
+    "Audit of break could not be inserted" => "ميزان تنفس قابل درج نمي باشد",
+    "Id of the agent could not be obtained" => "شناسه اپراتور قابل شناسايي نمي باشد",
+    "Number of audit nonassigned" => "تعدادي از حسابرسي ها اختصاص داده نشده اند",
+    "Error saving client information" => "خطا در ذخيره اطلاعات کلاينت ها",
+    "Information was saved" => "اطلاعات ذخيره شد",
+    "Call no active" => "تماسي وجود ندارد",
+    "Error when connecting to database Call Center" => "خطا در هنگام اتصال به مرکز تلفن",
+    "Calling" => "تماس",
+    "Forms Nondefined" => "فرم ها تعريف نشده است",
+    "Call Number" => "شماره تماس",
+    "Name" => "نام",
+    "Last Name" => "نام خانوادگي",
+    "Error when consulting contact information" => "خطا در هنگام بررسي کردن اطلاعات تماس",
+    "Phone" => "تلفن",
+    "Contacts" => "تماس ها",
+    "Number Phone not Registered" => "شماره تلفن رجيستر نشده است",
+    "Contact Basic Information" => "اطلاعات اوليه تماس",
+    "Number Identification" => "شناسايي شماره تلفن",
+    "Error when updating call information" => "خطا در هنگام به روز رساني اطلاعات تماس",
+    "Id call or Id contact have format invalid" => "شناسه تماس يا مخاطب فرمت معتبري ندارد",
+    "Confirm" => "تائيد",
+    "Add Client" => "افزودن کلاينت",
+    "View Client" => "نمايش کلاينت",
+    "Call can't be closed, channel is empty" => "خطا در قطع ارتباط ، کانال خالي است",
+    "Accept" => "پذيرفتن",
+    "error when creating new object" => "خطا در هنگام ايجاد مورد جديد",
+    "No call" => "تماسي وجود ندارد",
+    "transfer_error" => "خطا در انتقال تماس: ",
+    "Success" => "انتقال تماس با موفقيت انجام شد",
+    "Error when connecting to Call Center" => "خطا در هنگام اتصال به مرکز تلفن",
+    "Error query" => "خطا در دريافت اطلاعات",
+    "select extension" => "هر شماره داخلي را انتخاب کنيد",
+    "consultar_llamada" => "آيا انتقال انجام شود ?",
+    "Hold" => "نگهداشتن تماس",
+    "Unhold" => "آزاد کردن تماس",
+    "Marcar" => "تماس",
+    "Cancel" => "لغو",
+    "Marked Error" => "",
+    "Success Marked" => "تماس بعنوان موفقيت آميز نشانه گذاري شد",
+    "Please enter a number to mark" => "لطفا يک شماره براي علامت گذاري وارد کنيد",
+    "vtigercrm" => "vTiger CRM",
+    "Agent disconnected" => "ارتباط اپراتور قطع شد",
+    "ProgramCalls" => "تماس هاي برنامه ريزي شده",
+    "Date Init" => "تاريخ شروع",
+    "Date End" => "تاريخ پايان",
+    "Final Call" => "آخرين تماس تبليغاتي",
+    "Add" => "افزودن",
+    "Add Other" => "افزودن موارد ديگر",
+    "Start time" => "زمان شروع",
+    "End time" => "زمان پايان",
+    "Date field can not be empty" => "فيلد مربوط به تاريخ نبايد خالي باشد",
+    "You have to enter a a permitted hour" => "بايد يک ساعت مجاز وارد کنيد",
+    "Number field can not be empty" => "فيلد مربوط به شماره نمي تواند خالي باشد",
+    "Number field can be numeric" => "فيلد شماره بايد عددي باشد",
+    "Invalid Start Date" => "تاريخ شروع معتبرنيست",
+    "Invalid End Date" => "تاريخ پايان معتبر نيست",
+    "Invalid Start Time" => "زمان شروع معتبر نيست",
+    "Invalid End Time" => "زمان خاتمه معتبر نيست",
+    "Start Date must be greater than End Date" => "تاريخ شروع بايد قبل از تاريخ پايان باشد",
+    "Start Time must be greater than End Time" => "زمان شروع بايد قبل از زمان پايان باشد",
+    "Unable to parse start date specification" => "خطا در تحليل مشخصات تاريخ شروع",
+    "Unable to parse end date specification" => "خطا در تحليل مشخصات تاريخ پايان",
+    "Unable to parse start time specification" => "خطا در تحليل مشخصات زمان شروع",
+    "Unable to parse end time specification" => "خطا در تحليل مشخصات زمان پايان",
+    "You must be enter a valid init/end date" => "بايد يک تاريخ شروع/پايان معتبر وارد کنيد",
+    "The data has been saved" => "ديتا ذخيره شد",
+    "No data and no hour will be saved" => "هيچ ديتا و ساعتي ذخيره نشد",
+    "A call with the same date and the same hour already exist" => "تماسي با تاريخ و ساعت مشابه از پيش وجود دارد",
+    "The scheduled call date range is not between the campaign date range" => "رنج تاريخ تماس زمان بندي شده بين رنج تاريخ تبليغاتي نيست",
+    "The call has not been saved because the scheduled call date range is not between the campaign date range" => "تماس ذخيره نشد،به دليل اينکه رنج تاريخ تماس زمان بندي شده بين رنج تاريخ تبليغاتي نيست",
+    "The scheduled call date range is not between the campaign date range. Are you sure do you want to save?" => "رنج تاريخ تماس زمان بندي شده بين رنج تاريخ تبليغاتي نيست. آيا مطمئنيد که مي خواهيد آن را ذخيره کنيد؟",
+);
+?>

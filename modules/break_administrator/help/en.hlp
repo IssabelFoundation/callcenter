@@ -1,0 +1,19 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+
+<h1>{$node_name}</h1>
+<p align="Justify">This option allows creating break times which could be time for lunch, rest or any other reason. During this time the agent will not be available for making or receiving calls. This is important to determine the productivity of the agents by registering the time that the agent was not taking calls in the call center. The figure 1 shows a list of the existing breaks. 
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_break_list.png" border="0" />
+<p>Figure 1</p></div><br/>
+You can <b>Activate</b> or <b>Deactivate</b> them by selecting the break and clicking on those buttons.</p>
+<h2>New Break</h2>
+<p align="Justify">To create a new break, click on the blue link "Create New Break". Fill out the form with a name of the break and a brief description of it. When done, click on "Save" button. </p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_break_new.png" border="0" />
+<p>Figure 2</p></div><br/>
+
+</body>
+</html>

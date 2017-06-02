@@ -1,0 +1,131 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.2 2007/08/09 00:31:28 jmartinez Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+'Agent Console' => 'Agent Console',
+'Agent log-in failed!' => 'Agent log-in failed!',
+'Agent login process not started' => 'Agent login process not started',
+'Agent log-in terminated.' => 'Agent log-in terminated.',
+'Agent not authorized for ECCP - ECCP password not set' => 'Agent not authorized for ECCP - ECCP password not set',
+'Agent not found' => 'Agent not found',
+'Agent not handling an incoming call' => 'Agent not handling an incoming call',
+'Agent Number' => 'Agent Number',
+'Call at end of campaign' => 'Call at end of campaign',
+'Call Form' => 'Call Form',
+'Call Information' => 'Call Information',
+'Call Script' => 'Call Script',
+'Call successfully scheduled' => 'Call successfully scheduled',
+'Cannot start agent login' => 'Cannot start agent login',
+'Confirm contact' => 'Confirm contact',
+'Connected to call' => 'Connected to call',
+'Contact' => 'Contact',
+'Contact successfully confirmed' => 'Contact successfully confirmed',
+'Dismiss' => 'Dismiss',
+'End Break' => 'End Break',
+'End date' => 'End date',
+'End Hold' => 'End Hold',
+'End session' => 'End session',
+'End time' => 'End time',
+'Enter' => 'Enter',
+'Error while confirming contact' => 'Error while confirming contact',
+'Error while hanging up call' => 'Error while hanging up call',
+'Error while logging out agent' => 'Error while logging out agent',
+'Error while saving form data' => 'Error while saving form data',
+'Error while scheduling call' => 'Error while scheduling call',
+'Error while starting break' => 'Error while starting break',
+'Error while stopping break' => 'Error while stopping break',
+'Error while transferring call' => 'Error while transferring call',
+'Extension' => 'Extension',
+'Failed to retrieve agent password' => 'Failed to retrieve agent password',
+'Form data successfully saved' => 'Form data successfully saved',
+'Hangup' => 'Hangup',
+'Hold' => 'Hold',
+'Invalid agent number' => 'Invalid agent number',
+'Invalid extension number' => 'Invalid extension number',
+'Invalid or incomplete form data' => 'Invalid or incomplete form data',
+'Invalid or incomplete schedule' => 'Invalid or incomplete schedule',
+'Invalid or missing break ID' => 'Invalid or missing break ID',
+'Invalid or missing contact ID' => 'Invalid or missing contact ID',
+'Invalid or missing extension to transfer' => 'Invalid or missing extension to transfer',
+'Logging agent in. Please wait...' => 'Logging agent in. Please wait...',
+'Names' => 'Names',
+'No active call' => 'No active call',
+'No forms available for this call' => 'No forms available for this call',
+'No information available for this call' => 'No information available for this call',
+'(no matching contacts)' => '(no matching contacts)',
+'(No script available)' => '(No script available)',
+'On break' => 'On break',
+'Phone number' => 'Phone number',
+'Please select your agent number and your extension' => 'Please select your agent number and your extension',
+'Save data' => 'Save data',
+'Schedule at date' => 'Schedule at date',
+'Schedule call' => 'Schedule call',
+'Schedule' => 'Schedule',
+'Schedule to same agent' => 'Schedule to same agent',
+'Select break type' => 'Select break type',
+'Select extension to transfer to' => 'Select extension to transfer to',
+'Specified agent already connected to extension' => 'Specified agent already connected to extension',
+'Start and end date are required for date scheduling.' => 'Start and end date are required for date scheduling.',
+'Start date' => 'Start date',
+'Start time' => 'Start time',
+'Take Break' => 'Take Break',
+'There are no agents available. At least one agent is required for agent login.' => 'There are no agents available. At least one agent is required for agent login.',
+'There are no extensions available. At least one extension is required for agent login.' => 'There are no extensions available. At least one extension is required for agent login.',
+'Transfer' => 'Transfer',
+'Unable to fetch break types' => 'Unable to fetch break types',
+'Unable to hangup call' => 'Unable to hangup call',
+'Unable to read call information' => 'Unable to read call information',
+'Unable to read queue script' => 'Unable to read queue script',
+'Unable to save form data' => 'Unable to save form data',
+'Unable to schedule call' => 'Unable to schedule call',
+'Unable to set contact' => 'Unable to set contact',
+'Unable to start break' => 'Unable to start break',
+'Unable to stop break' => 'Unable to stop break',
+'Unable to transfer call' => 'Unable to transfer call',
+'(unavailable)' => '(unavailable)',
+'VTiger CRM' => 'VTiger CRM',
+'Welcome to Agent Console' => 'Welcome to Agent Console',
+
+'First name' => 'First name',
+'Last name' => 'Last name',
+'National ID' => 'National ID',
+'External site' => 'External site',
+
+'Blind transfer' => 'Blind transfer',
+'Attended transfer' => 'Attended transfer',
+'Password' => 'Password',
+'Callback Extension' => 'Callback Extension',
+'Agent ' => 'Agent ',
+' Logged in' => ' Logged in',
+'Call' => 'Call',
+'Information' => 'Information',
+'Script' => 'Script',
+'Waiting for call'=>'Waiting for call',
+);
+?>

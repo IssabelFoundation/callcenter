@@ -1,0 +1,96 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Desactivate" => "Деактивировать",
+    "New Field" => "Новое Поле",
+    "Add Field" => "Добавить Поле",
+    "Update Field" => "Обновить Поле",
+    "Are you sure you wish to delete form?" => "Вы уверены, что хотите удалить форму?",
+    "Form Name" => "Название",
+    "Form Description" => "Описание",
+    "Field Name" => "Название Поля",
+    "CSV Column" => "CSV Колонка",
+    "Column Number" => "Номер Колонки",
+    "Lines Number" => "Номер Линии",
+    "Field Validation" => "Проверка Полей",
+    "Order" => "Порядок",
+    "Add Item" => "Добавить",
+    "Remove Item" => "Удалить",
+    "New Form" => "Новая Форма",
+    "View Form" => "Просмотр Формы",
+    "Edit Form" => "Редактирование Форм",
+    "Activate" => "Активировать",
+    "Form List" => "Список Форм",
+    "Create New Form" => "Создать Новую Форму",
+    "Activate Error" => "Ошибка Активации",
+    "Error when Activating the form" => "Ошибка Активации формы",
+    "Error when deleting the Form" => "Ошибка удаления Формы",
+    "This field is been used by any campaign" => "Это поле используется одной или несколькими кампаниями",
+    "This form is been used by any campaign" => "Эта форма используется одной или несколькими кампаниями",
+    "Add Field Successfully" => "Поле Успешно добавлено",
+    "Field could not be added in the Form" => "Поле не может быть добавлено в Форму",
+    "Form could not be added" => "Форма не может быть добавлена",
+    "Values Field" => "Значения",
+    "Error Id Form" => "Ошибка Id Формы",
+    "Error Form Name is empty" => "Ошибка: Название Формы пустое",
+    "Error Field Name is empty" => "Ошибка:  Название Поля пустое",
+    "Error List is empty" => "Ошибка: Список полей пуст",
+    "Error in Order is empty or is not numeric" => "Ошибка порядкового номера: пустое поле или не является числовым",
+    "Order already exists" => "Порядковый номер уже существует",
+    "Edit Field" => "Редактирование Поля",
+    "Update Field Successfully" => "Поле успешно обновлено",
+    "Field could not be updated in the Form" => "Поле не может быть обновлено в этой Форме",
+    "Form could not be updated" => "Форма не может быть обновлена",
+    "Desactivate Error" => "Ошибка Деактивации",
+    "Delete Field Successfully" => "Поле успешно удалено",
+    "Type Label" => "Тип Метка",
+    "TEXT" => "Текс",
+    "TEXTAREA" => "Блок Текста",
+    "LIST" => "Список",
+    "DATE" => "Дата",
+    "Type Text" => "Тип Текст",
+    "Type List" => "Тип Список",
+    "Type Date" => "Тип Дата",
+    "Type Text Area" => "Тип Блок Текста",
+    "Type" => "Тип",
+    "Status" => "Статус",
+    "Active" => "Активная",
+    "Inactive" => "Неактивная",
+    "View" => "Вид",
+    "All" => "Все",
+    "Show Filter" => "Показать Фильтр",
+    "Hide Filter" => "Скрыть Фильтр",
+    "Filter applied " => "Текущий фильтр: ",
+    "Page" => "Страница",
+    "records" => "записей",
+    "No records match the filter criteria" => "Нет записей, соответствующих критериям фильтра",
+    "new field" => "новое поле",
+);
+?>

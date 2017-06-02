@@ -1,0 +1,126 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Agent Console" => "Консоль Агента",
+    "Agent log-in failed!" => "Вход агента не удался!",
+    "Agent login process not started" => "Не удаётся запустить процесс входа агента",
+    "Agent log-in terminated." => "Вход агента прерван",
+    "Agent not authorized for ECCP - ECCP password not set" => "Агент не авторизован для ECCP - ECCP пароль не установлен",
+    "Agent not found" => "Агент не найден",
+    "Agent not handling an incoming call" => "Агент не обрабатывает входящий вызов",
+    "Agent Number" => "Номер Агента",
+    "Call at end of campaign" => "Позвонить в конце кампании",
+    "Call Form" => "Форма",
+    "Call Information" => "Информация о Вызове",
+    "Call Script" => "Сценарий обработки Вызова",
+    "Call successfully scheduled" => "Вызов успешно запланирован",
+    "Cannot start agent login" => "Не удаётся запустить процесс входа агента",
+    "Cannot start agent login - Wrong password." => "Не удаётся запустить процесс входа агента - Неправильный пароль.",
+    "Confirm contact" => "Подтвердить контакт",
+    "Connected to call" => "Подключён к вызову",
+    "Contact" => "Контакт",
+    "Contact successfully confirmed" => "Контакт успешно подтверждён",
+    "Dismiss" => "Отклонить",
+    "End Break" => "Закончить Перерыв",
+    "End date" => "Конечная дата",
+    "End Hold" => "Снять с Удержания",
+    "End session" => "Завершить сессию",
+    "End time" => "Конечное время",
+    "Enter" => "Войти",
+    "Error while confirming contact" => "Ошибка при подтверждении контакта",
+    "Error while hanging up call" => "Ошибка при завершении вызова",
+    "Error while logging out agent" => "Ошибка при выходе агента",
+    "Error while saving form data" => "Ошибка при сохранении данных формы",
+    "Error while transferring call" => "Ошибка при переводе вызова",
+    "Extension" => "Внутренний номер",
+    "Failed to retrieve agent password" => "Не удалось получить пороль агента",
+    "Form data successfully saved" => "Данные формы успешно сохранены",
+    "Hangup" => "Завершить вызов",
+    "Hold" => "Удержание",
+    "Invalid agent number" => "Неверный номер агента",
+    "Invalid extension number" => "Недействительный внутренний номер",
+    "Invalid or incomplete form data" => "Неверные или неполные данные формы",
+    "Invalid or incomplete schedule" => "Неверное или неполное расписание",
+    "Invalid or missing break ID" => "Неверный или отсутствующий идентификатор перерыва",
+    "Invalid or missing contact ID" => "Неверный или отсутствующий идентификатор контакта",
+    "Invalid or missing extension to transfer" => "Неверный или отсутствующий внутренний номер для перевода",
+    "Logging agent in. Please wait..." => "Вход агента. Пожалуйста, подождите...",
+    "Names" => "Имя",
+    "No active call" => "Нет активного вызова",
+    "No forms available for this call" => "Нет форм доступных для этого вызова",
+    "No information available for this call" => "Нет информации доступной для этого вызова",
+    "(no matching contacts)" => "(нет совпадающих контактов)",
+    "(No script available)" => "(Нет доступного сценария)",
+    "On break" => "На перерыве",
+    "Phone number" => "Телефонный номер",
+    "Please select your agent number and your extension" => "Пожалуйста, выберите номер агента и ваш внутренний номер",
+    "Save data" => "Сохранить данные",
+    "Schedule at date" => "Запланировать на дату",
+    "Schedule call" => "Запланировать вызов",
+    "Schedule" => "Запланировать",
+    "Schedule to same agent" => "К этому же агенту",
+    "Select break type" => "Выберите тип перерыва",
+    "Select extension to transfer to" => "Выберите внутренний номер для перевода",
+    "Specified agent already connected to extension" => "Указанный агент уже подключён к внутреннему номеру",
+    "Start and end date are required for date scheduling." => "Начальная и конечная даты требуются для планирования на определённую дату.",
+    "Start date" => "Начальная дата",
+    "Start time" => "Начальное время",
+    "Take Break" => "Взять Перерыв",
+    "There are no agents available. At least one agent is required for agent login." => "Нет доступных агентов. По крайней мере один аген требуется для входа агента.",
+    "There are no extensions available. At least one extension is required for agent login." => "Нет доступных внутренних номеров. По крайней мере один внутренний номер требуется для входа агента.",
+    "Transfer" => "Перевести",
+    "Unable to fetch break types" => "Невозможно получить типы перерывов",
+    "Unable to hangup call" => "Невозможно завершить вызов",
+    "Unable to read call information" => "Невозможно прочитать информацию о вызове",
+    "Unable to read queue script" => "Невозможно прочитать сценарий обработки вызова для очереди",
+    "Unable to save form data" => "Невозможно сохранить данные формы",
+    "Unable to schedule call" => "Невозможно запланировать вызов",
+    "Unable to set contact" => "Невозможно установить контакт",
+    "Unable to start break" => "Не удалось начать перерыв",
+    "Unable to stop break" => "Не удалось завершить перерыв",
+    "Unable to transfer call" => "Не удалось перевести вызов",
+    "(unavailable)" => "(недоступен)",
+    "Welcome to Agent Console" => "Добро пожаловать в Консоль Агента",
+    "First name" => "Имя",
+    "Last name" => "Фамилия",
+    "National ID" => "Паспорт",
+    "External site" => "Внешний сайт",
+    "Blind transfer" => "Слепой перевод вызова",
+    "Attended transfer" => "Расширенный перевод вызова",
+    "Password" => "Пароль",
+    "Callback Extension" => "Внутренний номер для обратного вызова",
+    "Callback Login" => "Обратный вызов",
+    "Agent " => "Агент ",
+    " Logged in" => " Вошёл",
+    "Call" => "Вызов",
+    "Information" => "Информация",
+    "Script" => "Сценарий",
+);
+?>

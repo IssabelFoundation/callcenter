@@ -1,0 +1,59 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+
+<h1>{$node_name}</h1>
+<p align="Justify">This option lets us create forms which are useful for the agent to collect data during an ingoing or outgoing campaign. The Figure 1 shows the existing Forms in a list where you can see which ones are active and Inactive. To show the status of all forms, use the filter and select the option "All".</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_form_designer.png" border="0" />
+<p>Figure 1</p></div><br/>
+<p align="Justify">As you can see in the Figure 1, you can create a new form, view the existing ones and activate the inactive forms.</p>
+<h3>Create New Form</h3>
+<p align="Justify">To create a new form, click on the blue link "Create a New Form". There are two sections when creating a form. This first part is the name and description of the form. The second part is where we add the fields that the form will have and they can be text, list, date or label type. Below is a brief description of the required parameters for the new form.</p>
+<br />
+<table class="inline">
+  <tr>
+    <th>Field</th><th>Description</th>
+  </tr>
+  <tr>
+    <td>Name</td><td>This is the name that identifies the form.</td>
+  </tr>
+<tr>
+    <td>Description</td><td>This is a brief description of the form.</td>
+</tr>
+</table>
+<br />
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_form_new.png" border="0" />
+<p>Figure 2</p></div><br/>
+<p align="Justify">The form can have N fields and they can be added by clicking on "Add Field" button after setting the required parameters. Below a brief description of them:</p>
+<table class="inline">
+  <tr>
+    <th>Field</th><th>Description</th>
+  </tr>
+  <tr>
+    <td>Field Name</td><td>This is the name of the field.</td>
+  </tr>
+<tr>
+    <td>Order</td><td>This is the position of the field in the form.</td>
+</tr>
+<tr>
+    <td>Type</td><td><b>Type Label: </b>This type is to display an instruction.<br/>
+                     <b>Type Text: </b>This type is to enter short text.<br/>
+                     <b>Type List: </b>This type is to select several options from a list. If you use this type you have to add the possible options.<br/>
+                     <b>Type Date: </b>This type is to select a date.<br/>
+                     <b>Type Text Area: </b>This type is to enter long text.<br/>       
+    </td>
+</tr>
+</table>
+<h3>View</h3>
+<p align="Justify">You can check the details of an existing form by clicking on the blue link "View" located in the column Options from the list. A new window will be shown (See Figure 3) and here you can <b>Edit, Deactivate</b> or <b>Delete</b> the selected form.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_form_view.png" border="0" />
+<p>Figure 3</p></div><br />
+<h3>Edit</h3>
+<p>You can add and delete fields, change the name of the forms and other parameters, See Figure 4.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_form_edit.png" border="0" />
+<p>Figure 4</p></div><br/>
+</body>
+</html>

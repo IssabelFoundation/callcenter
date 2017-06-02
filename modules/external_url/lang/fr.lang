@@ -1,0 +1,44 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "External URLs" => "URLs externes",
+    "New URL" => "Nouvelle URL",
+    "Opens in" => "S'ouvre dans",
+    "URL Template" => "Modèle",
+    "URL Description" => "Description",
+    "New window" => "Nouvelle fenêtre",
+    "Embedded" => "Intégrée",
+    "Embedded frame" => "Cadre intégré",
+    "Apply changes" => "Appliquer",
+    "Enable use of this template" => "Activer l'utilisation de ce modèle",
+    "Open URL in" => "Ouvre l'URL dans",
+    "TEMPLATE_DESC" => "Le modèle peut contenir plusieurs variables contenues dans des crochets, tel que {HomeAddress}, qui sera remplacé par sa valeur pour chaque appel connecté. Les variables disponibles correspondent aux noms des attributs d'appels (sensible à la casse), ainsi que les attributs par défaut de l'appel :\n\n{__AGENT_NUMBER__} Identifiant du canal de l'agent, tel que Agent/9000\n{__CALL_TYPE__} peut être 'entrant' ou 'sortant'\n{__CAMPAIGN_ID__} Id interne de la campagne en cours\n{__CALL_ID__} Id interne de l'appel connecté en cours\n{__PHONE__} Numéro appelé ou id des appels connectés\n{__REMOTE_CHANNEL__} Id du canal des appels connectés\n",
+);
+?>

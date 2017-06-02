@@ -1,0 +1,120 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Outgoing Campaigns" => "Campañas Salientes",
+    "Campaigns" => "Campañas",
+    "New Campaign" => "Nueva campaña",
+    "Campaigns List" => "Listado de campañas",
+    "View Campaign" => "Ver campaña",
+    "Create New Campaign" => "Crear nueva campaña",
+    "Name Campaign" => "Nombre",
+    "Start Date" => "Fecha inicio",
+    "End Date" => "Fecha fin",
+    "Start Time" => "Hora inicio",
+    "End Time" => "Hora fin",
+    "Retries" => "Intentos",
+    "Trunk" => "Troncal",
+    "Queue" => "Cola",
+    "Context" => "Contexto",
+    "Script" => "Guión",
+    "Form" => "Formulario",
+    "Completed Calls" => "Llamadas completadas",
+    "Average Time" => "Promedio",
+    "File name" => "Nombre de archivo",
+    "Campaign ID is not valid" => "Id de Campaña no es válido",
+    "Name Campaign can't be empty" => "Nombre de campaña no puede estar vacío",
+    "Trunk can't be empty" => "Trunk no puede estar vacío",
+    "Context can't be empty" => "Contexto no puede estar vacío.",
+    "Queue can't be empty" => "Cola no puede estar vacío",
+    "Invalid Start Date" => "Fecha de inicio no válida.",
+    "Invalid End Date" => "Fecha Fin no válida",
+    "Invalid Start Time" => "Hora inicial no válida",
+    "Invalid End Time" => "Hora final no válida",
+    "Start Date must be greater than End Date" => "Fecha fin debe ser mayor que la fecha de inicio",
+    "Name Campaign already exists" => "El Nombre de la campaña ya existe",
+    "Invalid Campaign ID" => "ID de la campaña no válido",
+    "Invalid CSV File" => "Archivo CSV no válido",
+    "Element without phone number" => "Elemento sin número de teléfono",
+    "Edit Campaign" => "Editar Campaña",
+    "Error when Activating the Campaign" => "Error al activar la Campaña",
+    "Error when eliminating the Campaign" => "Error al desactivar la Campaña",
+    "Start Time must be greater than End Time" => "Hora Inicio deber ser menor que la hora fin",
+    "Invalid number" => "Número Inválido",
+    "Invalid CSV File Line" => "Archivo CSV inválido Línea ",
+    "CSV Data" => "Datos CSV",
+    "Phone Customer" => "Teléfono",
+    "Name Customer" => "Nombre",
+    "Status Call" => "Estado Llamada",
+    "Status" => "Estado",
+    "Options" => "Opciones",
+    "Success" => "Se realizó",
+    "Failure" => "Fallo",
+    "ShortCall" => "Llamada Corta",
+    "Error when deleting the Campaign" => "Error al eliminar la campaña",
+    "This campaign have calls done" => "Esta campaña tiene llamadas realizadas",
+    "Delete Error" => "Error al eliminar",
+    "There aren't form selected" => "No hay formularios seleccionados",
+    "Are you sure you wish to delete campaign?" => "¿Est&aacute; seguro que desea eliminar la campaña?",
+    "Error when desactivating the Campaign" => "Error al desactivar la campaña",
+    "Desactivate" => "Desactivar",
+    "Activate Error" => "Error al Activar",
+    "Desactivate Error" => "Error al Desactivar",
+    "Queue must be numeric" => "Número de cola debe de ser numérico y entero",
+    "Queue is being used, choose other one" => "La cola ya está siendo usada, escoja otra",
+    "Address" => "Dirección",
+    "Date & Time" => "Fecha y hora",
+    "Duration" => "Duración(Seg)",
+    "Finish" => "Terminada",
+    "Active" => "Activa",
+    "All" => "Todos",
+    "Inactive" => "Inactiva",
+    "Start" => "Inicio",
+    "End" => "Fin",
+    "Start time" => "Hora inicial",
+    "End time" => "Hora final",
+    "Max. used channels" => "Max. canales a usar",
+    "Campaign state" => "Campañas en estado",
+    "With selection" => "Con selección",
+    "Call File" => "Archivo de Llamadas",
+    "Activate" => "Activar",
+    "Range Date" => "Rango Fechas",
+    "Schedule per Day" => "Horario Diario",
+    "By Dialplan" => "Por Plan Marcado",
+    "Manage Trunks" => "Administrar Troncales",
+    "Manage Queues" => "Administrar Colas",
+    "Manage Forms" => "Administrar Formularios",
+    "External URLs" => "URLs Externos",
+    "Manage External URLs" => "Administrar URLs Externos",
+    "Deactivate" => "Desactivar",
+    "Campaign Name" => "Nombre Campaña",
+    "Change Status" => "Cambiar Estado",
+    "(No external URL)" => "(Sin URL externo)",
+);
+?>

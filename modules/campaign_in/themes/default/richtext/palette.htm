@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html id="cp">
+<head>
+	<title>RTE Color Palette</title>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<script type="text/javascript">
+	<!--
+	function selectColor(color) {
+		self.parent.setColor(color);
+	}
+	
+	function InitColorPalette() {
+		if (document.getElementsByTagName)
+			var x = document.getElementsByTagName('TD');
+		else if (document.all)
+			var x = document.all.tags('TD');
+		for (var i=0; i < x.length; i++) {
+			x[i].onmouseover = over;
+			x[i].onmouseout = out;
+			x[i].onmousedown = down;
+			x[i].style.background = '#' + x[i].id.replace('RTE_', ''); 
+		}
+	}
+	
+	function over() {
+		this.style.border = '1px solid #FFF';
+		this.style.cursor = 'hand';
+		this.style.cursor = 'pointer';
+	}
+	
+	function out() {
+		this.style.border = '1px solid #000';
+		this.style.cursor = 'default';
+	}
+	
+	function down() {
+		selectColor('#' + this.id.replace('RTE_', ''));
+	}
+	//-->
+	</script>
+	<style type="text/css"> 
+	body {
+		background: #FFF;
+		margin: 0;
+	}
+	table {
+		width: 150px;
+		height: 100px;
+		border: 1px solid #000;
+	}
+	td {
+		font-size: 4px;
+		width: 10px;
+		height: 10px;
+		border: 1px solid #000;
+	} 
+	</style> 
+</head>
+<body onload="InitColorPalette()">
+<table cellpadding="0" cellspacing="0">
+	<tr>
+		<td id="RTE_FFFFFF">&nbsp;</td>
+		<td id="RTE_FFCCCC">&nbsp;</td>
+		<td id="RTE_FFCC99">&nbsp;</td>
+		<td id="RTE_FFFF99">&nbsp;</td>
+		<td id="RTE_FFFFCC">&nbsp;</td>
+		<td id="RTE_99FF99">&nbsp;</td>
+		<td id="RTE_99FFFF">&nbsp;</td>
+		<td id="RTE_CCFFFF">&nbsp;</td>
+		<td id="RTE_CCCCFF">&nbsp;</td>
+		<td id="RTE_FFCCFF">&nbsp;</td>
+	</tr>
+	<tr>
+		<td id="RTE_CCCCCC">&nbsp;</td>
+		<td id="RTE_FF6666">&nbsp;</td>
+		<td id="RTE_FF9966">&nbsp;</td>
+		<td id="RTE_FFFF66">&nbsp;</td>
+		<td id="RTE_FFFF33">&nbsp;</td>
+		<td id="RTE_66FF99">&nbsp;</td>
+		<td id="RTE_33FFFF">&nbsp;</td>
+		<td id="RTE_66FFFF">&nbsp;</td>
+		<td id="RTE_9999FF">&nbsp;</td>
+		<td id="RTE_FF99FF">&nbsp;</td>
+	</tr>
+	<tr>
+		<td id="RTE_C0C0C0">&nbsp;</td>
+		<td id="RTE_FF0000">&nbsp;</td>
+		<td id="RTE_FF9900">&nbsp;</td>
+		<td id="RTE_FFCC66">&nbsp;</td>
+		<td id="RTE_FFFF00">&nbsp;</td>
+		<td id="RTE_33FF33">&nbsp;</td>
+		<td id="RTE_66CCCC">&nbsp;</td>
+		<td id="RTE_33CCFF">&nbsp;</td>
+		<td id="RTE_6666CC">&nbsp;</td>
+		<td id="RTE_CC66CC">&nbsp;</td>
+	</tr>
+	<tr>
+		<td id="RTE_999999">&nbsp;</td>
+		<td id="RTE_CC0000">&nbsp;</td>
+		<td id="RTE_FF6600">&nbsp;</td>
+		<td id="RTE_FFCC33">&nbsp;</td>
+		<td id="RTE_FFCC00">&nbsp;</td>
+		<td id="RTE_33CC00">&nbsp;</td>
+		<td id="RTE_00CCCC">&nbsp;</td>
+		<td id="RTE_3366FF">&nbsp;</td>
+		<td id="RTE_6633FF">&nbsp;</td>
+		<td id="RTE_CC33CC">&nbsp;</td>
+	</tr>
+	<tr>
+		<td id="RTE_666666">&nbsp;</td>
+		<td id="RTE_990000">&nbsp;</td>
+		<td id="RTE_CC6600">&nbsp;</td>
+		<td id="RTE_CC9933">&nbsp;</td>
+		<td id="RTE_999900">&nbsp;</td>
+		<td id="RTE_009900">&nbsp;</td>
+		<td id="RTE_339999">&nbsp;</td>
+		<td id="RTE_3333FF">&nbsp;</td>
+		<td id="RTE_6600CC">&nbsp;</td>
+		<td id="RTE_993399">&nbsp;</td>
+	</tr>
+	<tr>
+		<td id="RTE_333333">&nbsp;</td>
+		<td id="RTE_660000">&nbsp;</td>
+		<td id="RTE_993300">&nbsp;</td>
+		<td id="RTE_996633">&nbsp;</td>
+		<td id="RTE_666600">&nbsp;</td>
+		<td id="RTE_006600">&nbsp;</td>
+		<td id="RTE_336666">&nbsp;</td>
+		<td id="RTE_000099">&nbsp;</td>
+		<td id="RTE_333399">&nbsp;</td>
+		<td id="RTE_663366">&nbsp;</td>
+	</tr>
+	<tr>
+		<td id="RTE_000000">&nbsp;</td>
+		<td id="RTE_330000">&nbsp;</td>
+		<td id="RTE_663300">&nbsp;</td>
+		<td id="RTE_663333">&nbsp;</td>
+		<td id="RTE_333300">&nbsp;</td>
+		<td id="RTE_003300">&nbsp;</td>
+		<td id="RTE_003333">&nbsp;</td>
+		<td id="RTE_000066">&nbsp;</td>
+		<td id="RTE_330099">&nbsp;</td>
+		<td id="RTE_330033">&nbsp;</td>
+	</tr>
+</table>
+</body>
+</html>

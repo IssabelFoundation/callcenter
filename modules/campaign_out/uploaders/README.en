@@ -1,0 +1,130 @@
+Custom contact uploader plugin support
+--------------------------------------
+
+In order to integrate Elastix CallCenter to the workflow of a particular client,
+it might be useful to upload outgoing campaign contacts read from a source other
+than a CSV file. For example, contacts coming from a query on an external
+database, or consumed from a webservice. To integrate these scenarios, this
+document exposes a standard model and API for writing code that inserts contacts
+from a custom source into a campaign, without having to patch the core files in
+the campaign module.
+
+File organization
+-----------------
+
+To add a new uploader, a new directory must be created under uploaders/,
+with the files making up the uploader. The directory must contain a file called
+index.php that defines the entry points for the required functionality.
+Additionally the following directories should be included, if necessary:
+
+js/
+Javascript functions to be included for the uploader implementation. These files
+should be included by the main Smarty template located under the tpl/ directory.
+
+lang/
+Language translations for the texts to use in the uploader. The translation file
+format is identical to the files used by the standard modules.
+
+tpl/
+Files with templates for the panel.
+
+Other directories or files are ignored by the code, although they might be
+explicitly included.
+
+Functions and classes to implement
+----------------------------------
+
+In order to prevent name collisions between uploaders, the uploader-supplied
+index.php must define a class with a name that is derived from the panel
+directory name, with the first letter in uppercase. For example, a directory
+called "awesome" should define a class called "Uploader_Awesome".
+
+The class may define the following functions:
+
+static function main($module_name, $smarty, $local_templates_dir, $pDB);
+
+The main() function gets invoked to generate the form HTML with the options
+specific to the uploader being implemented, and to run the upload operation once
+options are selected. The paloForm class is already loaded and available to
+implement the form options. The $local_templates_dir parameter contains the
+template directory, already resolved for the selected uploader, so the template
+"templateX.tpl" may be loaded from the path "$local_templates_dir/templateX.tpl".
+The $smarty parameter is the Smarty class instance used by the main module. The
+form content must eventually be provided as a return value for the function.
+
+static function handleJSON_ACCION($module_name, $smarty, $local_templates_dir, $pDB);
+
+For each additional uploader operation that requires server assistance, a
+function can be defined called handleJSON_ACTION, where ACTION is used to choose
+the desired operation. To build an AJAX request that invokes the action, the
+request must be a GET or POST action with the following parameters:
+
+menu: "campaign_out"
+action: "load_contacts"
+id_campaign: ID
+rawmode: "yes"
+uploader: uploadername
+uploader_action: ACTION
+...
+
+The value of "uploadername" identifies the uploader to use and will invoke the
+method in the class Uploader_Uploadername. The value of ACTION contained in the
+uploader_action parameter will be used to build the method name handleJSON_ACTION.
+Despite what the prefix suggests, the function may return any required string content,
+in any format that can be generated. The function is responsible to call the
+Header() function to set Content-Type as necessary to match the intented output
+format. According to the Elastix framework standard, the request must also include
+"rawmode=yes" as a parameter to switch off the output of the Elastix HTML menus.
+The value of "id_campaign" is mandatory and can be extracted from the SELECT
+control with the name "id_campaign". With jQuery, the value can be extracted
+with the expression: $('input[name="id_campaign"]').val() .
+
+
+Standard operation procedure for contact uploading
+--------------------------------------------------
+
+When invoked, the main() method must check whether $_POST['save'] is defined. If
+defined, it must start the upload process with the options selected by $_POST
+and $_FILES, as required. The campaign ID for contact uploading is always
+defined in $_REQUEST['id_campaign']. On success, the most common step is to run
+Header("Location: ?menu=$module_name") in order to redirect to the list of known
+campaigns.
+
+The upload process (started by $_POST['save']) must perform the following
+operations:
+1) Start a database transaction using the $pDB instance of the paloDB class
+   passed as parameter 4.
+2) Create a new instance of a paloContactInsert object. This class is already
+   available when running any method in the upoader. The constructor requires
+   the paloDB instance passed to the main() function, and the campaign ID
+   specified in $_REQUEST['id_campaign'], in that order.
+3) Call the method beforeBatchInsert() on the newly created object instance.
+   This method will perform required tasks before the contact insertion. The
+   method returns TRUE on success or FALSE on an error. If an error occurs, it
+   can be verified with the error message on the instance attribute errMsg.
+4) Set up the source from which the campaign contacts will be read for
+   insertion. Each contact must consist of exactly one phone number to dial,
+   plus zero or more attributes. Each attribute must define a column number,
+   which defines the presentation order, starting from one. It must also define
+   an attribute label, and an attribute value. It is recommended that the source
+   that supplies the attributes guarantees that the same set of attributes is
+   defined for all contacts, and that they are presented in the same order.
+5) For each contact to insert, the following instance method must be invoked:
+
+   paloContactInsert::insertOneContact($number, $attributes)
+
+   On success, this method returns the ID of the newly-created contact, which
+   is the value of the "id" column on the "calls" table on the database. On
+   failure, NULL is returned. The $number parameter is the numeric string of the
+   phone number to dial for the contact. The $attributes parameter is an array
+   with keys representing the presentation order for the atribute (counting from
+   1) and values set to tuples. These tuples, in turn, have the attribute label
+   as first element and the attribute value as second element.
+6) After successfully inserting all contacts, the code must invoke the instance
+   method afterBatchInsert(). This method performs required operations after the
+   batch contact insert. The method returns TRUE on success or FALSE on an
+   error. If an error occurs, it can be verified with the error message on the
+   instance attribute errMsg.
+7) Commit the transacción on success, or rollback on failure, through paloDB
+   instance.
+

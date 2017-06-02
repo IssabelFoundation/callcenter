@@ -1,0 +1,27 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+<h1>{$node_name}</h1>
+<p align="Justify">This option shows in real time the status of the agents in the call center. You can see if the agent is in a call, taking a break, or inactive as well as the total number of calls and the total time of duration. The report will show the queues and agents belonging to it. If an agent belongs to more than one queue, the time will be shown in the respective queue. This means that the time in each queue could be different for the same agent. Below a brief description of the icons in the status column:</p>
+<table class="inline">
+            <tr>
+                <th>Icon</th><th>Description</th>
+            </tr>
+            <tr>
+                <td><img src="../modules/{$node_id}/images/ready.png" border="0" /></td><td>The agent is active and ready to make/receive calls.</td>
+            </tr>
+	    <tr>
+                <td><img src="../modules/{$node_id}/images/call.png" border="0" /></td><td>The agent is attending a call.</td>
+            </tr>
+	    <tr>
+                <td><img src="../modules/{$node_id}/images/break.png" border="0" /></td><td>The agent is on break time.</td>
+            </tr>
+        </table>
+<br />
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_monitoring.png" border="0" />
+<p>Figure 1</p></div><br />
+</body>
+</html>

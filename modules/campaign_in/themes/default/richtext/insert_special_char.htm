@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html>
+<head>
+	<title>RTE Special Characters</title>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<script type="text/javascript">
+	<!--
+	function selectColor(color) {
+		self.parent.setColor(color);
+	}
+	
+	function initSpecialChars() {
+		if (document.getElementsByTagName)
+			var x = document.getElementsByTagName('TD');
+		else if (document.all)
+			var x = document.all.tags('TD');
+		for (var i = 0; i < x.length; i++) {
+			x[i].onmouseover = over;
+			x[i].onmouseout = out;
+			x[i].onmousedown = down;
+		}
+	}
+	
+	function over() {
+		if (this.id.length > 0) {
+			this.style.border = '1px solid #FFF';
+			this.style.cursor = 'hand';
+			this.style.cursor = 'pointer';
+		}
+	}
+	
+	function out() {
+		if (this.id.length > 0) {
+			this.style.border = '1px solid #000';
+			this.style.cursor = 'default';
+		}
+	}
+	
+	function down() {
+		if (this.id.length > 0) {
+			window.opener.insertHTML(this.id);
+			window.close();
+		}
+	}
+	//-->
+	</script>
+	<style type="text/css"> 
+	body {
+		background: #FFF;
+		margin: 0;
+	}
+	table {
+		border: 1px solid #000;
+	}
+	td {
+		font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+		font-size: 14px;
+		width: 25px;
+		height: 25px;
+		border: 1px solid #000;
+		text-align: center;
+		vertical-align: middle;
+	} 
+	</style> 
+</head>
+<body onload="initSpecialChars();">
+<script type="text/javascript">
+<!--
+var cols = 15;
+var j = 0;
+document.write("<table cellpadding=\"0\" cellspacing=\"0\">");
+for (var i = 128; i < 255; i++) {
+	if (i != 129 && i != 141 && i != 143 && i != 144 && i != 157 && i != 160) {
+		j++;
+		if (j == 0) document.write("<tr>");
+		document.write("<td id=\"&#" + i + ";\">&#" + i + ";</td>");
+		if (j == cols) {
+			document.writeln("</tr>");
+			j = 0;
+		}
+	}
+}
+document.write("<td id=\"&spades;\">&spades;</td>");
+document.write("<td id=\"&clubs;\">&clubs;</td>");
+document.write("<td id=\"&diams;\">&diams;</td>");
+document.write("<td id=\"&hearts;\">&hearts;</td>");
+document.write("<td id=\"&oline;\">&oline;</td>");
+document.write("<td id=\"&larr;\">&larr;</td>");
+document.write("<td id=\"&rarr;\">&rarr;</td>");
+document.write("<td id=\"&uarr;\">&uarr;</td>");
+document.write("<td id=\"&darr;\">&darr;</td>");
+document.write("<td colspan=\"5\">&nbsp;</td>");
+document.writeln("</tr>");
+document.write("</table>");
+//-->
+</script>
+</body>
+</html>

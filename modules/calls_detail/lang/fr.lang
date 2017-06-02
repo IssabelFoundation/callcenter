@@ -1,0 +1,65 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Calls Detail" => "Détail des appels",
+    "Start Date" => "Du",
+    "End Date" => "Au",
+    "Start Time" => "à",
+    "End Time" => "à",
+    "Query" => "Filtrer",
+    "No.Agent" => "N° d'agent",
+    "Queue" => "File",
+    "Phone" => "Téléphone",
+    "Column" => "Colonne",
+    "Text" => "Texte",
+    "Error" => "Erreur",
+    "Transfer" => "Transfert",
+    "Duration" => "Durée",
+    "Error when connecting to database" => "Erreur de connexion à la base de données",
+    "Debe ingresar una fecha" => "Vous devez entrer une date",
+    "Debe ingresar una fecha valida" => "Vous devez entrer une date valide",
+    "Status" => "Statut",
+    "Success" => "Succès",
+    "Abandoned" => "Abandonné",
+    "End Monitor" => "Terminer la surveillance",
+    "Failure" => "Echec",
+    "NoAnswer" => "Sans réponse",
+    "OnQueue" => "Dans la file",
+    "Placing" => "Placé",
+    "Ringing" => "En sonnerie",
+    "ShortCall" => "Appel court",
+    "Duration Wait" => "Durée d'attente",
+    "Any Type" => "Tout",
+    "All Agents" => "Tous",
+    "All Queues" => "Toutes",
+    "Inbound" => "Entrant",
+    "Outbound" => "Sortant",
+);
+?>

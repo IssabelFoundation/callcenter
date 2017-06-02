@@ -1,0 +1,55 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+<h1>{$node_name}</h1>
+
+<p align="Justify">This option lets us configure some parameters to adjust the functioning of the call center:</p>
+<h2> Asterisk</h2>
+<p align="Justify">In this block there are parameters about the asterisk server such as IP address, login information, etc. In this case we have Asterisk in the same server as the call center.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_asterisk_connection.png" border="0" />
+<p>Figure 1</p></div><br/>
+<h2>Dialer Parameters</strong></h2>
+<p>You can configure the behavior of the automatic dialer of the call center (See figure 2). Below a brief description of each parameter:</p>
+<table class="inline">
+  <tr>
+    <th>Parameter</th><th>Description</th>
+  </tr>
+  <tr>
+    <td>Short Call Threshold</td><td>This is the minimal duration of a valid call. If a call lasts less than this time it will be considered as a short call and it will be tagged as failed, although it has been answered.</td>
+  </tr>
+<tr>
+    <td>Answering delay</td><td>This is the rough time duration since a call is assigned to an agent until it is taken by the agent or fail. This option places more calls than possible by assuming that in the time indicated by this parameter, at least one agent will be free.</td>
+</tr>
+<tr>
+    <td>Service percent</td><td>When the calls prediction calculates the time on which an agent will be free, there's a risk that the prediction is incorrect. The parameter service percent regulates the calls prediction so that we have the certainty that an agent will be free to answer a call.</td>
+</tr>
+<tr>
+    <td>Per-call dial timeout</td><td>If a call is not answered in more than this time, the call will be tagged as failed. The value 0 is a default Asterisk's value equivalent to 30 seconds.</td>
+</tr>
+<tr>
+    <td>Enable dialer debug</td><td>This option enables the output of messages in the log file of the dialer.</td>
+</tr>
+<tr>
+    <td>Dump all received Asterisk events</td><td>This option makes the dialer read all the AMI events that Asterisk broadcasts even the ones which don't interest to the dialer. This option works only if "Enable dialer debug" is enabled.</td>
+</tr>
+<tr>
+    <td>Enable overcommit of outgoing calls</td><td>This option makes the dialer place more calls than it is supposed to place. If this option is enabled, the dialer uses the statistics of ASR (Average Seizure Rate) to place a greater number of outgoing calls so that it cancels the ASR and all the agents remain busy.
+</td>
+</tr>
+<tr>
+    <td>Enable predicted dialer behavior</td><td>If this option is disabled, the dialer will place the calls just according to the number of free agents, and the options "Short Call Threshold", "Answering delay" and "Service percent" will be ignored.</td>
+</tr>
+</table>
+<br />
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_dialer_parameters.png" border="0" />
+<p>Figure 2</p></div><br/>
+
+<h2>Dialer Status</h2>
+<p align="Justify">It shows the current status of the dialer which could be STOPPED or RUNNING. In this section you can also START or STOP the dialer service (See figure 3).</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_dialer_status.png" border="0" />
+<p>Figure 3</p></div><br/>
+</body>
+</html>

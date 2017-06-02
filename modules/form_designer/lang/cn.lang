@@ -1,0 +1,87 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Desactivate" => "终止",
+    "New Field" => "新区域",
+    "Add Field" => "增加区域",
+    "Update Field" => "更新区域",
+    "Are you sure you wish to delete form?" => "你确定要删除表格？",
+    "Form Name" => "名称",
+    "Form Description" => "描述",
+    "Field Name" => "区域名称",
+    "CSV Column" => "CSV 专栏",
+    "Column Number" => "专栏名称",
+    "Lines Number" => "线路号码",
+    "Field Validation" => "区域确认",
+    "Order" => "顺序",
+    "List Item" => "列表项目",
+    "Add Item" => "增加 ",
+    "Remove Item" => "移除",
+    "New Form" => "新表格",
+    "View Form" => "查看表格",
+    "Edit Form" => "编辑表格",
+    "Activate" => "激活",
+    "Form List" => "表格列表",
+    "Create New Form" => "创建新表格",
+    "Activate Error" => "激活时出错",
+    "Error when Activating the form" => "激活表格时出现错误",
+    "Error when deleting the Form" => "删除表格时出现错误",
+    "This field is been used by any campaign" => "改区域已被促销活动使用",
+    "This form is been used by any campaign" => "改表格已被促销活动使用",
+    "Add Field Successfully" => "成功增加局域",
+    "Field could not be added in the Form" => "无法在表格中增加区域",
+    "Form could not be added" => "表格无法添加",
+    "Values Field" => "值",
+    "Form could not be cancelled" => "表格无法被取消",
+    "Error Id Form" => "表格ID出错",
+    "Error Form Name is empty" => "出现错误,表格名称空白",
+    "Error Field Name is empty" => "出现错误,区域名称空白",
+    "Error List is empty" => "出现错误,列表空白",
+    "Error in Order is empty or is not numeric" => "出现错误,顺序空白或者内容不是数字",
+    "Order already exists" => "改顺序已经存在",
+    "Edit Field" => "编辑区域",
+    "Update Field Successfully" => "区域更新成功",
+    "Field could not be updated in the Form" => "区域无法在表格中更新",
+    "Form could not be updated" => "表格无法更新",
+    "Desactivate Error" => "终止时出现错误",
+    "Error when eliminating the form" => "删除表格时出现错误",
+    "Delete Field Successfully" => "删除区域成功",
+    "Type Label" => "标签类型",
+    "TEXT" => "内容",
+    "LABEL" => "说明",
+    "TEXTAREA" => "内容区",
+    "LIST" => "列表 ",
+    "DATE" => "日期",
+    "Type Text" => "内容类型",
+    "Type List" => "列表类型",
+    "Type Date" => "日期类型",
+    "Type Text Area" => "内容区类型",
+);
+?>

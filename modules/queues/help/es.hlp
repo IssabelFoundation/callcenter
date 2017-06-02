@@ -1,0 +1,29 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+
+<h1>{$node_name}</h1>
+<p align="Justify">Esta opción permite asignar las colas que serán utilizadas para la recepción de llamadas en el call center. Esto hace fácil el monitoreo de las llamadas recibidas por un agente para determinar cuales fueron exitosas y cuales no.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_queue_list.png" border="0" />
+<p>Figura 1</p></div>
+<h2> Seleccionar Cola</h2>
+<p align="Justify">Haga click en el enlace "Seleccionar una Cola" para elegir la cola que será usada por el call center. Además usted puede crear un guión que será mostrado al agente. Estas colas deben ya existir antes de que desee seleccionarlas. Usted puede crear las colas desde el módulo PBX en Issabel.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_queue_select.png" border="0" />
+<p>Figura 2</p></div>
+<h2>Crear una Cola</h2>
+<p>Para crear una cola vaya a "PBX => Configuración PBX => Colas". La configuración de una cola para el call center es bastante diferente a una normal. Usted puede crear una cola con <b>Configuración Estándar</b> y <b/>Configuración Dinámica</b>.</p>
+<h3>Cola con Configuración Estándar</h3>
+<p>En Configuración Estándar usted tiene que agregar los números de agente en el campo Agentes Fijos como muestra la Figura 3. Note que se antepone la letra A antes de los números.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_queue_standard.png" border="0" />
+<p>Figura 3</p></div>
+<h3>Cola con Configuración Dinámica</h3>
+<p>En Configuración Dinámica usted tiene que agregar los número de extensión en el campo Dynamic Members como se muestra en la Figura 4. Note que se antepone la letra S antes de los números.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_queue_dynamic.png" border="0" />
+<p>Figura 4</p></div>
+<p>Para más información sobre Configuración Estática y Dinámica por favor vea la sección de ayuda del módulo Consola de Agente.</p>
+<br />
+</body>
+</html>

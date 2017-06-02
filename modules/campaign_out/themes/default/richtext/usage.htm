@@ -1,0 +1,345 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- 
+// Cross-Browser Rich Text Editor
+// Written by Kevin Roth (http://www.kevinroth.com/rte/)
+// Visit the support forums at http://www.kevinroth.com/forums/index.php?c=2
+// License: http://creativecommons.org/licenses/by/2.5/
+//-->
+<html>
+<head>
+	<title>Cross-Browser Rich Text Editor Usage Documentation</title>
+	<style type="text/css">
+	table tr td, table tbody, tr, td {
+		background-color: #E0E3EA;
+	}
+	
+	a.white {
+		color: #FFF;
+		text-decoration: underline;
+	}
+	
+	a.white:hover {
+		text-decoration: none;
+	}
+	
+	.center {
+		text-align: center;
+	}
+	
+	.code {
+		font-size: 12px;
+		display: block;
+		border: thin dashed #000;
+		background: #F3F6F3;
+		padding: 4px;
+		font-family: "Courier New", Courier, monospace;
+	}
+	</style>
+</head>
+
+<body>
+
+<h1>Cross-Browser Rich Text Editor Usage Documentation</h1>
+<p><b>Source:</b> <a href="http://www.kevinroth.com/rte/">http://www.kevinroth.com/rte/</a></p>
+<h2>Basic Usage Example</h2>
+<p>In the body of your web page, insert the following:</p>
+<ol>
+	<li>Add the following to your &lt;form&gt; tage: onsubmit="return submitForm();".  This will call the submitForm() function which updates the hidden form fields associated with your RTE before the form is submitted.  You will now have a &lt;form&gt; tag that looks like this:<br>
+	<pre class="code">&lt;form name="RTEDemo" action="demo.htm" method="post" onsubmit="return submitForm();"&gt;</pre>
+	</li>
+	<li>Add the submitForm() function to your page, and call the initRTE() function.  The initRTE() function sets the global path variables and detects the current browser's capabilities.  You must call this function before writing any RTEs to the page.<br>
+<pre class="code">
+&lt;script language="JavaScript" type="text/javascript"&gt;
+&lt;!--
+function submitForm() {
+	//make sure hidden and iframe values are in sync for all rtes before submitting form
+	updateRTEs();
+	
+	//change the following line to true to submit form
+	alert("rte1 = " + htmlDecode(document.RTEDemo.rte1.value));
+	return false;
+}
+
+//Usage: initRTE(imagesPath, includesPath, cssFile, genXHTML, encHTML)
+initRTE("./images/", "./", "", true);
+//--&gt;
+&lt;/script&gt;
+&lt;noscript&gt;&lt;p&gt;&lt;b&gt;Javascript must be enabled to use this form.&lt;/b&gt;&lt;/p&gt;&lt;/noscript&gt;
+</pre>
+	</li>
+	<li>Create a new richTextEditor instance, optionally set command options, and build the editor.  A full list of command options are below.<br>
+<pre class="code">
+&lt;script language="JavaScript" type="text/javascript"&gt;
+&lt;!--
+//build new richTextEditor
+var rte1 = new richTextEditor('rte1');
+rte1.html = 'here&#39;s the "\&lt;em\&gt;preloaded\&lt;\/em\&gt;&nbsp;\&lt;b\&gt;content\&lt;\/b\&gt;"';
+rte1.toggleSrc = false;
+rte1.build();
+//--&gt;
+&lt;/script&gt;
+</pre>
+	</li>
+	<li><b>*If retrieving a stored html string using a server-side language,</b> make certain to use the RTESafe() server-side function on your string before writing it to the page.  See server-side language demos to see how this is done.</li>
+</ol>
+
+<h2>Command Reference</h2>
+<p>To see a matrix of commands supported by each browser, <a href="http://www.kevinroth.com/rte/feature_matrix.asp">click here</a>.</p>
+<p>All RTE options must be set prior to calling the build() method.</p>
+<table cellpadding="2" cellspacing="2">
+	<tr valign="top">
+		<th nowrap style="text-align: left;">Option</th>
+		<th nowrap>Type</th>
+		<th nowrap>Default Value</th>
+		<th nowrap style="text-align: left;">Description</th>
+	</tr>
+	<tr valign="top">
+		<td>html</td>
+		<td class="center">string</td>
+		<td class="center">""</td>
+		<td>String of html that will be preloaded in the RTE.<br>Example: rte1.html = '<b>preloaded</b> text';</td>
+	</tr>
+	<tr valign="top">
+		<td>width</td>
+		<td class="center">int</td>
+		<td class="center">540</td>
+		<td>Width of the RTE.  If set below the width needed by the toolbars to render set commands, width will grow to minimum width necessary.<br>Example: rte1.width = 500;</td>
+	</tr>
+	<tr valign="top">
+		<td>height</td>
+		<td class="center">int</td>
+		<td class="center">200</td>
+		<td>Height of the RTE.<br>Example: rte1.height = 100;</td>
+	</tr>
+	<tr valign="top">
+		<td>readOnly</td>
+		<td class="center">boolean</td>
+		<td class="center">false</td>
+		<td>Makes RTE read-only.<br>Example: rte1.readOnly = true;</td>
+	</tr>
+	<tr valign="top">
+		<td>toolbar1</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether toolbar1 will be displayed or not.  Overrides command options contained within toolbar1.  Toolbar1 contains header formatting, font types, and font sizes.<br>Example: rte1.toolbar1 = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>toolbar2</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether toolbar2 will be displayed or not.  Overrides command options contained within toolbar2.  Toolbar2 contains all other command options not in toolbar1.<br>Example: rte1.toolbar2 = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdFormatBlock</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether block formatting command is enabled or disabled.<br>Example: rte1.cmdFormatBlock = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdFontName</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether font type command is enabled or disabled.<br>Example: rte1.cmdFontName = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdFontSize</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether font size command is enabled or disabled.<br>Example: rte1.cmdFontSize = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdIncreaseFontSize</td>
+		<td class="center">boolean</td>
+		<td class="center">false</td>
+		<td>Sets whether increase font size command is enabled or disabled.  This command is only available on Gecko browsers.<br>Example: rte1.cmdIncreaseFontSize = true;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdDecreaseFontSize</td>
+		<td class="center">boolean</td>
+		<td class="center">false</td>
+		<td>Sets whether decrease font size command is enabled or disabled.  This command is only available on Gecko browsers.<br>Example: rte1.cmdDecreaseFontSize = true;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdBold</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether bold command is enabled or disabled.<br>Example: rte1.cmdBold = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdItalic</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether italic command is enabled or disabled.<br>Example: rte1.cmdItalic = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdUnderline</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether underline command is enabled or disabled.<br>Example: rte1.cmdUnderline = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdStrikethrough</td>
+		<td class="center">boolean</td>
+		<td class="center">false</td>
+		<td>Sets whether strikethrough command is enabled or disabled.<br>Example: rte1.cmdStrikethrough = true;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdSuperscript</td>
+		<td class="center">boolean</td>
+		<td class="center">false</td>
+		<td>Sets whether superscript command is enabled or disabled.<br>Example: rte1.cmdSuperscript = true;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdSubscript</td>
+		<td class="center">boolean</td>
+		<td class="center">false</td>
+		<td>Sets whether subscript command is enabled or disabled.<br>Example: rte1.cmdSubscript = true;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdJustifyLeft</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether justify left command is enabled or disabled.<br>Example: rte1.cmdJustifyLeft = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdJustifyCenter</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether justify center command is enabled or disabled.<br>Example: rte1.cmdJustifyCenter = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdJustifyRight</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether justify right command is enabled or disabled.<br>Example: rte1.cmdJustifyRight = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdJustifyFull</td>
+		<td class="center">boolean</td>
+		<td class="center">false</td>
+		<td>Sets whether justify full command is enabled or disabled.<br>Example: rte1.cmdJustifyFull = true;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdInsertHorizontalRule</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether insert horizontal rule command is enabled or disabled.<br>Example: rte1.cmdInsertHorizontalRule = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdInsertOrderedList</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether insert ordered list command is enabled or disabled.<br>Example: rte1.cmdInsertOrderedList = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdInsertUnorderedList</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether insert unordered list command is enabled or disabled.<br>Example: rte1.cmdInsertUnorderedList = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdOutdent</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether outdent command is enabled or disabled.<br>Example: rte1.cmdOutdent = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdIndent</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether indent command is enabled or disabled.<br>Example: rte1.cmdIndent = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdForeColor</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether change fore color command is enabled or disabled.<br>Example: rte1.cmdForeColor = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdHiliteColor</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether change hilight color command is enabled or disabled.<br>Example: rte1.cmdHiliteColor = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdInsertLink</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether insert link command is enabled or disabled.<br>Example: rte1.cmdInsertLink = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdUnlink</td>
+		<td class="center">boolean</td>
+		<td class="center">false</td>
+		<td>Sets whether unlink command is enabled or disabled.<br>Example: rte1.cmdUnlink = true;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdInsertImage</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether insert image command is enabled or disabled.<br>Example: rte1.cmdInsertImage = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdInsertSpecialChars</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether insert special character command is enabled or disabled.<br>Example: rte1.cmdInsertSpecialChars = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdInsertTable</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether insert table command is enabled or disabled.<br>Example: rte1.cmdInsertTable = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdSpellcheck</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether spell check command is enabled or disabled.<br>Example: rte1.cmdSpellcheck = false;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdCut</td>
+		<td class="center">boolean</td>
+		<td class="center">false</td>
+		<td>Sets whether cut command is enabled or disabled.<br>Example: rte1.cmdCut = true;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdCopy</td>
+		<td class="center">boolean</td>
+		<td class="center">false</td>
+		<td>Sets whether copy command is enabled or disabled.<br>Example: rte1.cmdCopy = true;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdPaste</td>
+		<td class="center">boolean</td>
+		<td class="center">false</td>
+		<td>Sets whether paste command is enabled or disabled.<br>Example: rte1.cmdPaste = true;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdUndo</td>
+		<td class="center">boolean</td>
+		<td class="center">false</td>
+		<td>Sets whether undo command is enabled or disabled.<br>Example: rte1.cmdUndo = true;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdRedo</td>
+		<td class="center">boolean</td>
+		<td class="center">false</td>
+		<td>Sets whether redo command is enabled or disabled.<br>Example: rte1.cmdRedo = true;</td>
+	</tr>
+	<tr valign="top">
+		<td>cmdRemoveFormat</td>
+		<td class="center">boolean</td>
+		<td class="center">false</td>
+		<td>Sets whether remove formatting command is enabled or disabled.<br>Example: rte1.cmdRemoveFormat = true;</td>
+	</tr>
+	<tr valign="top">
+		<td>toggleSrc</td>
+		<td class="center">boolean</td>
+		<td class="center">true</td>
+		<td>Sets whether toggle source command is enabled or disabled.<br>Example: rte1.toggleSrc = false;</td>
+	</tr>
+</table>
+
+</body>
+</html>

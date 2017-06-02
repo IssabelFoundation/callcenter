@@ -1,0 +1,15 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+<h1>{$node_name}</h1>
+<p align="Justify">Esta opción muestra información acerca del tiempo en que los agentes han estado activos en la Consola de Agente detallando la fecha, tiempo de llamada y porcentaje del servicio midiendo así la eficiencia de los agentes.</p>
+<p>Use el filtro para obtener información general (Ver figura 1) o más específica (Ver figura 2). Puede descargar este reporte en diferentes formatos tales como CSV, XLS y PDF.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_time_li_lo_gen.png" border="0" />
+<p>Figura 1</p></div><br/>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_time_li_lo_det.png" border="0" />
+<p>Figura 2</p></div><br/>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+<h1>{$node_name}</h1>
+<p align="Justify">This option shows detailed information about all the incoming and outgoing calls of the call center with the agent, duration, queue, status, etc. You can use the filters to get more specific information. See Figure 1.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_calls_detail.png" border="0" />
+<p>Figure 1</p></div><br/>
+<p>You can download this report in different formats such as CSV, XLS and PDF.</p>
+</body>
+</html>

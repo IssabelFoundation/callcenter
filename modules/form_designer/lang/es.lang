@@ -1,0 +1,97 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Desactivate" => "Desactivar",
+    "New Field" => "Nuevo Campo",
+    "Add Field" => "Agregar Campo",
+    "Update Field" => "Actualizar Campo",
+    "Are you sure you wish to delete form?" => "¿Est&aacute; seguro que desea eliminar el formulario?",
+    "Form Name" => "Nombre",
+    "Form Description" => "Descripción",
+    "Field Name" => "Nombre del Campo",
+    "CSV Column" => "Columna CSV",
+    "Column Number" => "Número de Columnas",
+    "Lines Number" => "Número de Líneas",
+    "Field Validation" => "Validación del Campo",
+    "Order" => "Orden",
+    "List Item" => "Items de la Lista",
+    "Add Item" => "Agregar",
+    "Remove Item" => "Quitar",
+    "New Form" => "Nuevo Formulario",
+    "View Form" => "Vista del Formulario",
+    "Edit Form" => "Editar Formulario",
+    "Activate" => "Activar",
+    "Form List" => "Lista de Formularios",
+    "Form Designer" => "Diseño de Formularios",
+    "Create New Form" => "Crear Nuevo Formulario",
+    "Activate Error" => "Error al Activar",
+    "Error when Activating the form" => "Error cuando se estaba Activando el formulario",
+    "Error when deleting the Form" => "Error al borrar el formulario",
+    "This field is been used by any campaign" => "Este campo está siendo usado por una campaña",
+    "This form is been used by any campaign" => "Este formulario está siendo usado por una campaña",
+    "Add Field Successfully" => "Campo agregado satisfactoriamente",
+    "Field could not be added in the Form" => "No se pudo agregar el Campo en el Formulario",
+    "Form could not be added" => "No se pudo agregar el Formulario",
+    "Values Field" => "Valores",
+    "Form could not be cancelled" => "No se puede Cancelar el Formulario",
+    "Error Id Form" => "Error en el Id Formulario",
+    "Error Form Name is empty" => "Error Nombre del Formulario está vacío",
+    "Error Field Name is empty" => "Error Nombre de Campo está vacío",
+    "Error List is empty" => "Error la Lista está vacía",
+    "Error in Order is empty or is not numeric" => "Error el Orden está vacío o debe ser numérico",
+    "Order already exists" => "El orden ya está elegido",
+    "Delete Field Successfully" => "Campo borrado satisfactoriamente",
+    "Edit Field" => "Editar Campo",
+    "Update Field Successfully" => "Campo actualizado satisfactoriamente",
+    "Field could not be updated in the Form" => "El campo no puede ser actualizado en el formulario",
+    "Form could not be updated" => "El Formulario no puede ser actualizado",
+    "Desactivate Error" => "Error al Desactivar",
+    "Error when eliminating the form" => "Error al eliminar el formulario",
+    "Type Label" => "Tipo Etiqueta",
+    "TEXT" => "Texto",
+    "LABEL" => "Instrucción",
+    "TEXTAREA" => "Área de Texto",
+    "LIST" => "Lista",
+    "DATE" => "Fecha",
+    "Type Text" => "Tipo Texto",
+    "Type List" => "Tipo Lista",
+    "Type Date" => "Tipo Fecha",
+    "Type Text Area" => "Tipo Área de Texto",
+    "Type" => "Tipo",
+    "Status" => "Estado",
+    "Active" => "Activo",
+    "Inactive" => "Inactivo",
+    "View" => "Ver",
+    "All" => "Todos",
+    "No Data Found" => "No se encuentran datos",
+    "Drag and drop to reorder fields" => "Arrastre y suelte para reordenar los campos",
+    "new field" => "nuevo campo",
+);
+?>

@@ -1,0 +1,44 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+
+<h1>{$node_name}</h1>
+<p align="Justify">This option allows selecting the extensions that will be used in the dynamic configuration of the call center (Refer to Agent Console help section). Note that the extension numbers must already exist. In the list shown in Figure 1 you can see all the callback extensions with the status that shows if they are in use or not. </p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_callback_list.png" border="0" />
+<p>Figure 1</p></div><br/>
+<table class="inline">
+  <tr>
+    <th>Field</th><th>Description</th>
+  </tr>
+  <tr>
+    <td>Disconnect</td><td>Close the session of the agent that has an active session in the console using the callback extension.
+</td>
+  </tr>
+  <tr>
+    <td>Delete</td><td>Delete an existing callback extension.
+</td>
+  </tr>
+  <tr>
+    <td>Number</td ><td align="Justify">The number of the callback extension. This is the number that will be available in the agent console for login.</td>
+  </tr>
+  <tr>
+    <td>Name</td><td align="Justify">The name of the callback extension.</td>
+  </tr>
+<tr>
+    <td>Status</td><td align="Justify">Off Line / On line. It shows whether the callback extension is being used.</td>
+  </tr>
+<tr>
+    <td>Options</td><td align="Justify"><strong>Edit: </strong>You can modify the callback extension information by clicking on this link.<br/>
+    </td>
+</tr>
+</table>
+<h2>New callback extension</h2>
+<p>To create a new callback extension, click on the blue link "New callback extension". Here you have to select the extension, set a name and a password that will be used for logging in the agent console. It's not necessary to set the ECCP password since if it is left in blank the system set one randomly. See Figure 2.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_callback_new.png" border="0" />
+<p>Figure 2</p></div><br/>
+
+</body>
+</html>

@@ -1,0 +1,130 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.2 2007/08/09 00:31:28 jmartinez Exp $ */
+global $arrLangModule;
+$arrLangModule=array(
+'Campaign'
+    =>  'Campaign',
+'Start date'
+    =>  'Start date',
+'End date'
+    =>  'End date',
+'Schedule'
+    =>  'Schedule',
+'Queue'
+    =>  'Queue',
+'Retries'
+    =>  'Retries',
+'Total calls'
+    =>  'Total calls',
+'Pending calls'
+    =>  'Pending calls',
+'Failed calls'
+    =>  'Failed calls',
+'Short calls'
+    =>  'Short calls',
+'Connected calls'
+    =>  'Connected calls',
+'Placing calls'
+    =>  'Placing calls',
+'Ringing calls'
+    =>  'Ringing calls',
+'Queued calls'
+    =>  'Queued calls',
+'Pending calls'
+    =>  'Pending calls',
+'Abandoned calls'
+    =>  'Abandoned calls',
+'Unanswered calls'
+    =>  'Unanswered calls',
+'Finished calls'
+    =>  'Finished calls',
+'Lost track'
+    =>  'Lost track',
+'Agents'
+    =>  'Agents',
+'Free'
+    =>  'Free',
+'Busy'
+    =>  'Busy',
+'Not Logged In'
+    =>  'Not Logged In',
+'Break'
+    =>  'Break',
+'Agent'
+    =>  'Agent',
+'Phone Number'
+    =>  'Phone Number',
+'Trunk'
+    =>  'Trunk',
+'Status'
+    =>  'Status',
+'Since'
+    =>  'Since',
+'View campaign log'
+    =>  'View campaign log',
+'Placing'   =>  'Placing',
+'Dialing'   =>  'Dialing',
+'Ringing'   =>  'Ringing',
+'OnQueue'   =>  'On queue',
+'online'    =>  'Free',
+'offline'   =>  'Logged out',
+'oncall'    =>  'Busy',
+'paused'    =>  'On break',
+'LOG_FMT_PLACING'
+    =>  'Placing phone call to {phone} (retry {retry})',
+'LOG_FMT_DIALING'
+    =>  'Dialing {phone}, trunk is {trunk} ...',
+'LOG_FMT_RINGING'
+    =>  'Ringing {phone}, waiting for answer ...',
+'LOG_FMT_ONQUEUE'
+    =>  'Phone call to {phone} connected to queue {queue}, waiting for agent ...',
+'LOG_FMT_SUCCESS'
+    =>  'Phone call to {phone} handled by agent {agentchannel}',
+'LOG_FMT_HANGUP'
+    =>  'Phone call to {phone} disconnected from agent {agentchannel}, duration was {duration}',
+'LOG_FMT_ONHOLD'
+    =>  'Agent {agentchannel} put call to {phone} on hold',
+'LOG_FMT_OFFHOLD'
+    =>  'Agent {agentchannel} took call to {phone} off hold',
+'LOG_FMT_FAILURE'
+    =>  'Phone call to {phone} failed to be placed',
+'LOG_FMT_ABANDONED'
+    =>  'Phone call to {phone} on queue {queue} disconnected and was never handled',
+'LOG_FMT_SHORTCALL'
+    =>  'Short phone call to {phone} disconnected from agent {agentchannel}, duration was {duration}',
+'LOG_FMT_NOANSWER'
+    =>  'Phone call to {phone} disconnected before entering queue',
+'outgoing'  =>  'Outgoing campaign',
+'incoming'  =>  'Incoming campaign',
+'incomingqueue' =>  'Incoming queue',
+'N/A' => 'N/A', /* Not Available */
+'Previous 100 entries' => 'Previous 100 entries',
+'Hold'=>'Hold',
+);
+?>

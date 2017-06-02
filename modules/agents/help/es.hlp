@@ -1,0 +1,59 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+
+<h1>{$node_name}</h1>
+<p align="Justify">Esta opción muestra una lista de agentes creados para el call center que operarán en el sistema. Aquí usted puede también modificar y crear nuevos agentes. Cada agente consta de un número y una contraseña para que pueda iniciar sesión en el sistema. La figura 1 muestra una lista de agentes existentes.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_agent_list.png" border="0" />
+<p>Figura 1</p></div><br />
+<table class="inline">
+  <tr>
+    <th>Campo</th><th>Descripción</th>
+  </tr>
+  <tr>
+    <td>Desconectar</td><td>Este botón desconecta a un agente si tiene una sesión activa en la consola.
+</td>
+  </tr>
+  <tr>
+    <td>Eliminar</td><td>Este botón elimina a un agente.
+</td>
+  </tr>
+  <tr>
+    <td>Configuración</td><td><img src="../modules/{$node_id}/images/agent_list_ok.jpg" border="0">El agente está registrado tanto en la base de datos como en el archivo de configuración de Asterisk.<br/><br/>
+        <img src="../modules/{$node_id}/images/agent_list_error.jpg" border="0">Esta cruz significa que hay un error en el registro del agente. Lo errores pueden ser los siguientes:
+        <ul>
+              <li>El agente está registrado en la base de datos pero no en el archivo de configuración.</li>
+              <li>El agente está registrado en el archivo de configuración pero no en la base de datos.</li>
+        </ul>
+            La opción "Por reparar" arregla los errores antes mencionados. Esta opción realizará las siguientes acciones: 
+        <ul>
+              <li>Si el agente no está registrado en el archivo de configuración será agregado al mismo de acuerdo al registro en la base de datos.</li>
+              <li>Si el agente no está registrado en la base de datos será agregado a la misma de acuerdo al registro en el archivo de configuración.</li>
+        </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>Número</td><td align="Justify">Este es el número que identifica a el agente y debe ser ingresado en la consola de agente para iniciar sesión.</td>
+  </tr>
+  <tr>
+    <td>Nombre</td><td align="Justify">Nombre del agente.</td>
+  </tr>
+<tr>
+    <td>Estado</td><td align="Justify">Desconectado / Conectado. Indica si el agente tiene actualmente una sesión activa en la consola de agente.</td>
+  </tr> 
+<tr>
+    <td>Opciones</td><td align="Justify"><strong>Editar: </strong>Este enlace permite modificar la información del agente.<br/>
+    </td>
+</tr>
+</table>
+
+<h2>Nuevo Agente</h2>
+<p>Para crear un nuevo agente haga click en el enlace "Nuevo Agente" ubicado en la sección de Filtro. Aquí debe llenar un formulario con la información requerida como número de agente, nombre, constraseña entre otras. No es necesario especificar Contraseña ECCP ya que si es dejado en blanco el sistema lo llena automáticamente de manera aleatoria.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_agent_new.png" border="0" />
+<p>Figura 2</p></div><br />
+
+</body>
+</html>

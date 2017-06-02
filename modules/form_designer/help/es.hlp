@@ -1,0 +1,59 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+
+<h1>{$node_name}</h1>
+<p align="Justify">Esta opción permite crear formularios que serán usados por el agente para recolectar datos durante una campaña. La figura 1 muestra una lista de los formularios existentes donde se puede ver cuales están activos y cuales no. Use el filtro para una búsqueda más específica.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_form_designer.png" border="0" />
+<p>Figura 1</p></div><br/>
+<p align="Justify">Como puede ver en la figura 1 usted puede crear un nuevo formulario, ver uno existente o activar/desactivar formularios.</p>
+<h3>Crear nuevo formulario</h3>
+<p align="Justify">Para crear un nuevo formulario haga click en el botón "Crear Nuevi Formulario" ubicada en la sección de Filtro. Hay 2 secciones que se debe de llenar al crear un formulario. En la primera parte se especifica el nombre y la descripción. En la segunda parte se agregan los campos que tendrá el formulario que pueden ser de tipo texto, lista, fecha o etiqueta. A continuación una breve descripción de cada parámetro:</p>
+<br />
+<table class="inline">
+  <tr>
+    <th>Campo</th><th>Descripción</th>
+  </tr>
+  <tr>
+    <td>Nombre</td><td>Este es el nombre que identifica al formulario.</td>
+  </tr>
+<tr>
+    <td>Descripción</td><td>Una breve descripción del formulario.</td>
+</tr>
+</table>
+<br />
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_form_new.png" border="0" />
+<p>Figura 2</p></div><br/>
+<p align="Justify">El formulario puede tener N campos y son agregados con el botón "Agregar Campo". A continuación una breve descripción de ellos:</p>
+<table class="inline">
+  <tr>
+    <th>Campo</th><th>Descripción</th>
+  </tr>
+  <tr>
+    <td>Nombre del Campo</td><td>Nombre del campo.</td>
+  </tr>
+<tr>
+    <td>Orden</td><td>Esta es la posición que tendrá el campo dentro del formulario.</td>
+</tr>
+<tr>
+    <td>Tipo</td><td><b>Tipo Etiqueta: </b>Usado para mostrar instrucciones o nombres.<br/>
+                     <b>Tipo Texto: </b>Usado para ingresar texto corto.<br/>
+                     <b>Tipo Lista: </b>Usado para mostrar varias opciones en una lista. Si selecciona este tipo usted debe especificar las posibles opciones.<br/>
+                     <b>Tipo Fecha: </b>Usado para seleccionar una fecha.<br/>
+                     <b>Tipo Área de Texto: </b>Usado para ingresar texto largo.<br/>       
+    </td>
+</tr>
+</table>
+<h3>Ver Formularios</h3>
+<p align="Justify">Puede revisar los detalles de un formulario existente haciendo click en el enlace "Ver" correspondiente a cada formulario en la columna Opciones de la lista. Aparecerá una ventana donde podrá Editar, Activar/Desactivar o Eliminar el formulario seleccionado (Ver figura 3).</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_form_view.png" border="0" />
+<p>Figura 3</p></div><br />
+<h3>Editar Formularios</h3>
+<p>Al editar un formulario usted puede agregar, cambiar o  eliminar campos. También puede cambiar el nombre y la descripción del formulario. Ver Figura 4.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_form_edit.png" border="0" />
+<p>Figura 4</p></div><br/>
+</body>
+</html>

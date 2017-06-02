@@ -1,0 +1,73 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+
+<h1>{$node_name}</h1>
+<p align="Justify">This option allows creating an outgoing campaign where a set of calls are generated automatically from a list of phone numbers and assigned to the agents.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_campaign_list.png" border="0" />
+<p>Figure 1<p></div>
+<p align="Justify">You can <b>Activate, Deactivate</b> and <b>Delete</b> a campaign by selecting it from the list and using the buttons located in the filter section. To <b>Edit</b> a campaign click on the blue link Edit at the right of the campaign from the list. You can also download a report of the calls in a <b>CSV file</b> that contains the status of the calls and the data collected in the forms.</p>
+<br />
+<h3>New Campaign</h3>
+<p align="Justify">To create a new campaign, click on the blue link "Create new campaign" located in the section where the filters are. The parameters requires to create a new campaign are very important to determine how a call is going to be made. Below a brief description of the required parameters:</p>
+
+<table class="inline">
+  <tr>
+    <th>Field</th><th>Description</th>
+  </tr>
+  <tr>
+    <td>Name</td><td>Name of the campaign</td>
+  </tr>
+  <tr>
+    <td>Range date</td><td align="Justify"><b>Start: </b> Date on which the campaign starts. <br /> <b>End: </b>Date on which the campaign ends. After this date, no more calls will be made although there are pending phone numbers.</td>
+  </tr>
+  <tr>
+    <td>Schedule per Day</td><td align="Justify">The range of time per day which the campaign will last.</td>
+  </tr>
+  <tr>
+    <td>Form</td><td align="Justify">Select the forms to be used in the campaign to collect data.  To create a new form click on "Manage Forms" or go to Forms module.</td>
+  </tr>
+<tr>
+    <td>External URLs</td><td align="Justify">Select an URL to load an external aplication in the Agent Console. If you haven't created one you can do it by clicking on "Manage External URLs".</td>
+  </tr>
+  <tr>
+    <td>Trunk</td><td align="Justify">Select the trunk from where the calls are going out.</td>
+  </tr>
+  <tr>
+    <td>Max. used channels</td><td align="Justify">It limits the maximum number of simultaneous calls for this campaign.</td>
+  </tr>
+<tr>
+    <td>Context</td><td align="Justify">The name of the context to use for the campaign. The value by default is from-internal.
+    </td>
+  </tr>
+<tr>
+    <td>Queue</td><td align="Justify">This is the queue assigned to the campaign. The agents who will take the ingoing calls are configured in this queue. To activate a queue click on "Manage Queue". Notice that a queue must exists before it can be activated for the call center.
+   </td>
+  </tr>
+<tr>
+    <td>Retries</td><td align="Justify">Number of times that a call is made if it was unsuccessful.
+    </td>
+</tr>
+<tr>
+    <td>Call File</td><td align="Justify">Select a file in format .csv which contains the phone numbers that will be called by the campaign. You can add more data in this file as Name and Last Name.
+    </td>
+</tr>
+<tr>
+    <td>Call File Encoding</td><td align="Justify">This is the type of encoding of the file. Leave this field with the value by default.
+</td>
+</tr>
+<tr>
+    <td>Script</td><td align="Justify">This is the message that guides the agents when they are attending a call. It could contain a greeting or special words that an agent has to say during the call.
+    </td>
+</tr>
+</table>
+
+<br />
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_campaign_new.png" border="0" />
+<p>Figure 2</p></div>
+
+</body>
+</html>

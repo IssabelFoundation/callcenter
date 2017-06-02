@@ -1,0 +1,37 @@
+#!/usr/bin/php
+<?php
+
+// Agregar directorio libs de script a la lista de rutas a buscar para require()
+ini_set('include_path', "/var/www/html:/var/www/html/libs:".ini_get('include_path'));
+
+require_once "libs/misc.lib.php";
+require_once "libs/paloSantoDB.class.php";
+require_once "modules/dont_call_list/configs/default.conf.php";
+require_once "modules/dont_call_list/libs/paloSantoDontCall.class.php";
+
+if (count($argv) < 2) {
+    fputs(STDERR, "Do Not Call List bulk uploader for Elastix Callcenter.\n\n".
+        "{$argv[0]} /path/to/csv/file\n\n");
+    exit(1);
+}
+
+$o = new paloSantoDontCall($arrConfModule['cadena_dsn']);
+if ($o->errMsg != '') {
+    fputs(STDERR, "FATAL: could not connect to database: {$o->errMsg}\n");
+    exit(1);
+}
+
+print "\nUploading {$argv[1]} to Do Not Call list...\n";
+
+function progress($l)
+{
+    print "Total: ".$l["total"]." Inserted: ".$l["inserted"]." Rejected: ".$l["rejected"]."\r";
+}
+$r = $o->cargarArchivo($argv[1], "progress");
+if (!is_array($r)) {
+    fputs(STDERR, "ERR: could not upload {$argv[1]}: {$o->errMsg}\n");
+} else {
+    progress($r);
+}
+print "\n\n";
+?>

@@ -1,0 +1,67 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "New agent" => "Nouvel agent",
+    "Agent List" => "Liste des agents",
+    "Edit agent" => "Edition de l'agent",
+    "Agent Number" => "N° d'agent",
+    "View agent" => "Visualisation de l'agent",
+    "Queue" => "File d'attente",
+    "Error Delete Agent" => "Erreur en essayant d'effacer un agent.",
+    "Error Update Agent" => "Erreur en essayant de mettre à jour un agent.",
+    "Error Insert Agent" => "Erreur en essayant d'insérer un agent.",
+    "Error Agent Number" => "Le n° d'agent n'est pas au bon format.",
+    "Error saving agent in file" => "Erreur en sauvegardant l'agent dans le fichier",
+    "Error updating agent in file" => "Erreur en mettant à jour l'agent dans le fichier",
+    "Error when deleting agent in file" => "Erreur en effaçant l'agent dans le fichier",
+    "Agent number already exists" => "Le n° d'agent existe déjà.",
+    "Agent doesn't exist in configuration file" => "L'agent n'existe pas dans le fichier de configuration",
+    "Agent doesn't exist in database" => "L'agent n'existe pas dans la base de données",
+    "Number" => "N°",
+    "Disconect" => "Déconnecter",
+    "Configure" => "Configuré",
+    "Offline" => "Hors Ligne",
+    "Online" => "En Ligne",
+    "Not Status" => "Aucun statut",
+    "Repair" => "En dérangement",
+    "All" => "Tous",
+    "No call" => "Aucun appel",
+    "Name" => "Nom",
+    "Retype password" => "Retapez le mot de passe",
+    "View" => "Vue",
+    "Status" => "Statut",
+    "With selection" => "Pour la Sélection",
+    "Disconnect" => "Déconnexion",
+    "The passwords aren't numeric values" => "Les mots de passe ne sont pas des valeurs numériques.",
+    "The passwords are empty or don't match" => "Les mots de passe sont vides ou ne sont pas identique.",
+    "To rapair is necesary delete agent from configuration file. Do you want to continue?" => "Pour réparer, il est nécessaire de supprimer l'agent du fichier de configuration. Etes-vous sûr de vouloir continuer ?",
+    "To rapair is necesary add an agent in configuration file. Do you want to continue?" => "Pour réparer, il est nécessaire d'ajouter l'agent au fichier de configuration. Etes-vous sûr de vouloir continuer ?",
+);
+?>

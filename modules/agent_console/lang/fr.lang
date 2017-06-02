@@ -1,0 +1,127 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Agent Console" => "Console agent",
+    "Hangup" => "Raccrocher",
+    "Tranfer" => "Transferer",
+    "Call" => "Appeler",
+    "Form" => "Formulaire",
+    "Agent Number" => "Numéro",
+    "Take Break" => "Prendre une pause",
+    "There are no agents available. At least one agent is required for agent login." => "Il n'y a aucun agent de disponible. Il en faut au moins un pour se connecter à la console agent.",
+    "There are no extensions available. At least one extension is required for agent login." => "Il n'y a aucune extension de disponible. Il en faut au moins une pour se connecter à la console agent.",
+    "Fill the fields" => "Veuillez renseigner les champs",
+    "Break" => "Pause",
+    "UnBreak" => "Reprendre",
+    "In Break" => "En pause",
+    "Welcome to Console Agent" => "Bienvenue dans la console Agent",
+    "Please enter your number agent" => "Veuillez entrer votre numéro d'agent et votre extension",
+    "Number Agent" => "Numéro d'agent",
+    "Enter Agent" => "Entrer l'agent",
+    "Error when connecting to Asterisk Manager" => "Erreur de connexion au manager Asterisk",
+    "Unable to add Agent to queue: No such queue" => "Impossible d'ajouter un agent à la file: pas de file",
+    "Error when consulting Agent in Asterisk Manager" => "Erreur en consultant l'agent dans le manager Asterisk",
+    "Agent isn't in Queue Asterisk" => "L'agent n'est pas dans la file Asterisk",
+    "Unable to pause Agent to queue: No such queue" => "Impossible de sortir l'agent de la file: pas de file",
+    "Audit Error" => "Erreur audit",
+    "Number Agent already connected with extension" => "Numéro de l'agent déjà connecté avec l'extension",
+    "Agent Error" => "Erreur agent",
+    "Audit of break could not be inserted" => "L'audit de pause n'a pû être inséré",
+    "Id of the agent could not be obtained" => "L'id de l'agent n'a pû être obtenu",
+    "Number of audit nonassigned" => "Numéro d'audit non assigné",
+    "Error saving client information" => "Erreur de sauvegarde des informations client",
+    "Information was saved" => "L'information à été sauvegardée",
+    "Call no active" => "Aucun appel actif",
+    "Error when connecting to database Call Center" => "Erreur de connexion à la base de données callcenter",
+    "Calling" => "Appelant",
+    "Forms Nondefined" => "Formulaires non définis",
+    "Call Number" => "Numéro d'appel",
+    "Name" => "Prénom",
+    "Last Name" => "Nom",
+    "Error when consulting contact information" => "Erreur en consultant les informations de contact",
+    "Phone" => "Téléphone",
+    "Number Phone not Registered" => "Numéro de téléphone non enregistré",
+    "Contact Basic Information" => "Information basique du contact",
+    "Number Identification" => "Numéro d'identification",
+    "Error when updating call information" => "Erreur de mise à jour des informations d'appels",
+    "Id call or Id contact have format invalid" => "L'id d'appel ou de contact ont un format invalide",
+    "Confirm" => "Confirmer",
+    "Add Client" => "Ajouter client",
+    "View Client" => "Voir client",
+    "Call can't be closed, channel is empty" => "L'appel ne peut pas être terminé, le canal est vide",
+    "Accept" => "Accepter",
+    "error when creating new object" => "Erreur de création d'un nouvel objet",
+    "No call" => "Aucun appel",
+    "transfer_error" => "Erreur de transfert : ",
+    "Success" => "Transfert d'appel réussi",
+    "Error when connecting to Call Center" => "Erreur de connexion au centre d'appels",
+    "Error query" => "Erreur en question",
+    "select extension" => "sélectionnez une extension",
+    "consultar_llamada" => "Consulter transferts ?",
+    "Hold" => "Mettre en attente",
+    "Unhold" => "Reprendre",
+    "Marcar" => "Marquer",
+    "Cancel" => "Annuler",
+    "Marked Error" => "Erreur de marquage",
+    "Success Marked" => "Marqué correctement",
+    "Please enter a number to mark" => "Veuillez entrer un numéro à marquer",
+    "vtigercrm" => "vTiger CRM",
+    "Agent disconnected" => "Agent déconnecté",
+    "ProgramCalls" => "Programer des appels",
+    "Date Init" => "Date de début",
+    "Date End" => "Date de fin",
+    "Final Call" => "Appel en fin de campagne",
+    "Add" => "Ajouter",
+    "Add Other" => "Ajouter autre",
+    "Start time" => "Heure de début",
+    "End time" => "Heure de fin",
+    "Date field can not be empty" => "Le champ date ne peut pas être vide",
+    "You have to enter a a permitted hour" => "Vous devez renseigner une heure autorisée",
+    "Number field can not be empty" => "Le champ nombre ne peut pas être vide",
+    "Number field can be numeric" => "Le champ nombre doit être numérique",
+    "Invalid Start Date" => "Date de début incorrecte",
+    "Invalid End Date" => "Date de fin incorrecte",
+    "Invalid Start Time" => "Heure de début incorrecte",
+    "Invalid End Time" => "Heure de fin incorrecte",
+    "Start Date must be greater than End Date" => "La date de début doit être antérieure à la date de fin",
+    "Start Time must be greater than End Time" => "L'heure de début doit être antérieure à l'heure de fin",
+    "Unable to parse start date specification" => "Impossible de reconnaitre la date de début",
+    "Unable to parse end date specification" => "Impossible de reconnaitre la date de fin",
+    "Unable to parse start time specification" => "Impossible de reconnaitre l'heure de début",
+    "Unable to parse end time specification" => "Impossible de reconnaitre l'heure de fin",
+    "You must be enter a valid init/end date" => "Vous devez entrer une date de début/fin valide",
+    "The data has been saved" => "Les informations ont été sauvegardées",
+    "No data and no hour will be saved" => "Aucune information ni horaire ne seront sauvegardés",
+    "A call with the same date and the same hour already exist" => "Un appel existe déjà pour cette date et heure",
+    "The scheduled call date range is not between the campaign date range" => "La programmation de l'appel ne se trouve pas pendant la période de fonctionnement de la campagne",
+    "The call has not been saved because the scheduled call date range is not between the campaign date range" => "L'appel n'a pas été enregistré car sa programmation ne se trouve pas pendant la période de fonctionnement de la campagne",
+    "The scheduled call date range is not between the campaign date range. Are you sure do you want to save?" => "La programmation de l'appel n'entre pas dans la période de fonctionnement de la campagne. Êtes-vous sûr de vouloir l'enregistrer ?",
+);
+?>

@@ -1,0 +1,14 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/default/help.css">
+</header>
+<body>
+<h1>{$node_name}</h1>
+<p align="Justify">Esta opción muestra el tiempo en que los agentes han estado inactivos debido a los recesos. Este tiempo es calculado para un solo agente así como para todo el grupo mostrando de esta forma un tiempo total.</p>
+
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_break_report.png" border="0" />
+<p>Figura 1</p></div><br/>
+<p>Usted puede descargar este reporte en diferentes formatos tales como CSV, PDF o XLS.</p>
+</body>
+</html>

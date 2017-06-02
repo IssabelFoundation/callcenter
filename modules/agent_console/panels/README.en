@@ -1,0 +1,73 @@
+Custom panel support for Agent Console
+--------------------------------------
+
+In order to add customizations to the Agent Console, it might be useful to add
+additional panels as tabs with new controls. The following document is a model
+to set an API standard for custom panels, in order to minimize changes to the
+core files of the Agent Console.
+
+File organization
+-----------------
+
+To add a new panel, a new directory must be created under panels/ , with the
+files making up the panel. The directory must contain a file called index.php
+that defines the entry points for the required functionality. Additionally the
+following directorys should be included, if necessary:
+
+js/
+Javascript functions to be included for the panel implementation. Every file
+under this directory will be included as a <script> tag reference.
+
+lang/
+Language translations for the texts to use in the panel. The translation file
+format is identical to the files used by the standard modules.
+
+tpl/
+Files with templates for the panel.
+
+Other directories or files are ignored by the code, although they might be
+explicitly included.
+
+Functions and classes to implement
+----------------------------------
+
+In order to prevent name collisions between panels, the panel-supplied index.php
+must define a class with a name that is derived from the panel directory name,
+with the first letter in uppercase. For example, a directory called "awesome"
+should define a class called "Panel_Awesome".
+
+The class may define the following functions:
+
+static function templateContent($module_name, $smarty, $local_templates_dir, $oPaloConsola, $estado)
+
+If defined, the templateContent function should return the texts for the panel
+title and content. The class must be defined in order for a panel to be shown
+at all in the console. The title text is inserted inside <a> tags that reference
+an anchor called "#tabs-PANELNAME" where PANELNAME is the directory name for the
+panel files. The content string is the HTML content to place inside the panel
+<div> tag. This tag, in turn, has an "id" attribute with its value set to
+"tabs-PANELNAME". The content strings must be returned as follows:
+
+array('title' => "...", 'content' => "...")
+
+The $smarty parameter is the Smarty object instance used for the templates, and
+it can be used to generate the HTML content. The $local_templates_dir is the
+path to the tpl directory, and it can be directly used in a Smarty invocation,
+such as the following:
+
+$content = $smarty->fetch("$local_templates_dir/test.tpl");
+
+
+static function handleJSON_ACTION($module_name, $smarty, $local_templates_dir, $oPaloConsola, $estado)
+
+For each action defined by the panel that requires server access, a function can
+be defined called "handleJSON_ACTION", where ACTION is used to choose the desired
+operation. The HTTP request that invokes this action must specify a GET or POST
+parameter called "action", with a value of "panelname_Action" The "panelname"
+string identifies the panel to use and will use the class named Panel_Panelname.
+The "ACTION" string is used to build the functionname handleJSON_ACTION. Despite
+what the prefix suggests, the function may return any required string content,
+in any format that can be generated. The function is responsible to call the
+Header() function to set Content-Type as necessary to match the intented output
+format. According to the Elastix framework standard, the request must also include
+"rawmode=yes" as a parameter to switch off the output of the Elastix HTML menus.

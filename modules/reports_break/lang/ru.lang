@@ -1,0 +1,64 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "List Break" => "Список Перерывов",
+    "Hold" => "Удержание",
+    "Total" => "Всего",
+    "agent" => "Агент",
+    "break" => "Тип Перерыва",
+    "time_init" => "Время начала",
+    "time_end" => "Время Завершения",
+    "duration" => "Длительность",
+    "Name" => "Имя",
+    "Reports Break" => "Отчёт о Перерывах",
+    "Agent Name" => "Имя Агента",
+    "Break" => "Перерыв",
+    "query" => "Найти",
+    "date" => "Дата",
+    "Agent Number" => "№ Агента",
+    "Download" => "Скачать",
+    "Show Filter" => "Показать Фильтр",
+    "Hide Filter" => "Скрыть Фильтр",
+    "Start Date" => "Начальная Дата",
+    "End Date" => "Конечная Дата",
+    "Error" => "Ошибка",
+    "Warning" => "Предупреждение",
+    "Error when connecting to database" => "Ошибка соединения с базой данных",
+    "Error when creating object paloSantoReportsBreak" => "Ошибка создания объекта paloSantoReportsBreak",
+    "Error cargando listado de tipos de breaks" => "Ошибка загрузки списка типов перерывов",
+    "Error cargando listado de agentes" => "Ошибка загрузки списка агентов",
+    "Error cargando listado de breaks tomados" => "Ошибка загрузки списка используемых перерывов",
+    "Debe ingresar una fecha" => "Вы должны ввести любую дату",
+    "Debe ingresar una fecha valida" => "Вы должны ввести правильную дату",
+    "Validation Error" => "Ошибка проверки на корректность",
+    "The following fields contain errors" => "Следующие поля содержат ошибки",
+    "No register break in database" => "Нет зарегистрированных перерывов в базе данных",
+);
+?>

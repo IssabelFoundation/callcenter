@@ -1,0 +1,19 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+
+<h1>{$node_name}</h1>
+<p align="Justify">The ECCP  is a protocol developed by Palosanto Solutions for the Call Center. This protocol works with an authentication system. The default user is "agentconsole" which is used by the module Agent Console.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_eccp_users_list.png" border="0" />
+<p>Figure 1</p></div><br />
+
+<h2>New User</h2>
+<p>To create a new user, click on the blue link "New ECCP user". Here you have to fill out the form with the username and password. See figure 2.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_eccp_users_new.png" border="0" />
+<p>Figure 2</p></div><br />
+
+</body>
+</html>

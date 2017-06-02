@@ -1,0 +1,35 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+
+<h1>{$node_name}</h1>
+<p align="Justify">Esta opción nos permite agregar y configurar una URL externa para poder agregarla a una campaña. Con esta URL externa el agente puede acceder a otras aplicaciones durante el desarrollo de la campaña.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_list_url.png" border="0" />
+<p>Figura 1</p></div>
+
+<h3>Nuevo URL</h3>
+<p align="Justify">Para crear una nueva URL haga click en el enlace azul "Nuevo URL" ubicado en la sección de Filtro y llene los parámetros requeridos. A continuación una breve descripción de cada uno:</p>
+<table class="inline">
+  <tr>
+    <th>Campo</th><th>Descripción</th>
+  </tr>
+  <tr>
+    <td>Plantilla de URL</td><td>Este es el link que corresponde a la URL externa.</td>
+  </tr>
+  <tr>
+    <td>Descripción de URL</td><td align="Justify">Escriba una descripción de la URL externa. Esta información aparecerá como referencia durante la creación de una nueva campaña.</td>
+  </tr>
+  <tr>
+    <td>Abrir URL en</td><td align="Justify"><b>Nueva ventana: </b>La URL se ejecutará en una nueva ventana<br /> <b>Marco embebido: </b>La URL se ejecutará en la consola de agente como una pestaña más.<br /><b>JSONP: </b>Esta opción permite ejecutar código de JavaScript en la consola de Agente. La plantilla de URL provee soporte para ejecutar este lenguaje.</td>
+  </tr>
+</table>
+<br />
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_new_url.png" border="0" />
+<p>Figura 2</p></div>
+<p>Una vez haya configurado la URL externa haga click en el botón "Guardar".</p>
+<br />
+</body>
+</html>

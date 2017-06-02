@@ -1,0 +1,129 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Outgoing Campaigns" => "Outgoing Campaigns",
+    "Campaigns" => "Campaigns",
+    "New Campaign" => "New Campaign",
+    "Campaigns List" => "Campaigns List",
+    "View Campaign" => "View Campaign",
+    "Create New Campaign" => "Create New Campaign",
+    "Name Campaign" => "Name",
+    "Start Date" => "Start Date",
+    "End Date" => "End Date",
+    "Start Time" => "Start Time",
+    "End Time" => "End Time",
+    "Retries" => "Retries",
+    "Trunk" => "Trunk",
+    "Queue" => "Queue",
+    "Context" => "Context",
+    "Script" => "Script",
+    "Form" => "Form",
+    "Completed Calls" => "Completed calls",
+    "Average Time" => "Average time",
+    "File name" => "File name",
+    "Unable to parse start date specification" => "Unable to parse start date specification",
+    "Unable to parse end date specification" => "Unable to parse end date specification",
+    "Unable to parse start time specification" => "Unable to parse start time specification",
+    "Unable to parse end time specification" => "Unable to parse end time specification",
+    "Campaign ID is not valid" => "Campaign ID is not valid",
+    "Name Campaign can't be empty" => "Name Campaign can't be empty",
+    "Trunk can't be empty" => "Trunk can't be empty",
+    "Context can't be empty" => "Context can't be empty",
+    "Retries must be numeric" => "Retries must be numeric",
+    "Queue can't be empty" => "Queue can't be empty",
+    "Invalid Start Date" => "Invalid Start Date",
+    "Invalid End Date" => "Invalid End Date",
+    "Invalid Start Time" => "Invalid Start Time",
+    "Invalid End Time" => "Invalid End Time",
+    "Start Date must be greater than End Date" => "Start Date must be greater than End Date",
+    "Name Campaign already exists" => "Name Campaign already exists",
+    "Invalid Campaign ID" => "Invalid Campaign ID",
+    "Element without phone number" => "Element without phone number",
+    "Edit Campaign" => "Edit Campaign",
+    "Error when Activating the Campaign" => "Error when Activating the Campaign",
+    "Error when eliminating the Campaign" => "Error when eliminating the Campaign",
+    "Start Time must be greater than End Time" => "Start Time must be greater than End Time",
+    "CSV Data" => "CSV Data",
+    "Phone Customer" => "Phone",
+    "Name Customer" => "Name Customer",
+    "Status Call" => "Status Call",
+    "Status" => "Status",
+    "Options" => "Options",
+    "Success" => "Success",
+    "Failure" => "Failure",
+    "ShortCall" => "ShortCall",
+    "Error when deleting the Campaign" => "Error when deleting the Campaign",
+    "This campaign have calls done" => "This campaign have calls done",
+    "Delete Error" => "Delete Error",
+    "There aren't form selected" => "There aren't form selected",
+    "To rapair is necesary delete agent from configuration file. Do you want to continue?" => "To repair is necessary to delete agent from configuration file. Do you want to continue?",
+    "To rapair is necesary add an agent in configuration file. Do you want to continue?" => "To repair is necessary to add an agent in configuration file. Do you want to continue?",
+    "Error when desactivating the Campaign" => "Error when deactivating the Campaign",
+    "Desactivate" => "Deactivate",
+    "Activate Error" => "Activate Error",
+    "Desactivate Error" => "Deactivate Error",
+    "Queue must be numeric" => "Queue must be numeric",
+    "Queue is being used, choose other one" => "Queue is being used, choose other one",
+    "Address" => "Address",
+    "Date & Time" => "Date & Time",
+    "Duration" => "Duration(Seg)",
+    "Are you sure you wish to delete campaign?" => "Are you sure you wish to delete campaign?",
+    "Finish" => "Finish",
+    "Active" => "Active",
+    "All" => "All",
+    "Inactive" => "Inactive",
+    "Range Date" => "Range Date",
+    "Start" => "Start",
+    "End" => "End",
+    "Schedule per Day" => "Schedule per Day",
+    "Start time" => "Start time",
+    "End time" => "End time",
+    "Max. used channels" => "Max. used channels",
+    "View" => "View",
+    "Activate" => "Activate",
+    "Campaign state" => "Campaign state",
+    "With selection" => "With selection",
+    "By Dialplan" => "By Dialplan",
+    "Manage Trunks" => "Manage Trunks",
+    "Manage Queues" => "Manage Queues",
+    "Manage Forms" => "Manage Forms",
+    "External URLs" => "External URLs",
+    "Manage External URLs" => "Manage External URLs",
+    "At least 1 used channel must be allowed." => "At least 1 used channel must be allowed.",
+    "Campaign must allow at least one call retry" => "Campaign must allow at least one call retry",
+    "Change Status" => "Change Status",
+    "(Leave as 0 to disable channel limit)" => "(Leave as 0 to disable channel limit)",
+    "(No external URL)" => "(No external URL)",
+    "Load Contacts" => "Load Contacts",
+    "Load Contacts for Campaign" => "Load Contacts for Campaign",
+    "Available uploaders" => "Available uploaders",
+    "Options for" => "Options for",
+);
+?>

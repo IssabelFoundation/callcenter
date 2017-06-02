@@ -1,0 +1,14 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/default/help.css">
+</header>
+<body>
+<h1>{$node_name}</h1>
+<p align="Justify">This option shows the amount of the time that an agent has not been making or receiving calls because of the break times. This time is calculated for a single agent and for all the group of agents in a range of time.</p>
+
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_break_report.png" border="0" />
+<p>Figure 1</p></div><br/>
+<p>You can download this report in different formats such as CSV, XLS and PDF.</p>
+</body>
+</html>

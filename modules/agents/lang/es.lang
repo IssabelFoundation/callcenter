@@ -1,0 +1,70 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Agents" => "Agentes",
+    "New agent" => "Nuevo Agente",
+    "Agent List" => "Listado de Agentes",
+    "Edit agent" => "Editar agente",
+    "Agent Number" => "Número de Agente",
+    "View agent" => "Ver Agente",
+    "Queue" => "Cola",
+    "Error Delete Agent" => "Error al intentar eliminar un agente.",
+    "Error Update Agent" => "Error al intentar actualizar un agente.",
+    "Error Insert Agent" => "Error al intentar insertar un agente.",
+    "Error Agent Number" => "Número de agente en formato incorrecto.",
+    "Error saving agent in file" => "Error al guardar el agente en el archivo",
+    "Error updating agent in file" => "Error al actualizar el agente en el archivo",
+    "Error when deleting agent in file" => "Error al borrar el agente del archivo",
+    "Agent number already exists" => "Número de agente ya existe..",
+    "Agent doesn't exist in configuration file" => "Se ha borrado el agente del archivo de configuración",
+    "Agent doesn't exist in database" => "Agente no existe en la base de datos",
+    "To rapair is necesary delete agent from configuration file. Do you want to continue?" => "Para reparar es necesario borrar el agente del archivo de configuración. Desea continuar?",
+    "To rapair is necesary add an agent in configuration file. Do you want to continue?" => "Para reparar es necesario añadir el agente en el archivo de configuración. Desea continuar?",
+    "Number" => "Número",
+    "Disconect" => "Desconectar",
+    "Configure" => "Configuración",
+    "Offline" => "Desconectado",
+    "Online" => "Conectado",
+    "Not Status" => "Sin estado",
+    "Repair" => "Por reparar",
+    "All" => "Todos",
+    "No call" => "No hay llamada",
+    "Name" => "Nombre",
+    "Retype password" => "Repita contraseña",
+    "With selection" => "Con selección",
+    "Disconnect" => "Desconectar",
+    "The passwords aren't numeric values" => "Las contraseñas no son valores numéricos",
+    "The passwords are empty or don't match" => "Las contraseñas están vacías o no coinciden",
+    "ECCP Password" => "Contraseña ECCP",
+    "Retype ECCP password" => "Repita contraseña ECCP",
+    "ECCP passwords don't match" => "Contraseñas ECCP no coinciden",
+    "Status" => "Estado",
+);
+?>

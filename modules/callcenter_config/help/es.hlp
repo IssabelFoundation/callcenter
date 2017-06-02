@@ -1,0 +1,55 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+<h1>{$node_name}</h1>
+
+<p align="Justify">Esta opción permite configurar algunos parámetros para ajustar el funcionamiento del Call Center.</p>
+<h2>Conexión de Asterisk</h2>
+<p align="Justify">En esta parte se pueden ajustar parámetros del servidor Asterisk como dirección IP, información de inicio de sesión, etc. En este caso Asterisk se encuentra en el mismo servidor que el Call Center.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_asterisk_connection.png" border="0" />
+<p>Figura 1</p></div><br/>
+<h2>Parámetros de Dialer</strong></h2>
+<p>Usted puede configurar el comportamiento del Dialer automático en el Call Center (Ver figura 2). A continuación una breve descripción de cada parámetro:</p>
+<table class="inline">
+  <tr>
+    <th>Parámetro</th><th>Descripción</th>
+  </tr>
+  <tr>
+    <td>Umbral de llamada corta</td><td>Esta es la duración mínima de una llamada válida. Si una llamada dura menos de este valor de tiempo será considerada como fallida, a pesar de que haya sido contestada.</td>
+  </tr>
+<tr>
+    <td>Retraso hasta contestación</td><td>Esta es la duración de tiempo aproximada desde que una llamada es asignada a un agente hasta que el agente la toma o falle. Esta opción permite colocar tantas llamadas como sea posible asumiendo que en este tiempo al menos un agente está libre.</td>
+</tr>
+<tr>
+    <td>Porcentaje de Servicio</td><td>Cuando la predicción de llamadas calcula el tiempo en que un agente está libre, hay un riesgo de que tal predicción sea incorrecta. El parámetro porcentaje de servicio regula la predicción de llamadas para tener la certeza de que un agente está libre.</td>
+</tr>
+<tr>
+    <td>Espera máxima por llamada marcada</td><td>Si una llamada no es contestada dentro de este tiempo, la llamada será considerada fallida. El valor 0 es un valor predeterminado de Asterisk que equivale a 30 segundos.</td>
+</tr>
+<tr>
+    <td>Activar DEBUG de marcador</td><td>Esta opción habilita la salida de mensajes en el archivo de log del dialer.</td>
+</tr>
+<tr>
+    <td>Mostrar todos los eventos Asterisk recibidos</td><td>Esta opción permite que el dialer lea todos los eventos AMI que Asterisk transmite incluso aquellos que no son de interés para el dialer. Esta opción funciona sólamente si está activo el DEBUG de marcador.</td>
+</tr>
+<tr>
+    <td>Permitir sobre-colocar llamadas salientes</td><td>Esta opción permite que el dialer coloque más llamadas que las que debería colocar. Si esta opción está habilitada el dialer usa las estadísticas de ASR (Average Seizure Rate) para colocar un mayor número de llamadas salientes y así cancelar el ASR y todos los agentes permanezcan ocupados.
+</td>
+</tr>
+<tr>
+    <td>Activar comportamiento predictivo del marcado</td><td>Si esta opción está deshabilitada el dialer colocará las llamadas de acuerdo al número de agentes libres y las opciones "Umbral de Llamada Corta", "Retraso hasta contestación" y "Porcentaje de servicio" serán ignoradas.</td>
+</tr>
+</table>
+<br />
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_dialer_parameters.png" border="0" />
+<p>Figura 2</p></div><br/>
+
+<h2>Estado del Dialer</h2>
+<p align="Justify">Muestra el estado actual del dialer que puede estar "Detenido" o "En Ejecución". En esta sección es posible también "Iniciar" o "Detener" el servicio de dialer (Ver Figura 3).</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_dialer_status.png" border="0" />
+<p>Figura 3</p></div><br/>
+</body>
+</html>

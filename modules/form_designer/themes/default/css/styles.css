@@ -1,0 +1,44 @@
+table.formfield_list 
+{
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+    background-color: #f0f0f0;
+    border: 1px solid #999999;
+}
+table.formfield_list > thead
+{
+    color: #eeeeee;
+    border-left: 1px solid #999999;
+    border-top: 1px solid #999999;
+    border-right: 1px solid #999999;
+    border-bottom: 0px;
+    background-color: #555555;
+    height: 32px;
+}
+table.formfield_list > thead > tr > td
+{
+    color: #eeeeee;
+	padding: 6px;
+}
+table.formfield_list > tbody > tr:hover 
+{
+    background-color: #e0e0e0;
+}
+table.formfield_list > tbody > tr > td
+{
+    padding: 6px;
+    color: #555555;
+    border-bottom: 1px #b6b6b6 solid;
+}
+
+tr.formfield_new {
+	background-color: #ffeeee;
+}
+
+tbody.ui-sortable > tr.formfield_row {
+	cursor: move;
+}
+tbody.ui-sortable > tr.formfield_new {
+    cursor: auto;
+}

@@ -1,0 +1,132 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.2 2007/08/09 00:31:28 jmartinez Exp $ */
+global $arrLangModule;
+$arrLangModule=array(
+'Campaign Monitoring'
+    =>  'Suivi de campagne',
+'Campaign'
+    =>  'Campagne',
+'Start date'
+    =>  'Du',
+'End date'
+    =>  'Au',
+'Schedule'
+    =>  'Programmation',
+'Queue'
+    =>  'File',
+'Retries'
+    =>  'Tentatives',
+'Total calls'
+    =>  'Appels totaux',
+'Pending calls'
+    =>  'Appels en attente',
+'Failed calls'
+    =>  'Appels échoués',
+'Short calls'
+    =>  'Appels courts',
+'Connected calls'
+    =>  'Appels connectés',
+'Placing calls'
+    =>  'Appels en placement',
+'Ringing calls'
+    =>  'Appels en sonnerie',
+'Queued calls'
+    =>  'Appels en file d\'attente',
+'Pending calls'
+    =>  'Appels en attente',
+'Abandoned calls'
+    =>  'Appels abandonnés',
+'Unanswered calls'
+    =>  'Appels non répondus',
+'Finished calls'
+    =>  'Appels terminés',
+'Lost track'
+    =>  'Appels perdus',
+'Agents'
+    =>  'Agents',
+'Free'
+    =>  'Libre',
+'Busy'
+    =>  'Occupé',
+'Not Logged In'
+    =>  'Non connecté',
+'Break'
+    =>  'Pause',
+'Agent'
+    =>  'Agent',
+'Phone Number'
+    =>  'N° de téléphone',
+'Trunk'
+    =>  'Trunk',
+'Status'
+    =>  'Statut',
+'Since'
+    =>  'Depuis',
+'View campaign log'
+    =>  'Voir le log de campagne',
+'Placing'   =>  'Placement',
+'Dialing'   =>  'Numérotation',
+'Ringing'   =>  'Sonnerie',
+'OnQueue'   =>  'En attente',
+'online'    =>  'Libre',
+'offline'   =>  'Déconnecté',
+'oncall'    =>  'Occupé',
+'paused'    =>  'En pause',
+'LOG_FMT_PLACING'
+    =>  'Placement de l\'appel au {phone} ({retry} essai(s))',
+'LOG_FMT_DIALING'
+    =>  'Appel du {phone}, par le trunk {trunk} ...',
+'LOG_FMT_RINGING'
+    =>  'Sonnerie du {phone}, en attente de réponse ...',
+'LOG_FMT_ONQUEUE'
+    =>  'Appel au {phone} connecté à la file {queue}, en attente d\'un agent ...',    
+'LOG_FMT_SUCCESS'
+    =>  'Appel au {phone} pris par l\'agent {agentchannel}',
+'LOG_FMT_HANGUP'
+    =>  'Appel au {phone} déconnecté de l\'agent {agentchannel}, il a duré {duration}',
+'LOG_FMT_ONHOLD'
+    =>  'L\'agent {agentchannel} a mis l\'appel au {phone} en attente',
+'LOG_FMT_OFFHOLD'
+    =>  'L\'agent {agentchannel} a mis fin à l\'attente de l\'appel au {phone}',
+'LOG_FMT_FAILURE'
+    =>  'Impossible de placer l\'appel au {phone}',
+'LOG_FMT_ABANDONED'
+    =>  'L\'appel au {phone} de la file {queue} a été déconnecté et n\'a jamais été géré',    
+'LOG_FMT_SHORTCALL'
+    =>  'L\'appel court au {phone} a été déconnecté de l\'agent {agentchannel}, il a duré {duration}',    
+'LOG_FMT_NOANSWER'
+    =>  'L\'appel au {phone} a été déconnecté avant d\'entrer dans la file',
+'outgoing'  =>  'Campagne sortante',
+'incoming'  =>  'Campagne entrante',
+'incomingqueue' =>  'File entrante',
+'N/A' => 'N/A', /* Not Available */
+'Previous 100 entries' => '100 entrées précédentes',
+);
+?>
+

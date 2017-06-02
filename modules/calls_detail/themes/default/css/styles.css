@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+
+div.callcenter-recordings > div:first-child
+{
+    min-width: 100pt;
+    cursor: pointer;
+}
+div.collapsed > div.collapsable
+{
+    display: none;
+}

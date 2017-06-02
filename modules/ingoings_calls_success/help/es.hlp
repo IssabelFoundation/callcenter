@@ -1,0 +1,13 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+<h1>{$node_name}</h1>
+<p align="Justify">Esta opción muestra información acerca de la cantidad de llamadas recibidas, tiempo de espera, llamadas exitosas y abandonadas clasificadas por cola. Use el filtro para especificar el rango de fechas.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_call_list.png" border="0" />
+<p>Figura 1</p></div><br />
+<p>Usted puede descargar este reporte en diferentes formatos tales como CSV, XLS y PDF.</p>
+</body>
+</html>

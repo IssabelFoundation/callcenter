@@ -1,0 +1,15 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+<h1>{$node_name}</h1>
+<p align="Justify">This option shows information about the time that the agents have been active in the agent console since they logged in until they logged out. This report measures the efficiency of the agents by counting the time of calls answered over the time they were active in the console.</p>
+<p>Use the filter to generate a general report (Figure 1) or a detailed report (Figure 2). You can download it in different formats such as CSV, XLS and PDF.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_time_li_lo_gen.png" border="0" />
+<p>Figure 1</p></div><br/>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_time_li_lo_det.png" border="0" />
+<p>Figure 2</p></div><br/>
+</body>
+</html>

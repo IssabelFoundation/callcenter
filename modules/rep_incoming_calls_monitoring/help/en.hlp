@@ -1,0 +1,12 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+<h1>{$node_name}</h1>
+<p align="Justify">This is a report of the general status of incoming calls in real time. We can see the number of entered calls, answered, abandoned, waiting calls and without monitoring (See figure 1).</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_incoming_monitoring.png" border="0" />
+<p>Figure 1</p></div><br />
+</body>
+</html>

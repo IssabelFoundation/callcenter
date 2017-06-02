@@ -1,0 +1,57 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.2 2007/08/09 00:31:28 jmartinez Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+'New URL'   =>  'New URL',
+'Opens in'  =>  'Open in',
+'Active'   =>  'Active',
+'URL Template'   =>  'URL Template',
+'URL Description'   =>  'URL Description',
+'Description'   =>  'Description',
+'New window'   =>  'New window',
+'Embedded'   =>  'Embedded',
+'Embedded frame'   =>  'Embedded frame',
+'Apply changes' =>  'Apply changes',
+'Enable use of this template' => 'Enable use of this template',
+'Open URL in' => 'Open URL in',
+
+'TEMPLATE_DESC' => "The URL template may contain named placeholders in curly ".
+    "brackets, such as {HomeAddress}, which will be replaced with actual ".
+    "escaped values for each connected call. The available identifiers are the ".
+    "names of the call attributes (case sensitive), plus the following default ".
+    "attributes of the call:\n\n".
+    "{__AGENT_NUMBER__} Agent channel identifier, such as Agent/9000\n".
+    "{__CALL_TYPE__} either 'incoming' or 'outgoing'\n".
+    "{__CAMPAIGN_ID__} Internal ID of the current campaign\n".
+    "{__CALL_ID__} Internal ID of the current connected call\n".
+    "{__PHONE__} Dialed number or Caller-ID of the connected call\n".
+    "{__REMOTE_CHANNEL__} Channel identifier of the connected call\n".
+    "",
+);
+?>

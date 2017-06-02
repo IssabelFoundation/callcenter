@@ -1,0 +1,44 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+
+<h1>{$node_name}</h1>
+<p align="Justify">Esta opción permite seleccionar las extensiones que serán utilizadas en la Configuración Dinámica del Call Center (Vea la sección de ayuda del módulo Consola de Agente). Note que los números de extensión deben de existir previamente. En la lista mostrada en la figura 1 usted puede ver todas las extensiones callback con su estado que muestra si están en uso o no.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_callback_list.png" border="0" />
+<p>Figura 1</p></div><br/>
+<table class="inline">
+  <tr>
+    <th>Campo</th><th>Descripción</th>
+  </tr>
+  <tr>
+    <td>Desconectar</td><td>Este botón cierra la sesión activa que está usando la extensión callback.
+</td>
+  </tr>
+  <tr>
+    <td>Eliminar</td><td>Este botón elimina una extensión callback.
+</td>
+  </tr>
+  <tr>
+    <td>Número</td ><td align="Justify">Este el número de extensión callback. Este número está disponible en la consola de agente para iniciar sesión.</td>
+  </tr>
+  <tr>
+    <td>Nombre</td><td align="Justify">El nombre de la extensión callback.</td>
+  </tr>
+<tr>
+    <td>Estado</td><td align="Justify">Desconectado / Conectado. Muestra si la extensión callback está siendo usada.</td>
+  </tr>
+<tr>
+    <td>Opciones</td><td align="Justify"><strong>Editar: </strong>Este enlace permite modificar la información de una extensión callback.<br/>
+    </td>
+</tr>
+</table>
+<h2>Nueva extensión callback</h2>
+<p>Para crear una nueva extensión haga click en el enlace "Nueva extensión callback" ubicado en la sección de Filtro. Aquí deberá seleccionar la extensión, configurar un nombre y contraseña. Estos datos serán necesarios para iniciar sesión en la Consola de Agente. No es necesario configurar la contraseña ECCP ya que si se deja en blanco el sistema lo hará automáticamente. Ver Figura 2.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_callback_new.png" border="0" />
+<p>Figura 2</p></div><br/>
+
+</body>
+</html>

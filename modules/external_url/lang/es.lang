@@ -1,0 +1,47 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "New URL" => "Nuevo URL",
+    "Opens in" => "Se abre en",
+    "Active" => "Activo",
+    "URL Template" => "Plantilla de URL",
+    "URL Description" => "Descripción de URL",
+    "Description" => "Descripción",
+    "New window" => "Nueva ventana",
+    "Embedded" => "Embebido",
+    "Embedded frame" => "Marco embebido",
+    "Apply changes" => "Aplicar cambios",
+    "Enable use of this template" => "Habilitar uso de esta plantilla",
+    "Open URL in" => "Abrir URL en",
+    "Edit URL" => "Editar URL",
+    "Apply Changes" => "Aplicar Cambios",
+    "TEMPLATE_DESC" => "La plantilla de URL puede contener identificadores con nombres entre llaves, como por ejemplo {HomeAddress}, los cuales serán reemplazados con los verdaderos valores escapados para cada llamada conectada. Los identificadores disponibles son los nombres de los atributos de la llamada (con distinción de mayúsculas y minúsculas), además de los siguientes atributos por omisión de la llamada:\n\n{__AGENT_NUMBER__} Identificador del canal de agente, por ejemplo Agent/9000\n{__CALL_TYPE__} uno de los valores 'incoming', 'outgoing'\n{__CAMPAIGN_ID__} ID interno de la campaña en curso\n{__CALL_ID__} ID interno de la llamada actualmente conectada\n{__PHONE__} Número marcado o Caller-ID de la llamada conectada\n{__REMOTE_CHANNEL__} Identificador de canal de la llamada conectada\n",
+);
+?>

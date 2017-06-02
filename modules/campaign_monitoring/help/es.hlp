@@ -1,0 +1,20 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+<h1>{$node_name}</h1>
+<p align="Justify">Este módulo muestra en tiempo real la actividad de una campaña o una cola con información como estado general, estado de los agentes, estado de las llamadas y logs. En la cabecera de este módulo usted puede seleccionar qué campaña o cola desea monitorear (ver Figura 1).</p>
+<p align="Justify">Hay cuatro secciones: </p>
+<ul>
+<li><b>La cabecera:</b> Muestra el estado general de la campaña como el número de cola que utiliza, llamadas totales, llamadas abandonadas, fecha de inicio, fecha fin, horario, llamadas conectadas, llamadas terminadas, etc.</li>
+<li><b>Llamadas siendo marcadas:</b> Para las campañas salientes aquí se muestran las llamadas procesadas por el dialer que están esperando ser asignadas a un agente. Para campañas entrantes aquí se muestran las llamadas que están esperando ser atendidas por un agente.</li>
+<li><b>Agentes:</b> Aquí se muestran los agentes estáticos y dinámicos con el estado y las llamadas que están atendiendo actualmente.</li>
+<li><b>Registro de campaña:</b> Aquí se muestra un registro de las acciones realizadas por el dialer cuando asigna, atiende o termina llamadas.</li>
+</ul>
+<br />
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_campaign_monitoring.png" border="0" />
+<p>Figura 1</p></div><br />
+</body>
+</html>

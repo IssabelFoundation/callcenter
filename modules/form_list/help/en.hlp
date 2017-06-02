@@ -1,0 +1,17 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+
+<h1>{$node_name}</h1>
+<p align="Justify">This option shows a list of the existing forms with the possibility to show a preview of them before they can be used in the campaigns. Use the filter to show all the Forms.</p>
+<p align="Justify"></p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_form_list.png" border="0" />
+<p>Figure 1</p></div><br/>
+<p align="Justify">To see how a form looks, click on the link "Preview" located in the column "Options" of the list (See Figure 2). From this option you can't access to any data or modify the form.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_form.png" border="0" />
+<p>Figure 2</p></div><br/>
+</body>
+</html>

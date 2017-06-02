@@ -1,0 +1,132 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.org                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.2 2007/08/09 00:31:28 jmartinez Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+'Agent Console' => 'Kullanıcı Ekranı',
+'Agent log-in failed!' => 'Agent giriş hatası!',
+'Agent login process not started' => 'Agent giriş işlemi tamamlanmadı',
+'Agent log-in terminated.' => 'Agent girişi sonlandırıldı.',
+'Agent not authorized for ECCP - ECCP password not set' => 'Agent ECCP - ECCP için yetkili parolası tanımsız',
+'Agent not found' => 'Agent kaydı bulunamadı',
+'Agent not handling an incoming call' => 'Agent gelen çağrıyı alamadı',
+'Agent Number' => 'Agent Numarası',
+'Call at end of campaign' => 'Son Kampanya Çağrısı',
+'Call Form' => 'Arama Formu',
+'Call Information' => 'Arama Bilgisi',
+'Call Script' => 'Arama Scripti',
+'Call successfully scheduled' => 'Çağrı randevusu başarılı',
+'Cannot start agent login' => 'Kullanıcı girişi başlamadı',
+'Confirm contact' => 'Kişiyi onayla',
+'Connected to call' => 'Arama bağlandı',
+'Contact' => 'Arayan',
+'Contact successfully confirmed' => 'Kişi bilgisi onaylandı',
+'Dismiss' => 'Vazgeç',
+'End Break' => 'Mola Sonu',
+'End date' => 'Bitiş Tarihi',
+'End Hold' => 'Bitiş Saati',
+'End session' => 'Hattan Çıkış',
+'End time' => 'Süre sonu',
+'Enter' => 'Giriş',
+'Error while confirming contact' => 'Kişiyi onaylarken hata oluştu',
+'Error while hanging up call' => 'Çağrı açılırken hata oluştu',
+'Error while logging out agent' => 'Agent çıkış yaparken hata oluştu',
+'Error while saving form data' => 'Form kaydedilirken hata oluştu',
+'Error while scheduling call' => 'Randevu araması kurulurken hata oluştu',
+'Error while starting break' => 'Molaya alınırken hata oluştu',
+'Error while stopping break' => 'Moladan çıkılırken hata oluştu',
+'Error while transferring call' => 'Çağrı aktarılırken hata oluştu',
+'Extension' => 'Dahili',
+'Failed to retrieve agent password' => 'Agent parolası alma hatası',
+'Form data successfully saved' => 'Form bilgileri kaydedildi',
+'Hangup' => 'Telefonu Kapat',
+'Hold' => 'Beklet',
+'Invalid agent number' => 'Yanlış agent numarası',
+'Invalid extension number' => 'Yanlış dahili numara',
+'Invalid or incomplete form data' => 'Hatalı ya da eksik form verisi',
+'Invalid or incomplete schedule' => 'Yanlış ya da tamamlanmayan randevu',
+'Invalid or missing break ID' => 'Hatalı ya da olmayan mola ID',
+'Invalid or missing contact ID' => 'Hatalı ya da olmayan iletişim ID',
+'Invalid or missing extension to transfer' => 'Hatalı ya da olmayan transfer numarası',
+'Logging agent in. Please wait...' => 'Giriş yapılıyor. Lütfen bekleyin...',
+'Names' => 'İsimler',
+'No active call' => 'Aktif arama yok',
+'No forms available for this call' => 'Bu arama için form bilgisi yok',
+'No information available for this call' => 'Bu arama için bilgilendirme yok',
+'(no matching contacts)' => '(rehber bilgisi uyuşmadı)',
+'(No script available)' => '(arama metni yok)',
+'On break' => 'Molada',
+'Phone number' => 'Telefon no',
+'Please select your agent number and your extension' => 'Lütfen kullanıcı ve dahili numaranızı seçin',
+'Save data' => 'Formu Kaydet',
+'Schedule at date' => 'Randevu Ayarla',
+'Schedule call' => 'Randevu Araması',
+'Schedule' => 'Randevu',
+'Schedule to same agent' => 'Benim Randevum',
+'Select break type' => 'Mola şeklini seçin',
+'Select extension to transfer to' => 'Aktarılacak dahiliyi seçin',
+'Specified agent already connected to extension' => 'Seçilen kullanıcıya dahili zaten bağlandı',
+'Start and end date are required for date scheduling.' => 'Randevu için başlangıç ve bitiş tarihi gerekli.',
+'Start date' => 'Başlangıç Tarihi',
+'Start time' => 'Başlangıç Saati',
+'Take Break' => 'Mola Ver',
+'There are no agents available. At least one agent is required for agent login.' => 'Boşta agent bulunamadı. En az 1 agent giriş yapmalı.',
+'There are no extensions available. At least one extension is required for agent login.' => 'Boşta dahili numara yok. En az 1 dahili numara olmalı.',
+'Transfer' => 'Aktar',
+'Unable to fetch break types' => 'Mola şekli alınamadı',
+'Unable to hangup call' => 'Çağrı kapatılamadı',
+'Unable to read call information' => 'Arama bilgisi alınamadı',
+'Unable to read queue script' => 'Kuyruk metni okunamadı',
+'Unable to save form data' => 'Form bilgileri kaydedilemedi',
+'Unable to schedule call' => 'Tanımsız randevu araması',
+'Unable to set contact' => 'Arayan kaydedilemiyor',
+'Unable to start break' => 'Mola başlatılamıyor',
+'Unable to stop break' => 'Mola kapatılamıyor',
+'Unable to transfer call' => 'Arama aktarılamıyor',
+'(unavailable)' => '(kalmadı)',
+'VTiger CRM' => 'VTiger CRM',
+'Welcome to Agent Console' => 'Kullanıcı Ekranına Hoşgeldin',
+
+'First name' => 'Adı',
+'Last name' => 'Soyadı',
+'National ID' => 'Uluslararası ID',
+'Internal Call ID' => 'Genel ID',
+'External site' => 'Harici site',
+
+'Blind transfer' => 'Transfer Et',
+'Attended transfer' => 'Konferans Yap',
+'Password' => 'Parola',
+'Callback Extension' => 'Geri Arama Dahilisi',
+'Callback Login' => 'Geri Arama Girişi',
+'Agent ' => 'Agent ',
+' Logged in' => ' girdi',
+'Call' => 'Arama',
+'Information' => 'Bilgi',
+'Script' => 'Metin',
+);
+?>

@@ -1,0 +1,35 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+
+<h1>{$node_name}</h1>
+<p align="Justify">This option lets us add and configure the external URLs that are requested when we create a new campaign. With an External URL the agent can access to other applications during the campaign.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_list_url.png" border="0" />
+<p>Figure 1</p></div>
+
+<h3>New URL</h3>
+<p align="Justify">To create a new URL click on the blue link "New URL" located in the section where the filters are. Fill out the required parameters. Below is a brief description of them:</p>
+<table class="inline">
+  <tr>
+    <th>Field</th><th>Description</th>
+  </tr>
+  <tr>
+    <td>URL Template</td><td>The link for the execution of the external application.</td>
+  </tr>
+  <tr>
+    <td>URL Description</td><td align="Justify">Write a description of the external URL. This information will appear as a reference during the creation of a new campaign.</td>
+  </tr>
+  <tr>
+    <td>Open URL in</td><td align="Justify"><b>New window: </b>The URL will execute in a new window<br /> <b>Embedded frame: </b>The URL will execute in the agent console like one more tab.<br /><b>JSONP: </b>This option allows executing JavaScript code in the agent console. The URL Template provides the JavaScript to execute.</td>
+  </tr>
+</table>
+<br />
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_new_url.png" border="0" />
+<p>Figure 2</p></div>
+<p>Once you have configured the External URL, click on "Save" button.</p>
+<br />
+</body>
+</html>

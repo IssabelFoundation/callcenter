@@ -1,0 +1,72 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Call File Encoding" => "Codificación de Archivo de Llamadas",
+    "Call File" => "Archivo de Llamadas",
+    "Invalid character encoding" => "Codificación de caracteres inválida",
+    "Call file not specified or failed to be uploaded" => "Archivo de llamadas no especificado o falló la transferencia",
+    "Invalid CSV File" => "Archivo CSV no válido",
+    "Invalid CSV File Line" => "Archivo CSV inválido Línea ",
+    "Invalid number" => "Numero Inválido",
+    "auto" => "Automático (use con cuidado)",
+    "ISO-8859-1" => "ISO-8859-1 - Europa Occidental",
+    "ISO-8859-2" => "ISO-8859-2 - Europa Occidental y Central",
+    "ISO-8859-3" => "ISO-8859-3 - Europa Occidental and Sur de Europa",
+    "ISO-8859-4" => "ISO-8859-4 - Europa Occidental and Países Bálticos",
+    "ISO-8859-5" => "ISO-8859-5 - Alfabeto cirílico",
+    "ISO-8859-6" => "ISO-8859-6 - Árabe",
+    "ISO-8859-7" => "ISO-8859-7 - Griego",
+    "ISO-8859-8" => "ISO-8859-8 - Hebreo",
+    "ISO-8859-9" => "ISO-8859-9 - Europa Occidental + Turquía",
+    "ISO-8859-10" => "ISO-8859-10 - Europa Occidental + Lenguajes Nórdicos",
+    "ISO-8859-13" => "ISO-8859-13 - Lenguajes Bálticos + Polaco",
+    "ISO-8859-14" => "ISO-8859-14 - Lenguajes Célticos",
+    "ISO-8859-16" => "ISO-8859-16 - Lenguajes de Europa Central, Oriental y Sur",
+    "EUC-JP" => "EUC-JP - Japonés, Coreano, Chino simplificado",
+    "eucJP-win" => "eucJP-win - Japonés, Coreano, Chino simplificado (Windows)",
+    "SJIS" => "Shift JIS - Japonés",
+    "SJIS-win" => "Shift JIS - Japonés (Windows)",
+    "JIS" => "JIS - Japonés",
+    "ISO-2022-JP" => "ISO-2022-JP - Japonés",
+    "Windows-1251" => "Windows-1251 - Alfabeto cirílico",
+    "Windows-1252" => "Windows-1252 - Europa Occidental",
+    "EUC-CN" => "EUC-CN - Chino simplificado",
+    "CP936" => "CP936 - Chino",
+    "HZ" => "HZ - Chino",
+    "EUC-TW" => "EUC-TW - Chino (Taiwan)",
+    "BIG-5" => "BIG-5 - Chino Tradicional",
+    "EUC-KR" => "EUC-KR - Coreano",
+    "UHC" => "UHC - Coreano",
+    "ISO-2022-KR" => "ISO-2022-KR - Coreano",
+    "CP866" => "CP866 - Alfabeto cirílico",
+    "KOI8-R" => "KOI8-R - Ruso",
+    "ArmSCII-8" => "ArmSCII-8 - Armenio",
+);
+?>

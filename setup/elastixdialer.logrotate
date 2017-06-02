@@ -1,0 +1,8 @@
+/opt/elastix/dialer/dialerd.log {
+    missingok
+    notifempty
+    rotate 5
+    postrotate
+        /bin/kill -HUP `cat /opt/elastix/dialer/dialerd.pid 2> /dev/null` 2> /dev/null || true
+    endscript
+}

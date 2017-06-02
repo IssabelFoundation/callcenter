@@ -1,0 +1,64 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Calls Detail" => "جزئيات تماس",
+    "Start Date" => "تاريخ شروع",
+    "End Date" => "تاريخ پايان",
+    "Start Time" => "زمان شروع",
+    "End Time" => "زمان پايان",
+    "Query" => "دريافت اطلاعات",
+    "No.Agent" => "اپراتوري وجود ندارد",
+    "Agent" => "اپراتور",
+    "Queue" => "صف",
+    "Type" => "نوع",
+    "Phone" => "تلفن",
+    "Column" => "ستون",
+    "Text" => "متن",
+    "Error" => "خطا",
+    "Transfer" => "انتقال",
+    "Duration" => "مدت",
+    "Total" => "کل",
+    "Status" => "وضعيت",
+    "Success" => "موفقيت",
+    "Abandoned" => "از دست رفته",
+    "End Monitor" => "پايان نظارت",
+    "Failure" => "شکست",
+    "NoAnswer" => "بدون جواب",
+    "OnQueue" => "در صف",
+    "Placing" => "جا داده شده",
+    "Ringing" => "در حال زنگ زدن",
+    "ShortCall" => "تماس کوتاه",
+    "Duration Wait" => "مدت انتظار",
+    "Error when connecting to database" => "خطا در هنگام اتصال به ديتابيس",
+    "Debe ingresar una fecha" => "بايد يک تاريخ را وارد کنيد",
+    "Debe ingresar una fecha valida" => "بايد يک تاريخ معتبر را وارد کنيد",
+    "Filter" => "فيلتر",
+);
+?>

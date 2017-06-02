@@ -1,0 +1,127 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Agent Console" => "Consola de Agente",
+    "Agent log-in failed!" => "Inicio de sesión de agente ha fallado!",
+    "Agent login process not started" => "No se ha iniciado proceso de sesión de agente",
+    "Agent log-in terminated." => "Inicio de sesión de agente ha terminado.",
+    "Agent not authorized for ECCP - ECCP password not set" => "Agente no autorizado para ECCP - clave ECCP no asignada",
+    "Agent not found" => "Agente no se encuentra",
+    "Agent not handling an incoming call" => "Agente no atiende una llamada entrante",
+    "Agent Number" => "Número de agente",
+    "Call at end of campaign" => "Llamar al fin de la campaña",
+    "Call Form" => "Formulario de llamada",
+    "Call Information" => "Información de llamada",
+    "Call Script" => "Diálogo de llamada",
+    "Call successfully scheduled" => "Llamada agendada correctamente",
+    "Cannot start agent login" => "No se puede iniciar sesión de agente",
+    "Confirm contact" => "Confirmar contacto",
+    "Connected to call" => "Conectado a llamada",
+    "Contact" => "Contacto",
+    "Contact successfully confirmed" => "Contacto confirmado correctamente",
+    "Dismiss" => "Cerrar",
+    "End Break" => "Fin Descanso",
+    "End date" => "Fecha final",
+    "End Hold" => "Fin Hold",
+    "End session" => "Fin sesión",
+    "End time" => "Hora final",
+    "Enter" => "Ingresar",
+    "Error while confirming contact" => "Error al confirmar contacto",
+    "Error while hanging up call" => "Error al colgar llamada",
+    "Error while logging out agent" => "Error al desloguear agente",
+    "Error while saving form data" => "Error al guardar datos de formulario",
+    "Error while scheduling call" => "Error al agendar llamada",
+    "Error while starting break" => "Error al iniciar descanso",
+    "Error while stopping break" => "Error al finalizar descanso",
+    "Error while transferring call" => "Error al transferir llamada",
+    "Extension" => "Extensión",
+    "Failed to retrieve agent password" => "No se puede recuperar clave de agente",
+    "Form data successfully saved" => "Datos de formulario guardados correctamente",
+    "Hangup" => "Colgar",
+    "Invalid agent number" => "Número de agente incorrecto",
+    "Invalid extension number" => "Número de extensión incorrecto",
+    "Invalid or incomplete form data" => "Datos de formulario incorrectos o incompletos",
+    "Invalid or incomplete schedule" => "Horario incorrecto o incompleto",
+    "Invalid or missing break ID" => "ID de descanso incorrecto o faltante",
+    "Invalid or missing contact ID" => "ID de contacto incorrecto o faltante",
+    "Invalid or missing extension to transfer" => "Extensión a transferir incorrecta o faltante",
+    "Logging agent in. Please wait..." => "Iniciando sesión de agente. Por favor espere...",
+    "Names" => "Nombres",
+    "No active call" => "No hay llamada activa",
+    "No forms available for this call" => "No hay formularios disponibles para esta llamada",
+    "No information available for this call" => "No hay información disponible para esta llamada",
+    "(no matching contacts)" => "(sin contactos aplicables)",
+    "(No script available)" => "(No hay diálogo disponible)",
+    "On break" => "En descanso",
+    "Phone number" => "Número de teléfono",
+    "Please select your agent number and your extension" => "Por favor seleccione su número de agente y su extensión",
+    "Save data" => "Guardar datos",
+    "Schedule at date" => "Agendar por fecha",
+    "Schedule call" => "Agendar llamada",
+    "Schedule" => "Agendar",
+    "Schedule to same agent" => "Agendar al mismo agente",
+    "Select break type" => "Seleccione descanso",
+    "Select extension to transfer to" => "Seleccione extensión a transferir",
+    "Specified agent already connected to extension" => "Agente indicado ya conectado a otra extensión",
+    "Start and end date are required for date scheduling." => "Se requiere fecha inicial y final para agendar por fecha",
+    "Start date" => "Fecha inicial",
+    "Start time" => "Hora inicial",
+    "Take Break" => "Descanso",
+    "There are no agents available. At least one agent is required for agent login." => "No hay agentes disponibles. Se requiere al menos un agente para sesión de agente.",
+    "There are no extensions available. At least one extension is required for agent login." => "No hay extensiones disponibles. Se requiere al menos una extensión para sesión de agente.",
+    "Transfer" => "Transferir",
+    "Unable to fetch break types" => "No se puede leer tipos de descanso",
+    "Unable to hangup call" => "No se puede colgar llamada",
+    "Unable to read call information" => "No se puede leer información de llamada",
+    "Unable to read queue script" => "No se puede leer diálogo de cola",
+    "Unable to save form data" => "No se puede guardar datos de formulario",
+    "Unable to schedule call" => "No se puede agendar llamada",
+    "Unable to set contact" => "No se puede asignar contacto",
+    "Unable to start break" => "No se puede iniciar descanso",
+    "Unable to stop break" => "No se puede terminar descanso",
+    "Unable to transfer call" => "No se puede transferir llamada",
+    "(unavailable)" => "(no disponible)",
+    "Welcome to Agent Console" => "Bienvenido a la Consola de Agente",
+    "First name" => "Nombre",
+    "Last name" => "Apellido",
+    "National ID" => "Cédula/RUC",
+    "External site" => "Sitio externo",
+    "Blind transfer" => "Transferencia ciega",
+    "Attended transfer" => "Transferencia atendida",
+    "Password" => "Contraseña",
+    "Callback Extension" => "Extensión de Callback",
+    "Agent " => "Agente ",
+    " Logged in" => " Conectado",
+    "Call" => "Llamada",
+    "Information" => "Información",
+    "Script" => "Diálogo",
+    "Waiting for call" => "Esperando llamada",
+);
+?>

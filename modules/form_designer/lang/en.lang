@@ -1,0 +1,98 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.2 2007/08/09 00:31:28 jmartinez Exp $ */
+global $arrLangModule;
+$arrLangModule=array(
+"Desactivate" => "Deactivate",  
+"New Field" => "New Field",   
+"Add Field" => "Add Field",   
+"Update Field" => "Update Field",  
+"Are you sure you wish to delete form?"=>"Are you sure you wish to delete form?",
+"Form Name" => "Name",  
+"Form Description" => "Description",    
+"Field Name" => "Field Name",  
+"CSV Column" => "CSV Column", 
+"Column Number" => "Column Number",  
+"Lines Number" => "Lines Number",  
+"Field Validation" => "Field Validation",  
+"Order" => "Order",  
+"List Item" => "List Item",  
+"Add Item" => "Add",  
+"Remove Item" => "Remove",  
+"New Form" => "New Form",  
+"View Form" => "View Form",  
+"Edit Form" => "Edit Form",  
+"Activate" => "Activate",
+"Form List" => "Form List",   
+"Form Designer" => "Form Designer",
+"Create New Form" => "Create New Form",   
+"Activate Error" => "Activate Error",  
+"Error when Activating the form" => "Error when Activating the form",  
+"Error when deleting the Form"=>"Error when deleting the Form",
+"This field is been used by any campaign"=>"This field is being used by any campaign",
+"This form is been used by any campaign"=>"This form is being used by any campaign",
+"Add Field Successfully" => "Add Field Successfully",  
+"Field could not be added in the Form" => "Field could not be added in the Form",  
+"Form could not be added" => "Form could not be added",  
+"Values Field" => "Values",   
+"Form could not be cancelled" => "Form could not be cancelled",  
+"Error Id Form" => "Error Id Form",   
+"Error Form Name is empty" => "Error Form Name is empty",   
+"Error Field Name is empty" => "Error Field Name is empty",   
+"Error List is empty" => "Error List is empty",  
+"Error in Order is empty or is not numeric" => "Error in Order is empty or is not numeric", 
+"Order already exists" => "Order already exists",  
+"Edit Field" => "Edit Field",  
+"Update Field Successfully" => "Field successfully updated",  
+"Field could not be updated in the Form" => "Field could not be updated in the Form",
+"Form could not be updated" => "Form could not be updated",  
+"Desactivate Error" => "Deactivate Error",  
+"Error when eliminating the form" => "Error when eliminating the form",
+"Delete Field Successfully" => "Field successfully deleted",  
+"Type Label" => "Instruction",  
+"TEXT" => "Text",  
+"LABEL" => "Instruction",  
+"TEXTAREA" => "Text Area",  
+"LIST" => "List",  
+"DATE" => "Date",  
+"Type Label"=>"Type Label",
+"Type Text"=>"Type Text",
+"Type List"=>"Type List",
+"Type Date"=>"Type Date",
+"Type Text Area"=>"Type Text Area",
+"Type" => "Type",
+"Status" => "Status",
+"Active" => "Active",
+"Inactive" => "Inactive",
+"View" => "View",
+"All" => "All",
+'No Data Found'=>'No Data Found',
+'Drag and drop to reorder fields'=>'Drag and drop to reorder fields',
+'new field'=>'new field',
+);
+?>

@@ -1,0 +1,13 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+<h1>{$node_name}</h1>
+<p align="Justify">Esta opción muestra la cantidad de llamadas completadas y abandonadas por hora. Este reporte está organizado por horas (24 horas) y colas por lo que es posible ver el total de llamadas para una cola específica y para una hora específica, o todas como un total. Use los filtros para encontrar información más específica (Ver Figura 1). Usted puede descargar este reporte en diferentes formatos tales como CSV, XLS o PDF.</p>
+
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_call_x_hour.png" border="0" />
+<p>Figura 1</p></div><br/>
+</body>
+</html>

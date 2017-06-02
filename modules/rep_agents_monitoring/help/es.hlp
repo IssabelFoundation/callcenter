@@ -1,0 +1,27 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+<h1>{$node_name}</h1>
+<p align="Justify">Esta opción muestra en tiempo real el estado de los agentes en el Call Center. Usted puede ver si un agente se encuentra atendiendo una llamada, tomando un receso o en estado inactivo, así como tambien el número total de llamadas y la duración. El reporte muestra los agentes con las correspondientes colas a la que pertencen. Si el agente pertence a más de una cola, el tiempo se mostrará para cada uno de esas colas. A continuación una breve descripción de los íconos de la columna estado:</p>
+<table class="inline">
+            <tr>
+                <th>Ícono</th><th>Descripción</th>
+            </tr>
+            <tr>
+                <td><img src="../modules/{$node_id}/images/ready.png" border="0" /></td><td>El agente está activo y listo para realizar o recibir llamadas.</td>
+            </tr>
+	    <tr>
+                <td><img src="../modules/{$node_id}/images/call.png" border="0" /></td><td>El agente está atendiendo una llamada.</td>
+            </tr>
+	    <tr>
+                <td><img src="../modules/{$node_id}/images/break.png" border="0" /></td><td>El agente está tomando un receso.</td>
+            </tr>
+        </table>
+<br />
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_monitoring.png" border="0" />
+<p>Figura 1</p></div><br />
+</body>
+</html>

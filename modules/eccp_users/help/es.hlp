@@ -1,0 +1,19 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+
+<h1>{$node_name}</h1>
+<p align="Justify">ECCP es un protocolo desarrollado por PaloSanto Solutions enfocado para Call Center. Este protocolo trabaja con un sistema de autenticación. El usuario predeterminado es "agentconsole" que es usado por el módulo Consola de Agente.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_eccp_users_list.png" border="0" />
+<p>Figura 1</p></div><br />
+
+<h2>Nuevo Usuario</h2>
+<p>Para crear un nuevo usuario haga click en el enlace "Nuevo usuario ECCP"ubicado en la sección de Filtro. Ver figura 2.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_eccp_users_new.png" border="0" />
+<p>Figura 2</p></div><br />
+
+</body>
+</html>

@@ -1,0 +1,133 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: ru.lang,v 2.5 2015/12/19 15:10:28 Andrey Exp $ */
+global $arrLangModule;
+$arrLangModule=array(
+'Campaign Monitoring'
+    =>  'Мониторинг Кампании',
+'Campaign'
+    =>  'Кампания',
+'Start date'
+    =>  'Начальная дата',
+'End date'
+    =>  'Конечная дата',
+'Schedule'
+    =>  'Расписание',
+'Queue'
+    =>  'Очередь',
+'Retries'
+    =>  'Повторные попытки',
+'Total calls'
+    =>  'Всего вызовов',
+'Pending calls'
+    =>  'Ожидающие вызовы',
+'Failed calls'
+    =>  'Не успешные вызовы',
+'Short calls'
+    =>  'Короткие вызовы',
+'Connected calls'
+    =>  'Отвеченные вызовы',
+'Placing calls'
+    =>  'Размещенные вызовы',
+'Ringing calls'
+    =>  'Звонящие сейчас',
+'Queued calls'
+    =>  'Вызовы в очереди',
+'Pending calls'
+    =>  'Ожидающие вызовы',
+'Abandoned calls'
+    =>  'Потерянные вызовы',
+'Unanswered calls'
+    =>  'Неотвеченные вызовы',
+'Finished calls'
+    =>  'Завершенные вызовы',
+'Lost track'
+    =>  'Ошибки трассировки',
+'Agents'
+    =>  'Агенты',
+'Free'
+    =>  'Свободно',
+'Busy'
+    =>  'Занято',
+'Not Logged In'
+    =>  'Не вошел в систему',
+'Break'
+    =>  'Перерыв',
+'Agent'
+    =>  'Агент',
+'Phone Number'
+    =>  'Телефонный номер',
+'Trunk'
+    =>  'Транк',
+'Status'
+    =>  'Статус',
+'Since'
+    =>  'Начиная с',
+'View campaign log'
+    =>  'Просмотр подробностей кампании',
+'Placing'   =>  'Размещение',
+'Dialing'   =>  'Набор',
+'Ringing'   =>  'Вызов',
+'OnQueue'   =>  'В очереди',
+'online'    =>  'Свободен',
+'offline'   =>  'Вышел',
+'oncall'    =>  'Занят',
+'paused'    =>  'На перерыве',
+'LOG_FMT_PLACING'
+    =>  'Размещение вызова на номер {phone} (попытка {retry})',
+'LOG_FMT_DIALING'
+    =>  'Набор номера {phone}, транк {trunk} ...',
+'LOG_FMT_RINGING'
+    =>  'Идёт вызов на {phone}, ожидание ответа ...',
+'LOG_FMT_ONQUEUE'
+    =>  'Вызов на номер {phone} присоединён к очереди {queue}, ожидает агента ...',
+'LOG_FMT_SUCCESS'
+    =>  'Вызов на номер {phone} обрабатывается агентом {agentchannel}',
+'LOG_FMT_HANGUP'
+    =>  'Вызов на номер {phone} отключён от агента {agentchannel}, длительность была {duration}',
+'LOG_FMT_ONHOLD'
+    =>  'Агент {agentchannel} поставил вызов к {phone} на удержание',
+'LOG_FMT_OFFHOLD'
+    =>  'Агент {agentchannel} снял вызов к {phone} с удержания',
+'LOG_FMT_FAILURE'
+    =>  'Вызов на номер {phone} не удалось разместить',
+'LOG_FMT_ABANDONED'
+    =>  'Вызов на номер {phone} в очереди {queue} отключён и не был обработан',
+'LOG_FMT_SHORTCALL'
+    =>  'Короткий вызов на номер {phone} отключён от агента {agentchannel}, длительность была {duration}',
+'LOG_FMT_NOANSWER'
+    =>  'Вызов на номер {phone} отключён до поступления в очередь',
+'outgoing'  =>  'Исходящая кампания',
+'incoming'  =>  'Входящая кампания',
+'incomingqueue' =>  'Очередь входящих',
+'N/A' => 'Н/Д', /* Not Available */
+'Previous 100 entries' => 'Предыдущие 100 записей',
+'Average Call Duration' => 'Средняя длительность вызова',
+'Maximum Call Duration' => 'Максимальная длительность вызова',
+);
+?>

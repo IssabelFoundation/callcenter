@@ -1,0 +1,477 @@
+#!/usr/bin/php
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 1.2-2                                               |
+  | http://www.elastix.org                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: dialerd,v 1.2 2008/09/08 18:29:36 alex Exp $ */
+declare(ticks=8);
+ini_set('memory_limit', -1);        // Permitir al programa usar toda la memoria que necesite
+ini_set('display_errors', 0);       // Impedir que los errores de STDERR se copien en STDOUT
+ini_set('error_reporting', E_ALL & ~E_STRICT);  // Mostrar advertencias además de errores
+
+// Agregar directorio de script a la lista de rutas a buscar para require()
+ini_set('include_path', dirname($argv[0]).":".ini_get('include_path'));
+
+// Auto-cargado de las clases en base al nombre de archivo
+function __autoload($sNombreClase) {
+    $sNombreBase = $sNombreClase.'.class.php';
+    foreach (explode(':', ini_get('include_path')) as $sDirInclude) {
+        if (file_exists($sDirInclude.'/'.$sNombreBase)) {
+            require_once($sNombreBase);
+            return;
+        }
+    }
+}
+
+require_once('Console/Getopt.php');     // Parseo de opciones de línea de comando
+
+$gsNombreSignal = NULL; // Número de la señal atrapada
+$goAppLog = NULL;
+
+$opt = Console_Getopt::getopt($argv, 'd');
+if (PEAR::isError($opt)) {
+    // Se ha especificado una operación no reconocida
+    fwrite(STDERR, $opt->getMessage()."\n");
+    $opt = NULL;
+/*
+} else if (count($opt[0]) == 0) {
+    $opt = NULL;
+*/
+}
+$iRes = main($opt,
+    'Marcador predictivo en PHP',
+    'dialerd',
+    'HubProcess');
+exit($iRes);
+
+function load_default_timezone()
+{
+    $sDefaultTimezone = @date_default_timezone_get();
+    if ($sDefaultTimezone == 'UTC') {
+        $sDefaultTimezone = 'America/New_York';
+        $regs = NULL;
+        if (is_link("/etc/localtime") && preg_match("|/usr/share/zoneinfo/(.+)|", readlink("/etc/localtime"), $regs)) {
+            $sDefaultTimezone = $regs[1];
+        } elseif (file_exists('/etc/sysconfig/clock')) {
+            foreach (file('/etc/sysconfig/clock') as $s) {
+                $regs = NULL;
+                if (preg_match('/^ZONE\s*=\s*"(.+)"/', $s, $regs)) {
+                    $sDefaultTimezone = $regs[1];
+                }
+            }
+        }
+    }
+    date_default_timezone_set($sDefaultTimezone);
+}
+
+// Punto de entrada del programa demonio (plantilla)
+function main($paramConfig, $sDescDemonio, $sNombreDemonio /* , ... */)
+{
+    global $argv;
+    global $gsNombreSignal;
+    global $goAppLog;
+
+    // Para silenciar avisos de fecha/hora
+    if (function_exists('date_default_timezone_get')) {
+        load_default_timezone();
+    }
+
+    // Esta es la tabla de procesos a monitorear
+    $tablaProcesos = array();
+    $iNumParams = func_num_args();
+    for ($i = 3; $i < $iNumParams; $i++) {
+        $sNombreProceso = func_get_arg($i);
+        $tablaProcesos[$sNombreProceso] = NULL;
+    }
+
+    $infoConfig = array();
+    $sNombreConfig = $sNombreDemonio.'.conf';
+    $sNombreMainLog = $sNombreDemonio.'.log';
+    $sNombrePID = $sNombreDemonio.'.pid';
+
+    // El script se rehusa a ejecutarse como root en Unix/Linux.
+    if (posix_geteuid() == 0) die(
+        "\nSECURITY WARNING: Sorry, I STRONGLY OBJECT to run as root.\n\n".
+        "This program requires only network access and therefore does not require root privileges.\n\n");
+
+    // Construir el nombre del archivo de configuración
+    $sRutaTrabajo = dirname($argv[0]);
+    $sArchivoConfig = "$sRutaTrabajo/$sNombreConfig";
+    $sArchivoPID = "$sRutaTrabajo/$sNombrePID";
+
+    // Intentar cargar el archivo de configuración
+    $infoConfig = parse_ini_file($sArchivoConfig, TRUE);
+    if (count($infoConfig) == 0) {
+        if (function_exists('error_get_last'))
+            $e = error_get_last();
+        else $e = array('message' => 'Failed to open file, error_get_last() not available.');
+        die("Could not load configuration file: $e[message]\n");
+    }
+    if (!isset($infoConfig['basedir'])) $infoConfig['basedir'] = $sRutaTrabajo;
+
+    // Esperar hasta que finalice la instancia previa
+    finalizarInstanciaPrevia($sArchivoPID);
+
+    // Si no se indica depuración del programa, se vuelve un demonio
+    $bDepuracion = FALSE;
+    if (is_array($paramConfig) && isset($paramConfig[0]) && is_array($paramConfig[0])) {
+        foreach ($paramConfig[0] as $param) {
+            if ($param[0] === 'd') $bDepuracion = TRUE;
+        }
+    }
+    if (!$bDepuracion) daemon(TRUE, FALSE);
+    //$PROGRAM_NAME = $sNombreDemonio.' - MASTER MONITOR';
+
+    // Escribir el PID del proceso actual
+    escribirPID($sArchivoPID);
+
+    // Crear los logs de aplicación, de Harris, y de llamadas no escritas
+    $bExitoAbrirLogs = FALSE;
+    openlog($sNombreDemonio, LOG_PID, LOG_USER);
+    $oMainLog = new AppLogger();
+    try {
+        $oMainLog->open("$sRutaTrabajo/$sNombreMainLog");
+        $bExitoAbrirLogs = TRUE;
+    } catch (Exception $e) {
+        syslog(LOG_WARNING, "Unable to open applogs properly: ".$e->getMessage());
+        $oMainLog = NULL;
+    }
+    closelog();
+
+    if ($bExitoAbrirLogs && !is_null($oMainLog)) {
+        $bContinuar = TRUE;
+        $goAppLog = $oMainLog;
+
+        // Conectar sistema de mensajes de error de PHP al log
+        $old_errorHandler = set_error_handler('daemonErrorHandler');
+
+        $sBannerLog = str_pad($sDescDemonio, 40, ' ', STR_PAD_BOTH);
+        $sBanner = <<<BANNEREND
+Main log opened correctly
+----------------------------------------
+$sBannerLog
+      (PHP implementation, v1.0)
+    Powered by Palosanto Solutions
+
+      Please report bugs/issues at:
+        http://bugs.elastix.org/
+----------------------------------------
+BANNEREND;
+        $oMainLog->output($sBanner);
+        $oMainLog->output("Main log located at $sRutaTrabajo/$sNombreMainLog");
+
+        $oMainLog->prefijo("ProcessMonitor");
+        $oMainLog->output("PID = ".posix_getpid().", monitor started normally");
+
+        // Instalar manejadores de señal para demonio (SIGTERM, SIGQUIT, SIGINT, SIGHUP)
+        pcntl_signal(SIGTERM, 'manejadorPrimarioSignal');
+        pcntl_signal(SIGQUIT, 'manejadorPrimarioSignal');
+        pcntl_signal(SIGINT, 'manejadorPrimarioSignal');
+        pcntl_signal(SIGHUP, 'manejadorPrimarioSignal');
+
+        // Iniciar procesos mientras se deba continuar
+        while ($bContinuar) {
+            // Si la tarea ha finalizado o no existe, se debe iniciar
+            foreach (array_keys($tablaProcesos) as $sTarea) {
+                // Si está definido el PID del proceso, se verifica si se ejecuta.
+                if (!is_null($tablaProcesos[$sTarea])) {
+                    $iStatus = NULL;
+                    $iPidDevuelto = pcntl_waitpid($tablaProcesos[$sTarea], $iStatus, WNOHANG);
+                    if ($iPidDevuelto > 0) {
+                        $oMainLog->output("WARNING: $sTarea (PID=$iPidDevuelto) ended unexpectedly (status=$iStatus), scheduling restart...");
+                        $iErrCode = pcntl_wifexited($iStatus) ? pcntl_wexitstatus($iStatus) : 255;
+                        $iRcvSignal = pcntl_wifsignaled($iStatus) ? pcntl_wtermsig($iStatus) : 0;
+                        if ($iRcvSignal != 0) { $oMainLog->output("WARNING: $sTarea terminated due to signal $iRcvSignal..."); }
+                        if ($iErrCode != 0) { $oMainLog->output("WARNING: $sTarea returned error code $iErrCode..."); }
+                        $tablaProcesos[$sTarea] = NULL;
+                    }
+                }
+
+                // Si no está definido el PID del proceso, se intenta iniciar
+                if (is_null($tablaProcesos[$sTarea])) {
+                    $tablaProcesos[$sTarea] = iniciarTarea($sNombreDemonio, $sTarea, $infoConfig, $oMainLog);
+                }
+            }
+
+            // Revisar si existe señal que indique finalización del programa
+            if (!is_null($gsNombreSignal) &&
+            	in_array($gsNombreSignal, array(SIGTERM, SIGINT, SIGQUIT, SIGHUP))) {
+
+                // Mandar la señal a todos los procesos controlados
+                $oMainLog->output("PID = ".posix_getpid().", $sNombreDemonio received signal #$gsNombreSignal, ".
+                	(($gsNombreSignal == SIGHUP) ? 'switching logs' : 'terminating')."...");
+                foreach (array_keys($tablaProcesos) as $sTarea) {
+                    if (!is_null($tablaProcesos[$sTarea])) {
+                        $oMainLog->output("Forwarding signal #$gsNombreSignal to $sTarea...");
+                        posix_kill($tablaProcesos[$sTarea], $gsNombreSignal);
+                        //posix_kill(-1 * getpgrp($tablaProcesos[$sTarea]), $gsNombreSignal);
+                        $oMainLog->output("Completed signal forwarding to $sTarea");
+                    }
+                }
+
+                if ($gsNombreSignal != SIGHUP) {
+	                // Esperar a que todos los procesos controlados terminen
+	                foreach (array_keys($tablaProcesos) as $sTarea) {
+	                    if (!is_null($tablaProcesos[$sTarea])) {
+	                        $iStatus = NULL;
+	                        pcntl_waitpid($tablaProcesos[$sTarea], $iStatus, 0);
+	                        $tablaProcesos[$sTarea] = NULL;
+	                    }
+	                }
+	                $bContinuar = 0;
+                } else {
+                	$oMainLog->reopen();
+                   	$oMainLog->output("PID = ".posix_getpid().", $sNombreDemonio received signal #$gsNombreSignal, using new log.");
+                   	$gsNombreSignal = NULL;
+                }
+            } else {
+                // Esperar medio segundo entre verificaciones de actividad
+                usleep(500000);
+            }
+        }
+
+        // Restaurar manejador anterior de errores
+        // set_error_handler($old_errorHandler);
+    }
+
+    // Cerrar los logs una vez indicada la finalización del programa
+    if (!is_null($oMainLog)) {
+        $oMainLog->output("PID = ".posix_getpid().", process terminated normally.");
+        $oMainLog->close();
+        $oMainLog = NULL;
+    }
+
+    // Borrar el PID del proceso actual
+    borrarPID($sArchivoPID);
+
+}
+
+// Implementación de daemon() usando pcntl_fork()
+function daemon($nochdir, $noclose)
+{
+    $iPid = pcntl_fork();
+    if ($iPid != -1) {
+        if ($iPid != 0) exit(0);    // Terminar el proceso padre
+        if (!$noclose) {
+            fclose(STDIN);
+            fclose(STDOUT);
+        }
+        if (posix_setsid() >= 0) {
+            if (!$nochdir) chdir('/');
+            return 0;
+        } else {
+            return -1;
+        }
+    } else {
+        return -1;
+    }
+}
+
+/* Si existe el archivo de PID indicado, se manda una señal SIGINT y se espera
+   a que el otro programa finalice
+ */
+function finalizarInstanciaPrevia($sNombrePID)
+{
+    if (file_exists($sNombrePID)) {
+        // Abrir el archivo y leer el PID que tiene adentro
+        $regs = NULL;
+        $contenido = file($sNombrePID);
+        if (!is_array($contenido)) die("Unable to open PID file '$sNombrePID'\n");
+        if (count($contenido) > 0 && preg_match('/^(\d+)/', $contenido[0], $regs)) {
+            $iPid = $regs[1];
+            if (posix_kill($iPid, 0)) {
+                /* El siguiente método es específico de Linux y no funcionará
+                   con otro OS. Se verifica si el proceso fue iniciado con PHP
+                   y si contiene como primer parámetro la cadena  */
+                $bValidoPID = TRUE;
+                if (!is_readable("/proc/$iPid/cmdline")) $bValidoPID = FALSE;
+                if ($bValidoPID) {
+                    $argv_proc = explode("\0", file_get_contents("/proc/$iPid/cmdline"));
+                    if (strpos($argv_proc[0], '/php') === FALSE) $bValidoPID = FALSE;
+                }
+                if (!$bValidoPID) {
+                    print "PID $iPid does not look like a PHP daemon. Assuming stale PID file.\n";
+                    unlink($sNombrePID);
+                } else {
+                    print "Signaling termination to PID $iPid...\n";
+                    if (!posix_kill($iPid, SIGINT)) {
+                        print "Unable to signal PID $iPid (running as different user?). Assuming stale PID file.\n";
+                        unlink($sNombrePID);
+                    }
+                }
+                if (file_exists($sNombrePID)) {
+                    print "Waiting for PID $iPid to terminate...\n";
+                    while (file_exists($sNombrePID)) usleep(1000000);
+                    print "PID $iPid seems to have terminated, resuming startup...\n";
+                }
+            }
+        }
+    }
+}
+
+// Escribir el archivo de PID
+function escribirPID($sNombrePID)
+{
+    $hArchivoPID = fopen($sNombrePID, 'w');
+    if (!$hArchivoPID) die("Unable to create PID file '$sNombrePID'\n");
+    fputs($hArchivoPID, sprintf('%d', posix_getpid()));
+    fclose($hArchivoPID);
+}
+
+// Borrar el archivo de PID
+function borrarPID($sNombrePID)
+{
+    while (file_exists($sNombrePID)) { unlink($sNombrePID); }
+}
+
+// Manejador de señales para el proceso demonio principal
+function manejadorPrimarioSignal($signo)
+{
+    global $gsNombreSignal;
+
+    $gsNombreSignal = $signo;
+}
+
+/* Iniciar una tarea específica en un proceso separado. Para el proceso padre,
+   devuelve el PID del proceso hijo.
+ */
+function iniciarTarea($sNombreDemonio, $sNombreTarea, $infoConfig, &$oMainLog)
+{
+    global $gsNombreSignal;
+
+    set_error_handler('daemonErrorHandler');
+
+    // Verificar que el nombre de la clase que implementa el proceso es válido
+    if (!class_exists($sNombreTarea)) {
+        $oMainLog->output("FATAL: (internal) Invalid process classname '$sNombreTarea'");
+        die("(internal) Invalid process classname '$sNombreTarea'\n");
+    }
+
+    // Iniciar tarea en proceso separado
+    $iPidProceso = pcntl_fork();
+    if ($iPidProceso != -1) {
+        if ($iPidProceso == 0) {
+            //$PROGRAM_NAME = $sNombreDemonio.' - '.$sNombreTarea;
+            $oMainLog->prefijo($sNombreTarea);
+            $oMainLog->output("starting up process...");
+
+            // Instalar los manejadores de señal para el proceso hijo
+            pcntl_signal(SIGTERM, 'manejadorPrimarioSignal');
+            pcntl_signal(SIGQUIT, 'manejadorPrimarioSignal');
+            pcntl_signal(SIGINT, 'manejadorPrimarioSignal');
+            pcntl_signal(SIGHUP, 'manejadorPrimarioSignal');
+
+            // Elegir la tarea que debe de ejecutarse
+            $oProceso = NULL;
+            try {
+                $oProceso = new $sNombreTarea();
+                if (!($oProceso instanceof AbstractProcess)) throw new Exception('Not a subclass of AbstractProcess!');
+            } catch (Exception $ex) {
+                $oMainLog->output("ERR: while creating $sNombreTarea - uncaught exception: ".$ex->getMessage());
+                die("ERR: while instantiating $sNombreTarea - ".$ex->getMessage()."\n");
+            }
+
+            // Realizar inicialización adicional de la tarea
+            try {
+                $bContinuar = $oProceso->inicioPostDemonio($infoConfig, $oMainLog);
+                if ($bContinuar) $oMainLog->output("PID = ".posix_getpid().", process started normally");
+            } catch (Exception $ex) {
+                $bContinuar = FALSE;
+                $oMainLog->output("ERR: while initializing $sNombreTarea - uncaught exception: ".$ex->getMessage());
+            }
+
+            // Continuar la tarea hasta que se finalice
+            while ($bContinuar) {
+                // Ejecutar el procedimiento de trabajo del demonio
+                if (is_null($gsNombreSignal)) {
+                    try {
+                        $bContinuar = $oProceso->procedimientoDemonio();
+                    } catch (Exception $ex) {
+                        $bContinuar = FALSE;
+                        $oMainLog->output("ERR: while running $sNombreTarea - uncaught exception: ".$ex->getMessage());
+                    }
+                }
+
+                // Revisar si existe señal que indique finalización del programa
+                if (!is_null($gsNombreSignal)) {
+                    if (in_array($gsNombreSignal, array(SIGTERM, SIGINT, SIGQUIT))) {
+                    	$oMainLog->output("PID = ".posix_getpid().", process received signal $gsNombreSignal, terminating...");
+                    	$bContinuar = FALSE;
+                    } elseif ($gsNombreSignal == SIGHUP) {
+                    	$oMainLog->output("PID = ".posix_getpid().", process received signal $gsNombreSignal, switching logs...");
+                        if (method_exists($oProceso, 'propagarSIGHUP')) {
+                           $oMainLog->output("PID = ".posix_getpid().", process has handler for SIGHUP, calling...");
+                           $oProceso->propagarSIGHUP();
+                        }
+                    	$oMainLog->reopen();
+                    	$oMainLog->output("PID = ".posix_getpid().", process received signal $gsNombreSignal, using new log.");
+                        $gsNombreSignal = NULL;
+                    }
+                }
+            }
+
+            // Indicar al módulo de trabajo por qué se está finalizando
+            try {
+                $oProceso->limpiezaDemonio($gsNombreSignal);
+            } catch (Exception $ex) {
+                $oMainLog->output("ERR: while cleaning up $sNombreTarea - uncaught exception: ".$ex->getMessage());
+            }
+            $oMainLog->output("PID = ".posix_getpid().", process terminated normally.");
+            $oMainLog->close();
+
+            exit(0);   // Finalizar el proceso hijo
+        }
+    } else {
+        // Avisar que no se puede iniciar la tarea requerida
+        $oMainLog->output("Unable to fork $sNombreTarea - $!");
+    }
+    return $iPidProceso;
+}
+
+// Procedimiento que usa el log abierto para reportar el error que haya ocurrido
+function daemonErrorHandler($errno, $errmsg, $filename, $linenum, $vars)
+{
+    global $goAppLog;
+    $errortype = array (
+        E_ERROR              => 'Error',
+        E_WARNING            => 'Warning',
+        E_PARSE              => 'Parsing Error',
+        E_NOTICE             => 'Notice',
+        E_CORE_ERROR         => 'Core Error',
+        E_CORE_WARNING       => 'Core Warning',
+        E_COMPILE_ERROR      => 'Compile Error',
+        E_COMPILE_WARNING    => 'Compile Warning',
+        E_USER_ERROR         => 'User Error',
+        E_USER_WARNING       => 'User Warning',
+        E_USER_NOTICE        => 'User Notice',
+        E_STRICT             => 'Runtime Notice',
+//        E_RECOVERABLE_ERROR  => 'Catchable Fatal Error'
+        );
+    if (!is_null($goAppLog) && $errno != E_STRICT) {
+        $goAppLog->output("$errortype[$errno]: $filename line $linenum - $errmsg");
+    }
+}
+?>

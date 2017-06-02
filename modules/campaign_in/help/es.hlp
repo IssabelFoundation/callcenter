@@ -1,0 +1,50 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+
+<h1>{$node_name}</h1>
+<p align="Justify">Esta opción permite crear una campaña entrante donde los agentes reciben las llamadas que los usurarios comunes realizan al call center. Cuando los usuarios llaman al número de extensión de la cola que está configurada con la campaña, las llamadas serán pasadas a los agentes que están asignados.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_campaign_list.png" border="0" />
+<p>Figura 1<p></div>
+<p align="Justify">Usted puede <b>Activar, Desactivar</b> y <b>Eliminar</b> una campaña seleccionándola de la lista y usando los botones ubicados en la sección de Filtro. Para <b>Editar</b> una campaña haga click en el enlace azul "Editar" correspondiente a cada campaña. Es posible descargar un reporte en un archivo CSV de cada campaña que contiene el estado de las llamadas y los datos recolectados con los formularios.</p>
+<br />
+<h3>Nueva Campaña</h3>
+<p align="Justify">Para crear una nueva campaña haga click en el enlace "Crear nueva campaña" ubicado en la sección de Filtro. A continuación una breve descripción de los parámetros requeridos:</p>
+
+<table class="inline">
+  <tr>
+    <th>Campo</th><th>Descripción</th>
+  </tr>
+  <tr>
+    <td>Nombre</td><td>Nombre de la campaña</td>
+  </tr>
+  <tr>
+    <td>Rango Fechas</td><td align="Justify"><b>Inicio: </b> Fecha en que inicia la campaña. <br /> <b>Fin: </b>Fecha en que culmina la campaña. Luego de esta fecha no se recibirán mas llamadas.</td>
+  </tr>
+  <tr>
+    <td>Horario Diario</td><td align="Justify">El horario por día en que se desarrollará la campaña.</td>
+  </tr>
+  <tr>
+    <td>Formulario</td><td align="Justify">Seleccione los formularios que serán usados en la campaña para recolectar datos. Para crear un nuevo formulario haga click en "Administrar Formularios" o vaya al módulo "Diseñador de Formularios".</td>
+  </tr>
+<tr>
+    <td>URLs Externos</td><td align="Justify">Seleccione el URL que será cargado como una aplicación externa en la consola de agente. Puede crear un nuevo URL haciendo click en el enlace "Administrar URLs Externos" o vaya al módulo "URLs Externos".</td>
+  </tr>
+<tr>
+    <td>Cola</td><td align="Justify">Esta es la cola asignada a la campaña. Los agentes que tomarán las llamadas entrantes están configurados en esta cola. Para activar una cola haga click en el enlace "Administrar Colas". Note que para activar una cola esta debe de existir previamente.</td>
+  </tr>
+<tr>
+    <td>Guión</td><td align="Justify">Aquí se especifica un conjunto de instrucciones que guiarán a los agentes durante las llamadas en la campaña. Puede contener un saludo o palabras especiales.
+    </td>
+</tr>
+</table>
+
+<br />
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_campaign_new.png" border="0" />
+<p>Figura 2</p></div>
+
+</body>
+</html>

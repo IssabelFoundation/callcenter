@@ -1,0 +1,30 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+
+<h1>{$node_name}</h1>
+<p align="Justify">The option "Console Agent" of the Call Center allows the operator to perform active campaigns using a specific extension. The agent can receive calls from the queue configured on Ingoing Campaigns and can be assigned to calls from Outgoing Campaigns. Here the operator has to log in to enter to the system <i>(See Figure 1)</i> by using the <b>Standard configuration</b> consisting of the agent number, the password and the extension that will be used (the agent previously created in the module Agent Options), or the <b>Dynamic configuration</b> consisting of a callback extension and the password (the callback extension previously added in the module Agent Options). It's important that the agent remember to log off when the working day finishes for preventing alteration in the reports due to fake time session.</p>
+
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_agent_console.png" border="0" />
+<p>Figure 1</p></div><br/>
+
+<p align="Justify">In the Agent Console it is possible to hang-up, take a break, transfer the call, visit VTiger CRM login page and close the session. The figure 2 shows how the agent console looks when there isn't any active call for the agent. The blue bar indicates this state.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_agent_console_ci1.png" border="0" />
+<p>Figure 2</p></div><br/>
+<p align="Justify">When there's an active call (see the green bar), in the section Call Information, you will see the phone number, the name and other data regarding the call <i>(see Figure 2)</i>. For Ingoing Campaigns this information will be available provided a list of clients has been uploaded from the module Clients located in the menu Ingoing Campaigns. For Outgoing Campaigns the list of clients is uploaded when the campaign is created from the module Campaign located in the menu Outgoing Campaign.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_agent_console_ci2.png" border="0" />
+<p>Figure 3</p></div><br/>
+<p align="Justify">The section Call Script is a set of instructions that is supposed to be followed by the agent in the calls for the current campaign. This script is created along with the campaign. <i>(See Figure 4)</i></p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_agent_console_cs.png" border="0" />
+<p>Figure 4</p></div><br/>
+<p align="Justify">For the campaigns, it is possible to create more than one form to collect data in an active call. The forms are created from the module Form Designer and added to the campaign along with the creation of it. <i>(See Figure 5)</i></p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_agent_console_cf.png" border="0" />
+<p>Figure 5</p></div><br/>
+<p align="Justify">The section External Site provides the opportunity to execute an external application by using a link previously created in the module Outgoing Campaign and added to the campaign along with the creation of it. This option is available for Ingoing and Outgoing Campaigns. <i>(See Figure 6)</i></p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_agent_console_es.png" border="0" />
+<p>Figure 6</p></div><br/>
+</body>
+</html>

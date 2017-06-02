@@ -1,0 +1,31 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+
+<h1>{$node_name}</h1>
+<p align="Justify">La opción "Consola de Agente" del Call Center permite al operador llevar a cabo campañas activas utilizado una extensión específica. El agente puede recibir llamadas de la cola configurada en Campañas Entrantes y puede ser asignada a llamadas de Campanas Salientes. Aquí el operador ingresa al sistema <i>(Ver Figura 1)</i> utilizando la <b>Configuración Estándar</b> que consiste en el número de agente, la contraseña y la extensión que usará (el agente debe ser creado previamente en el módulo Opciones de Agente), o la <b>Configuración Dinámica</b> que consiste en una extensión de callback y una contraseña (La extensión de callback debe ser creada previamente en el módulo Opciones de Agente). Es importante que el agente recuerde cerrar sesión cuando su día de trabajo finali
+ce para prevenir alteración en los reportes debido a una sesión activa falsa.</p>
+
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_agent_console.png" border="0" />
+<p>Figura 1</p></div><br/>
+
+<p align="Justify">En la consola de agente es posible colgar, tomar un receso, transferir una llamada, ir a la página de VTiger CRM para iniciar sesión. La figura 2 muestra como la consola de agente luce cuando no hay una llamada activa. La barra azul indica el estado.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_agent_console_ci1.png" border="0" />
+<p>Figura 2</p></div><br/>
+<p align="Justify">Cuando hay una llamada activa (ver la barra verde), en la sección Información de Llamada usted verá el número telefónico, el nombre y otros datos respecto a la llamada actual. <i>(ver figura 2)</i>. Para Campañas Entrantes esta información estará disponible siempre y cuando una lista de clientes haya sido cargada desde el módulo Clientes ubicado en el módulo Campañas Entrantes. Para Campañas Salientes la lista de clientes es cargada cuando una campaña es creada desde el módulo Campaña ubicado en el módulo Campañas Salientes.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_agent_console_ci2.png" border="0" />
+<p>Figura 3</p></div><br/>
+<p align="Justify">La sección Diálogo de llamada es un conjunto de instrucciones que deberían ser seguidas por el agente durante la campaña actual. Este diálogo de llamada es creado junto con la campaña. <i>(Ver Figura 4)</i></p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_agent_console_cs.png" border="0" />
+<p>Figura 4</p></div><br/>
+<p align="Justify">Para las campañas es posible crear más de un formulario para recolectar datos en una llamada activa. Los formularios son creados desde el módulo Diseñador de Formularios y son agregados a la campaña durante la creación de la misma. <i>(Ver Figura 5)</i></p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_agent_console_cf.png" border="0" />
+<p>Figura 5</p></div><br/>
+<p align="Justify">La sección Sitio Externo provee la oportunidad de ejecutar una aplicación externa usando un link previamente configurado en el módulo Campaña Saliente y agregado a la campana junto con la creación de la misma. Esta opción está disponible para campañas tanto entrantes como salientes. <i>(Ver Figura 6)</i></p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_agent_console_es.png" border="0" />
+<p>Figura 6</p></div><br/>
+</body>
+</html>

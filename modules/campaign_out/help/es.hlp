@@ -1,0 +1,73 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+
+<h1>{$node_name}</h1>
+<p align="Justify">Esta opción permite crear una campaña saliente donde un conjunto de llamadas son generadas automáticamente a partir de una lista de números telefónicos y asignados a los agentes.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_campaign_list.png" border="0" />
+<p>Figura 1<p></div>
+<p align="Justify">Usted puede <b>Activar, Desactivar</b> y <b>Eliminar</b> una campaña seleccionándola de la lista y usando los botones ubicados en la sección de Filtro. Para <b>Editar</b> una campaña haga click en el enlace azul "Editar" ubicado en la columna Opciones de la lista de campañas. Usted puede también descargar un reporte de todas las llamadas en un archivo con formato CSV que contiene el estado de las llamadas y la información recolectada de los formaularios.</p>
+<br />
+<h3>Nueva Campaña</h3>
+<p align="Justify">Para crear una nueva campaña haga click en el enlace azul "Crear Nueva campaña" ubicado en la sección de Filtro. Los parámetros requeridos para crear una nueva campaña son muy importantes para determinar como una llamada será realizada. A continuación una breve descripción de los parámetros requeridos:</p>
+
+<table class="inline">
+  <tr>
+    <th>Campo</th><th>Descripción</th>
+  </tr>
+  <tr>
+    <td>Nombre</td><td>Nombre de la campaña</td>
+  </tr>
+  <tr>
+    <td>Rango Fechas</td><td align="Justify"><b>Inicio: </b> Fecha en que empieza la campaña. <br /> <b>Fin: </b>Fecha en que termina la campaña. Después de esta fecha no se realizarán más llamadas a menos que hayan números de teléfono pendientes.</td>
+  </tr>
+  <tr>
+    <td>Horario Diario</td><td align="Justify">El rango de tiempo por día que la campaña dura.</td>
+  </tr>
+  <tr>
+    <td>Formulario</td><td align="Justify">Seleccione los formularios que serán usados en la campaña para recolectar datos. Para crear un nuevo formulario haga click en el enlace "Administrar formularios".</td>
+  </tr>
+<tr>
+    <td>URLs Externos</td><td align="Justify">Seleccione un URL para cargar una aplicación externa en la consola de agente. Si no ha creado uno usted puede hacerlo haciendo click en el enlace "Administrar URLs Externos".</td>
+  </tr>
+  <tr>
+    <td>Troncal</td><td align="Justify">Seleccione la troncal por donde las llamadas van a salir.</td>
+  </tr>
+  <tr>
+    <td>Max. canales a usar</td><td align="Justify">Limita el número máximo de llamadas simultáneas para la campaña.</td>
+  </tr>
+<tr>
+    <td>Contexto</td><td align="Justify">El nombre del contexto a usar para la campaña. El valor predeterminado es from-internal.
+    </td>
+  </tr>
+<tr>
+    <td>Cola</td><td align="Justify">Esta es la cola asignada a la campaña. Los agentes quienes harán las llamadas entrantes están configurados en esta cola. Paar activar una cola haga click en el enlace "Administrar Colas". Note que la cola debe existir antes de que sea activada para una campaña..
+   </td>
+  </tr>
+<tr>
+    <td>Intentos</td><td align="Justify">Número de veces que una llamada será hecha si no fue exitosa.
+    </td>
+</tr>
+<tr>
+    <td>Archivo de Llamadas</td><td align="Justify">Seleccione un archivo en formato CSV que contenga los números de teléfono que serán llamados durante la campaña. Usted puede agregar más datos en este archivo como Nombre y Apellido.
+    </td>
+</tr>
+<tr>
+    <td>Codificación de Archivo de Llamadas</td><td align="Justify">Este es el tipo de codificación del archivo de llamadas. Se recomienda dejar este campo con el valor predeterminado..
+</td>
+</tr>
+<tr>
+    <td>Guión</td><td align="Justify">Aquí están las instrucciones que guían a los agentes cuando están atendiendo una llamada. Puede contener saludos o palabras especiales.
+    </td>
+</tr>
+</table>
+
+<br />
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_campaign_new.png" border="0" />
+<p>Figura 2</p></div>
+
+</body>
+</html>

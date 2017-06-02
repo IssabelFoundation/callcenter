@@ -1,0 +1,18 @@
+<?php
+global $arrLangModule; 
+ $arrLangModule = array(
+"List Calls"     => "Arama Listesi",
+"Queue"          => "Kuyruk",
+"Successful"     => "Tamamlandı",
+"Left"           => "Kapatıldı",
+"Time Hopes"     => "Bekleme Süresi",
+"Find"           => "Bul",
+"Date Init"      => "Tarihinde",
+"Date End"       => "Bitiş Tarihi",
+"Total Calls"    => "Toplam Arama",
+"Error"          => "Hata",
+"Total"          => "Toplam",
+"Error when connecting to database"          => "Error when connecting to database",
+"Error when creating object paloSantoReportsCalls" => "Error when creating object paloSantoReportsCalls",
+);
+?>

@@ -1,0 +1,122 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Outgoing Campaigns" => "Campagnes sortantes",
+    "Campaigns" => "Campagnes",
+    "Estado" => "Etat",
+    "New Campaign" => "Nouvelle campagne",
+    "Campaigns List" => "Liste des campagnes",
+    "View Campaign" => "Voir campagne",
+    "Create New Campaign" => "Créer une nouvelle campagne",
+    "Name Campaign" => "Nom",
+    "Start Date" => "Date de début",
+    "End Date" => "Date de fin",
+    "Start Time" => "Heure de début",
+    "End Time" => "Heure de fin",
+    "Retries" => "Tentatives",
+    "Queue" => "File",
+    "Context" => "Contexte",
+    "Form" => "Formulaire",
+    "Completed Calls" => "Appels aboutis",
+    "Average Time" => "Temps moyen",
+    "File name" => "Nom fichier",
+    "Unable to parse start date specification" => "Impossible d'analyser à partir de la date de début",
+    "Unable to parse end date specification" => "Impossible d'analyser jusqu'à la date de fin",
+    "Unable to parse start time specification" => "Impossible d'analyser à partir de l'heure de début",
+    "Unable to parse end time specification" => "Impossible d'analyser jusqu'à l'heure de fin",
+    "Campaign ID is not valid" => "L'id de la campagne est non valide",
+    "Name Campaign can't be empty" => "Le nom de la campagne ne peut pas être vide",
+    "Trunk can't be empty" => "Le trunk ne peut pas être vide",
+    "Context can't be empty" => "Le cntexte ne peut pas être vide",
+    "Retries must be numeric" => "Les Essais doivent être numériques",
+    "Queue can't be empty" => "La file ne peut pas être vide",
+    "Invalid Start Date" => "Date de début invalide",
+    "Invalid End Date" => "Date de fin invalide",
+    "Invalid Start Time" => "Heure de début invalide",
+    "Invalid End Time" => "Heure de fin invalide",
+    "Start Date must be greater than End Date" => "La Date de début doit être antérieure à la date de fin",
+    "Name Campaign already exists" => "Le nom de campagne existe déjà",
+    "Invalid Campaign ID" => "Id de campagne invalide",
+    "Invalid CSV File" => "Fichier CSV invalide",
+    "Element without phone number" => "Elément sans n° de téléphone",
+    "Edit Campaign" => "Editer campagne",
+    "Error when Activating the Campaign" => "Erreur en activant la campagne",
+    "Error when eliminating the Campaign" => "Erreur en supprimant la campagne",
+    "Start Time must be greater than End Time" => "L'Heure de début doit être antérieure à l'heure de fin",
+    "Invalid number" => "N° invalide",
+    "Invalid CSV File Line" => "Ligne du Fichier CSV invalide ",
+    "CSV Data" => "Données CSV",
+    "Phone Customer" => "Téléphone",
+    "Name Customer" => "Nom du client",
+    "Status Call" => "Etat de l'appel",
+    "Status" => "Etat",
+    "Success" => "Réussi",
+    "Failure" => "Echoué",
+    "ShortCall" => "Appel court",
+    "Error when deleting the Campaign" => "Erreur en supprimant la campagne",
+    "This campaign have calls done" => "Cette campagne a des appels répondus",
+    "Delete Error" => "Erreur effacement",
+    "There aren't form selected" => "Il n'y a pas de formulaire sélectionné",
+    "To rapair is necesary delete agent from configuration file. Do you want to continue?" => "Pour réparer il est nécessaire d'effacer l'agent du fichier de configuration. Voulez-vous continuer ?",
+    "To rapair is necesary add an agent in configuration file. Do you want to continue?" => "Pour réparer il est nécessaire d'ajouter l'agent dans le fichier de configuration. Voulez-vous continuer ?",
+    "Error when desactivating the Campaign" => "Erreur en désactivant la campagne",
+    "Desactivate" => "Désactiver",
+    "Activate Error" => "Erreur d'activation",
+    "Desactivate Error" => "Erreur de désactivation",
+    "Queue must be numeric" => "La file doit être numérique",
+    "Queue is being used, choose other one" => "La file est en cours d'utilisation, choisissez-en une autre",
+    "Address" => "Adresse",
+    "Date & Time" => "Date & heure",
+    "Duration" => "Durée (sec)",
+    "Are you sure you wish to delete campaign?" => "Etes-vous sûr de vouloir supprimer la campagne?",
+    "Finish" => "Terminées",
+    "Active" => "Actives",
+    "All" => "Toutes",
+    "Inactive" => "Inactives",
+    "Range Date" => "Période du",
+    "Start" => "Début",
+    "End" => "Fin",
+    "Schedule per Day" => "Programmation du jour",
+    "Start time" => "Heure de début",
+    "End time" => "Heure de fin",
+    "Max. used channels" => "Max. de canaux utilisés",
+    "View" => "Vue",
+    "Activate" => "Activer",
+    "Campaign state" => "Etat de la Campagne",
+    "With selection" => "Pour la Sélection",
+    "Call File" => "Fichier d'appels",
+    "By Dialplan" => "Par plan de numérotation",
+    "Manage Trunks" => "Gérer les trunks",
+    "Manage Queues" => "Gérer les files d'attente",
+    "Manage Forms" => "Gérer les formulaires",
+    "External URLs" => "URLs externes",
+    "Manage External URLs" => "Gérer les URLs externes",
+);
+?>

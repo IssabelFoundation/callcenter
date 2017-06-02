@@ -1,0 +1,3423 @@
+Protocolo ECCP v0.1
+-------------------
+Revisión 5
+Estatus: Beta
+
+Objetivo
+--------
+El protocolo ECCP es un protocolo basado en XML cuya finalidad es la de proveer 
+de un API de comunicaciones a través de un puerto TCP para que aplicaciones externas
+puedan comunicarse con el motor de call center que provee Elastix.
+
+La carencia de un mecanismo de comunicación entre el motor de call center y las 
+aplicaciones cliente, que permita la transmisión de eventos asincrónicos, fue una 
+de las motivaciones para la creación del ECCP. Antes del ECCP una aplicación cliente 
+debía enviar peticiones periódicas al servidor para enterarse de la ocurrencia de 
+eventos asincrónicos.
+
+Por otro lado, era necesario una estandarización del protocolo de comunicaciones
+con el motor de call center con miras a permitir escalabilidad y organización.
+
+Convenciones usadas en este documento
+-------------------------------------
+En la mayor parte de este documento, cuando se refiera a “atributos” y “elementos”, 
+estos términos estarán relacionados con su definición dentro del lenguaje XML.
+
+Cuando se mencione la palabra servidor (a secas) se estará haciendo referencia al 
+servidor de call center, que viene junto con el módulo de call center de Elastix. 
+Este programa también recibe el nombre de “dialerd”.
+
+Toda fecha tendrá formato yyyy-mm-dd y todo hora tendrá formato hh:mm:ss. La zona
+horaria con la que se opera es siempre la que se ha configurado en el servidor
+que ejecuta el programa dialerd. 
+
+La palabra 'CallCenter' (sensitiva a mayusculas) se utilizará para referirse
+al módulo CallCenter de Elastix.
+
+Arquitectura
+------------
+
+-------------      -----     ---------------------------
+|           |     /     \    |                         |
+| Servidor  |-----  Red  ----| Cliente                 |
+| (dialerd) |     \     /    | (Ej. Consola de agente) |
+|           |      -----     |                         |
+-------------                ---------------------------
+
+Comunicaciones TCP/IP
+---------------------
+
+La comunicación será TCP en el puerto 20005.
+
+Sesiones
+--------
+El protocolo ECCP está orientado a sesiones, teniendo la capacidad de soportar 
+múltiples sesiones de comunicación, puediendo atender de esta manera a varias 
+aplicaciones cliente a la vez.
+
+Una sesión quedará establecida luego de que la aplicación cliente se haya 
+autenticado correctamente. La sesión permanecerá activa hasta que la aplicación
+cliente termine la sesión o hasta que ocurra un timeout por inactividad.
+
+El valor del timeout por inactividad será de 5 minutos, luego de lo cual el 
+servidor terminará la sesión.
+
+Separación entre cliente y agente
+---------------------------------
+El servidor se comunica con apliaciones cliente y es la aplicación cliente la 
+que gestiona el ingreso de los agentes al sistema. Una aplicación cliente puede
+manejar a uno o más agentes.
+
+Esto último abre las puertas a dos escenarios que se explican a continuación.
+
+Escenario 1: Consolas de agente que se conectan directamente al servidor.
+
+Aquí cada consola de agente se encarga de gestionar el ingreso de un solo agente.
+Para el servidor cada consola de agente es vista como una aplicación cliente.
+
+                         --------------------------------
+                /--------| Consola de agente (agente 1) |
+               /         --------------------------------
+------------  /          --------------------------------
+| Servidor |------------ | Consola de agente (agente 2) |
+------------  \          --------------------------------
+               \         --------------------------------
+                \--------| Consola de agente (agente 3) |
+                         --------------------------------
+
+Como vemos en el ejemplo anterior el servidor ha iniciado 3 sesiones, una para 
+cada aplicación cliente, que en este caso vendría a ser cada consola de agente.
+Este esquema es el más sencillo de implementar.
+
+Escenario 2: Consolas de agente que se conectan mediante una aplicación cliente
+intermediaria.
+
+Aquí la aplicación cliente intermediaria se encarga de gestionar el ingreso de 
+varios agentes. En este escenario, desde el punto de vista del servidor, la
+aplicación cliente intermediaria es vista como una aplicación cliente, mientras
+que las consolas de agente no.
+
+                                                --------------------------------
+                                        /-------| Consola de agente (agente 1) |
+                                       /        --------------------------------
+-----------   ----------------------  /         --------------------------------
+| Servidor |--| App. intermediaria |----------- | Consola de agente (agente 2) |
+-----------   ----------------------  \         --------------------------------
+                                       \        --------------------------------
+                                        \-------| Consola de agente (agente 3) |
+                                                --------------------------------
+
+Como vemos en el ejemplo anterior, el servidor ha iniciado UNA SOLA SESION en 
+lugar de tres. 
+
+En un futuro nos referirnos a esta aplicación intermediara como *servidor de 
+concurrencia*. Un servidor de concurrencia es útil en varios sentidos. Uno de
+ellos es que se liberan recursos del servidor Elastix, pues el servidor de 
+concurrencia puede estar instalado en un equipo remoto. El servidor Elastix ya 
+no tiene que encargarse de gestionar las sesiones para las aplicaciones 'cliente'.
+
+El servidor de concurrencia también puede servir de servidor de caché para 
+descongestionar los requerimientos al servidor Elastix. Por ejemplo, podría hacer 
+caché de información de las campañas. 
+
+Consideraciones de seguridad
+----------------------------
+Para mantener cierto control sobre las aplicaciones cliente que se conectan al 
+servidor, este último mantendrá un registro de IPs autorizadas para conectarse.
+En caso de que un cliente intente conectarse desde una dirección IP no 
+autorizada, el servidor simplemente cerrará la conección con un mensaje 
+“Connection refuesed” y escribirá un mensaje de error en el log respectivo.
+
+Tipos de paquetes
+-----------------
+Existen tres tipos de paquetes en el protocolo ECCP:
+* evento
+* requerimiento
+* respuesta
+
+Cada paquete se representa como un documento XML bien formado, cuyas etiquetas
+son definidas a continuación. 
+
+Evento
+------
+Un evento es generado por un acontecimiento asincrónico ocurrido en el Servidor.
+A continuación su sintáxis básica:
+<event>
+...
+</event>
+
+IMPORTANTE: para extensión futura del protocolo, pueden definirse eventos 
+adicionales a los descritos en este documento, así como etiquetas y atributos
+adicionales en eventos definidos. Un cliente de ECCP DEBE IGNORAR todo evento 
+que no sepa manejar. De la misma manera, el cliente DEBE IGNORAR cualquier 
+etiqueta o atributo que no sepa manejar en el evento que recibe.
+
+Requerimiento
+-------------
+Un requerimiento es un mensaje enviado por la aplicación cliente hacia el 
+servidor. El servidor contestará este mensaje con la respuesta apropiada.
+
+En el requerimiento se incluye un atributo llamado id. Este id no es otra cosa
+que una cadena de caracteres que sirve para poder identificar la respuesta. De 
+este modo se minimiza la posibilidad de que ocurran problemas ocasionados por
+condiciones de carrera. El identificador consta de dos partes unidas por un 
+punto: la primera parte está constituida por el timestamp UNIX y la segunda 
+parte está compuesta de un entero aleatorio de 6 caracteres.
+Un ejemplo de identificador es el siguiente:
+
+1292899827.394772
+
+A continuación de un ejemplo de un requerimiento:
+
+<request id="1292899827.394772">
+...
+</request>
+
+Respuesta
+---------
+Un requerimiento puede producir una o varias respuestas. Las respuestas se 
+relacionan con los requerimientos a través del identificador del requerimiento.
+A continuación su sintaxis básica:
+
+<response id=identificador>
+...
+</response>
+
+IMPORTANTE: para extensión futura del protocolo, pueden definirse etiquetas y 
+atributos adicionales en respuestas definidass. El cliente ECCP DEBE IGNORAR 
+cualquier etiqueta o atributo que no sepa manejar en la respuesta que recibe.
+
+Autenticación de Requerimientos
+-------------------------------
+Algunos de los Requerimientos listados en este manual ordenan actualizaciones en 
+el estado del sistema que deben ser autorizadas únicamente para un agente en 
+particular. Cuando un Requerimiento requiere ser autenticado, el método usado es 
+el siguiente: 
+* Cada agente tiene asignada una contraseña conocida por el servidor.
+* El requerimiento "login" de la aplicación, en caso de tener éxito, devuelve
+  un texto aleatorio como contenido del tag "app_cookie". De aquí en adelante
+  a este texto se lo llamará cookie.
+* Todo requerimiento que deba ser autenticado debe tener dos argumentos 
+  obligatorios, agent_number y agent_hash .
+* El parámetro agent_number es el nombre del agente, como "Agent/9000"
+* El parámetro agent_hash es un valor resultante de aplicar el hash MD5 a la
+  concatenación del texto cookie, el nombre del agente, y la contraseña del
+  agente, en este orden. Es decir, para el agente Agent/9000 con contraseña
+  de valor "unaclavesecreta":
+  
+  s = cookie + "Agent/9000" + "unaclavesecreta" 
+  agent_hash <-- MD5(s)
+  
+  ...donde cookie contiene el valor devuelto en app_cookie por el login, y 
+  el signo más (+) indica la operación de concatenación de cadenas.
+
+Todo requerimiento que haga referencia a un argumento agent_hash debe de recibir
+el valor de hash calculado de la manera indicada anteriormente.
+
+Mensajes de error
+-----------------
+Los requerimientos definidos en este documento pueden reportar errores de la 
+siguiente manera:
+
+<response id=identificador>
+  <failure>
+    <code>XXX</code>
+    <message>Algun mensaje</message>
+  </failure>
+</response>
+
+o de la siguiente manera:
+
+<response id=identificador>
+  <request_response>
+      <failure>
+        <code>XXX</code>
+        <message>Algun mensaje</message>
+      </failure>
+  </request_response>
+</response>
+
+La diferencia entre los dos métodos es que el primero indica errores de formato
+o de protocolo que ocurren antes del procesamiento específico del requerimiento,
+mientras que el segundo método indica un error dentro del procesamiento
+específico del requerimiento.
+
+Un requerimiento se considera fallido si contiene la etiqueta <failure>. Dentro
+de la etiqueta se almacena un código de error y un mensaje descriptivo. El 
+código de error está vagamente basado en los códigos de error de HTTP, pero no
+se debe de contar con esta relación.
+
+Los códigos de error más comunes son los siguientes:
+Código de error     Significado
+400                 Petición mal formada
+401                 No autorizado
+404                 No se encuentra el objeto
+417                 Una condición esperada falla en cumplirse
+500                 Error interno del programa
+501                 No implementado
+
+Casos comunes de errores
+------------------------
+
+Respuestas a requerimientos sin previo inicio de sesión:
+
+En caso de requerimientos sin previo inicio de sesión, el servidor responderá así:
+
+<response id=identificador>
+  <failure>
+    <code>401</code>
+    <message>Unauthorized</message>
+  </failure>
+</response>
+
+Respuestas a requerimientos mal formateados:
+
+En caso de que el servidor no pueda entender algún requerimiento, responderá así:
+
+<response>
+  <failure>
+    <code>400</code>
+    <message>Bad request</message>
+  </failure>
+</response>
+
+Como se puede observar, el atributo id no se incluye.
+
+Modelo de funcionamiento de CallCenter
+--------------------------------------
+A continuación se describe el modelo de funcionamiento del sistema CallCenter.
+Esta explicación proporciona una referencia para comprender los tipos de 
+requerimientos que son necesarios en el protocolo ECCP, así como los parámetros
+necesarios y opcionales en cada protocolo.
+
+La asignación de llamadas en el CallCenter se implementa a través de las colas
+de Asterisk. Cada cola se identifica con un número, y tiene dos tipos de 
+actores: agentes y llamadas. Un agente es una extensión de Asterisk que se ha
+registrado como perteneciente a la cola, para recibir llamadas. Una llamada
+puede, a través de órdenes dadas al Asterisk vía AMI (Asterisk Manager Interface),
+o vía un marcado directo a la central Asterisk, entrar a una cola. Al entrar,
+oirá música de espera hasta que un agente se libere, en cuyo caso la llamada
+será enlazada con este agente.
+
+Los agentes pueden ser de tipo dinámico o estático. Los agentes dinámicos pueden
+logonearse o deslogonearse de la cola arbitrariamente, y casi siempre son 
+extensiones reales de la central. Un agente estático siempre pertenece a la 
+cola, aunque puede estar en estado no-disponible. Para el funcionamiento actual
+del CallCenter, todos los agentes estáticos deben ser canales de tipo Agent/9000,
+en oposición a los agentes dinámicos, que son extensiones cuyos canales deben ser
+de tipo SIP/4321 o IAX2/4321. Estas cadenas (Agent/9000, SIP/4321, IAX2/4321) 
+identifican internamente al agente que puede atender llamadas. Tanto los agentes
+estáticos como dinámicos pueden pertenecer a múltiples colas.
+
+Un agente estático tiene un número asociado, que es independiente de la 
+extensión telefónica usada para hacer uso de este agente. Por ejemplo, una cola
+puede tener un agente 9000, el cual es usado por la extensión 1064. Para que una
+extensión haga uso de un agente estático, debe de completar el procedimiento de
+'login' a la cola. En Elastix, se ha configurado el número *8888 como login de
+cola arbitraria. Al marcar este número, la extensión oye una grabación para 
+ingresar el número de agente que se va a usar. Luego de digitado, se reproduce 
+otra grabación para que ingrese la contraseña del agente. Si se digita 
+correctamente la contraseña, la extensión ingresa a la cola como un agente, y la
+extensión reproduce música de espera hasta que se le asigne una llamada. Para 
+finalizar el login a la cola, se cuelga la extensión, o se ejecuta el método 
+Agentlogoff del AMI indicando el canal Agent/XXXX que desea terminar la sesión.
+Al realizar login y logout a través del CallCenter, el sistema lleva la 
+auditoría de cuánto tiempo ha estado logoneado cada agente.
+
+Un agente dinámico es una extensión ordinaria de tipo SIP o IAX2. El logoneo a
+la cola consiste en un QueueAdd a cada cola de interés, y no requiere una 
+contraseña internamente. Al agregarse a la cola, la extensión permanece colgada
+hasta que se asigna una llamada, en cuyo caso la extensión timbrará y el agente
+debe de contestar la llamada. Para finalizar el login a la cola, se ejecuta el
+método QueueRemove del AMI indicando el canal que desea deslogonearse. Al igual
+que con los agentes estáticos, el sistema lleva la auditoría de cuánto tiempo
+ha estado logoneado cada agente.
+
+En el resto del documento, toda instancia de Agent/XXXX (por ejemplo Agent/9000)
+debe entenderse que se refiere a cualquier tipo de agente, sea estático o 
+dinámico. Por lo tanto, también son aceptables SIP/4321 o IAX2/4321.
+
+El CallCenter soporta dos modos principales de operación: campañas salientes y
+campañas entrantes. Una campaña tiene asociada una cola, a través de la cual
+se procesarán las llamadas asociadas a esta campaña. Tanto la campaña saliente,
+como la campaña entrante, pueden estar en funcionamiento simultáneo en la misma
+central, siempre que se asignen colas separadas para cada función. Para una
+campaña entrante, se configura la central y los planes de marcado para que una
+llamada que viene del exterior termine en una cola que ha sido registrada como
+reservada para campañas entrantes (Interfaz Web: Call Center-->Ingoing Calls
+-->Queues). Para una campaña saliente, se debe configurar una nueva campaña
+(Call Center-->Outgoing Calls-->Campaigns) con una lista de números telefónicos
+a marcar. El sistema entonces marcará cada uno de los números, asociando como
+extensión a la cola donde esperan los agentes.
+
+El sistema, luego de aceptar el login de los agentes, empieza a marcar o esperar
+llamadas. Para cada llamada entrante, se crea un nuevo registro de la llamada
+en la base de datos. Para las llamadas salientes, se actualiza el tiempo de 
+duración de la llamada en la base de datos de los teléfonos cargados. El sistema
+notifica al agente cuando una llamada ha sido asignada por Asterisk, y le 
+transmite el ID de la campaña, el ID de la llamada asociada, los atributos de la
+llamada que hayan sido cargados en la base de datos, el texto asociado que debe
+recitar el agente (el llamado "script" de la campaña), y los IDs de los 
+formularios que se pueden usar para recoger datos sobre la llamada. La interfaz
+del lado del cliente recoge los datos para llenar el formulario, y se los 
+transmite al sistema CallCenter para ser almacenados. (NOTA: la intefaz antigua
+del CallCenter no tiene todavía soporte para asociar formularios a una campaña
+entrante)
+
+Para el caso de las llamadas entrantes, existe una lista de contactos identificada
+por número telefónico. El sistema identifica el número vía el servicio de 
+Caller-ID e intenta mostrar los atributos del contacto que corresponde a una
+llamada entrante. Sin embargo, puede ocurrir que existan múltiples contactos que
+tienen el mismo número telefónico asociado. En este caso el CallCenter transmite
+la información de todos los contactos que coinciden con el número telefónico, y
+el agente humano debe de confirmar cuál contacto fue el que se ha recibido.
+
+El sistema CallCenter permite que un agente pause la recepción de llamadas como
+parte de un receso controlado, también controlado y auditado. A estos recesos
+se los llama "breaks". Cuando un agente debe ingresar a un break, se selecciona
+desde la interfaz el tipo de break que debe de usar. Luego, al terminar el break
+el agente lo indica a través de la interfaz, y empieza a recibir llamadas otra
+vez.
+
+Listado de eventos
+------------------
+
+Evento "agentlinked"
+
+Este evento se genera cuando un agente ha sido enlazado con una llamada ingresada
+a la cola. Internamente se ha recibido el evento Link/Bridge para la llamada.
+
+Elementos informativos:
+* agent_number: Agente que ha sido enlazado con la llamada. Este identificador 
+  está de la forma 'Agent/9000'.
+* remote_channel: Canal que representa la llamada que ha sido enlazada. Puede
+  estar en una variedad de formatos, pero el más frecuente es PROTOCOLO/XXX-YYYY.
+  Por ejemplo: 'SIP/unatroncal-0000001'.
+* call_type: Uno de los dos valores 'incoming' u 'outgoing', para indicar si la
+  llamada es entrante o saliente, respectivamente.
+* campaign_id: ID de la base de datos de la campaña, un entero. Este valor es
+  requerido para identificar una llamada saliente. Para una llamada entrante,
+  este valor es opcional, e incluso puede estar omitido, si la llamada entrante
+  no está asociada a una campaña.
+* call_id: ID de la base de datos de la llamada, un entero. Con este ID, y el 
+  valor de call_type (y campaign_id para llamadas salientes), el código cliente
+  puede identificar la llamada a procesar para formularios.
+* phone: El número que fue marcado, o el Caller-ID que fue recibido.
+* status: El estado de la llamada. Usualmente es 'Success' para llamada saliente
+  y 'activa' para llamada entrante.
+* uniqueid: ID interno de Asterisk que identifica a la llamada remota.
+* datetime_originate: (Sólo llamada saliente) Fecha y hora en que se inició el
+  marcado de la llamada.
+* datetime_originateresponse: (Sólo llamada saliente) Fecha y hora en que se
+  recibió respuesta del marcado de la llamada.
+* datetime_join: Fecha y hora en que la llamada ingresó a la cola.
+* datetime_linkstart: Fecha y hora en que la llamada fue enlazada al agente.
+* retries: (Opcional) Número de veces que la llamada ha sido reintentada.
+* trunk: Troncal a través de la cual se recibió la llamada. Por ejemplo: 
+  DAHDI/4 o SIP/unatroncal
+* queue: (Sólo llamada entrante) Cola que recibió la llamada
+* call_attributes: (Opcional) Atributos asociados a la llamada en la base de 
+  datos. Esta es una lista que contiene múltiples elementos 'attribute'. Cada
+  elemento attribute tiene los siguientes elementos:
+  * label: Etiqueta de texto asociada al atributo
+  * value: Valor de texto del atributo
+  * order: Orden en que se sugiere que se muestren los atributos
+* matching_contacts: (Opcional, sólo llamada entrante) Lista de contactos cuyo
+  número de teléfono coincide con el Caller-ID de la llamada. Si hay más de un
+  contacto, la interfaz debe usar el requerimiento setcontact para indicar cuál
+  contacto debe asociarse con la llamada recibida. Este elemento es una lista
+  que contiene múltiples elementos 'contact'. Cada elemento contact tiene un
+  atributo 'id' que debe usarse en el requerimiento setcontact. Además cada 
+  contacto tiene múltiples elementos 'attribute'. Cada elemento attribute
+  contiene los siguientes elementos:
+  * label: Etiqueta de texto asociada al atributo del contacto
+  * value: Valor de texto del atributo del contacto
+  * order: Orden en que se sugiere que se muestren los atributos del contacto
+* call_survey: (Opcional) Lista de formularios con los datos recogidos para esta
+  llamada. Este elemento sólo está presente si se ha recogido previamente datos
+  para esta llamada. Este elemento es una lista que contiene múltiples elementos
+  'form'. Cada elemento form tiene un atributo 'id' que debe usarse en el 
+  requerimiento saveformdata. Además cada form tiene múltiples elementos 
+  'field'. Cada elemento field tiene un atributo 'id' que pueden usarse también
+  en el requerimiento saveformdata. El elemento field tiene ademas los 
+  siguientes elementos:
+  * label: Etiqueta del elemento de formulario
+  * value: Valor que fue recogido en el formulario
+* campaignlog_id: ID del registro de bitácora. Para monitoreo de campaña.
+
+NOTA: para averiguar los formularios aplicables a una llamada que no ha sido
+previamente llenada, se debe usar el requerimiento getcampaigninfo.
+
+Ejemplo:
+
+Llamada entrante:
+<event>
+    <agentlinked>
+        <agent_number>Agent/9000</agent_number>
+        <remote_channel>SIP/1065-00000001</remote_channel>
+        <calltype>incoming</calltype>
+        <call_id>13</call_id>
+        <campaign_id>1</campaign_id>
+        <phone>1065</phone>
+        <status>activa</status>
+        <uniqueid>1296517374.1</uniqueid>
+        <datetime_join>2011-01-31 18:42:55</datetime_join>
+        <datetime_linkstart>2011-01-31 18:42:55</datetime_linkstart>
+        <trunk>SIP/1065</trunk>
+        <queue>8001</queue>
+        <call_attributes>
+            <attribute>
+                <label>first_name</label>
+                <value>Usuario</value>
+                <order>1</order>
+            </attribute>
+            <attribute>
+                <label>last_name</label>
+                <value>Windows</value>
+                <order>2</order>
+            </attribute>
+            <attribute>
+                <label>phone</label>
+                <value>1065</value>
+                <order>3</order>
+            </attribute>
+            <attribute>
+                <label>cedula_ruc</label>
+                <value>0915172176</value>
+                <order>4</order>
+            </attribute>
+        </call_attributes>
+        <matching_contacts>
+            <contact id="2">
+                <attribute>
+                    <label>first_name</label>
+                    <value>Usuario</value>
+                    <order>1</order>
+                </attribute>
+                <attribute>
+                    <label>last_name</label>
+                    <value>Windows</value>
+                    <order>2</order>
+                </attribute>
+                <attribute>
+                    <label>phone</label>
+                    <value>1065</value>
+                    <order>3</order>
+                </attribute>
+                <attribute>
+                    <label>cedula_ruc</label>
+                    <value>0915172176</value>
+                    <order>4</order>
+                </attribute>
+            </contact>
+        </matching_contacts>
+        <call_survey/>
+    </agentlinked>
+</event>
+
+Llamada saliente:
+<event>
+    <agentlinked>
+        <agent_number>Agent/9000</agent_number>
+        <remote_channel>Local/1065@from-internal-988d;1</remote_channel>
+        <calltype>outgoing</calltype>
+        <call_id>27</call_id>
+        <campaign_id>5</campaign_id>
+        <phone>1065</phone>
+        <status>Success</status>
+        <uniqueid>1296517619.3</uniqueid>
+        <datetime_originate>2011-01-31 18:46:59</datetime_originate>
+        <datetime_originateresponse>2011-01-31 18:47:07</datetime_originateresponse>
+        <datetime_join>2011-01-31 18:47:07</datetime_join>
+        <datetime_linkstart>2011-01-31 18:47:07</datetime_linkstart>
+        <retries>1</retries>
+        <call_attributes>
+            <attribute>
+                <label>Nombre</label>
+                <value>Zoila</value>
+                <order>1</order>
+            </attribute>
+            <attribute>
+                <label>Apellido</label>
+                <value>Chacha</value>
+                <order>2</order>
+            </attribute>
+            <attribute>
+                <label>Campo1</label>
+                <value>gato</value>
+                <order>3</order>
+            </attribute>
+            <attribute>
+                <label>Campo2</label>
+                <value>perro</value>
+                <order>4</order>
+            </attribute>
+            <attribute>
+                <label>Campo3</label>
+                <value>mono</value>
+                <order>5</order>
+            </attribute>
+        </call_attributes>
+        <call_survey/>
+    </agentlinked>
+</event>
+
+Evento "agentunlinked"
+
+Este evento se genera cuando se deshace el enlace entre un agente y la llamada
+previamente enlazada. Internamente se ha recibido el evento Hangup del lado
+remoto.
+
+Elementos informativos:
+* agent_number: Agente que ha sido desenlazado de la llamada. Este identificador 
+  está de la forma 'Agent/9000'.
+* call_type: Uno de los dos valores 'incoming' u 'outgoing', para indicar si la
+  llamada es entrante o saliente, respectivamente.
+* campaign_id: (Opcional) ID de la base de datos de la campaña, un entero. Este
+  valor es requerido para identificar una llamada saliente. Para una llamada 
+  entrante, este valor es opcional, e incluso puede estar omitido, si la llamada
+  entrante no está asociada a una campaña.
+* call_id: ID de la base de datos de la llamada, un entero. Con este ID, y el 
+  valor de call_type (y campaign_id para llamadas salientes), el código cliente
+  puede identificar la llamada a procesar para formularios.
+* phone: El número que fue marcado, o el Caller-ID que fue recibido.
+* datetime_linkend: Fecha y hora en que la llamada fue desconectada del agente.
+* duration: Duración en segundos de la llamada.
+* shortcall: Bandera puesta a 1 si la llamada es demasiado corta según la 
+  configuración del sistema, o 0 si es una llamada de duración normal.
+* campaignlog_id: ID del registro de bitácora. Para monitoreo de campaña.
+
+Ejemplo:
+<event>
+    <agentunlinked>
+        <agent_number>Agent/9000</agent_number>
+        <calltype>incoming</calltype>
+        <campaign_id>1</campaign_id>
+        <call_id>13</call_id>
+        <phone>1065</phone>
+        <datetime_linkend>2011-01-31 18:46:59</datetime_linkend>
+        <duration>216</duration>
+        <shortcall>0</shortcall>
+    </agentunlinked>
+</event>
+
+Evento "agentloggedin"
+
+Este evento se genera cuando el agente indicado ha ingresado al sistema. La 
+separación de esto como un evento permite que la respuesta al requerimiento 
+loginagent regrese de inmediato mientras el agente se demora digitando la clave.
+
+Nota: no debe de confundirse este evento con el requerimiento loginagent.
+
+Elementos informativos:
+* agent: Agente que ha podido logonearse. Este identificador está de la forma 
+  'Agent/9000'.
+
+Ejemplo:
+<event>
+    <agentloggedin>
+        <agent>Agent/9000</agent>
+    </agentloggedin>
+</event>
+
+Evento "agentloggedout"
+
+Este evento se genera cuando el agente indicado ha sido deslogoneado del sistema,
+sea por voluntad del agente (requerimiento logoutagent), o porque la extensión
+asociada ha sido colgada o se perdió la comunicación.
+
+Nota: no debe de confundirse este evento con el requerimiento logoutagent.
+
+Elementos informativos:
+* agent: Agente que ha sido deslogoneado. Este identificador está de la forma 
+  'Agent/9000'.
+
+Ejemplo:
+<event>
+    <agentloggedout>
+        <agent>Agent/9000</agent>
+    </agentloggedout>
+</event>
+
+Evento "agentfailedlogin"
+
+Este evento se genera cuando el agente indicado ha intentado logonearse al 
+sistema pero el intento ha fallado. Una posible causa es que el agente no haya
+digitado la contraseña de ingreso a la cola.
+
+Elementos informativos:
+* agent: Agente que ha intentado logonearse. Este identificador está de la forma 
+  'Agent/9000'.
+
+Ejemplo:
+<event>
+    <agentfailedlogin>
+        <agent>Agent/9000</agent>
+    </agentfailedlogin>
+</event>
+
+
+Evento "pausestart"
+
+Este evento se genera cuando el agente indicado entra en una pausa o un hold.
+
+Elementos informativos:
+* agent_number: Agente que ha entrado en pausa. Este identificador está de la 
+  forma 'Agent/9000'.
+* pause_class: Uno de los tipos 'break' o 'hold'
+* pause_type: ID de la pausa que se ha indicado en el requerimiento pauseagent.
+  Sólo presente para pause_class igual a break.
+* pause_name: Nombre de la pausa correspondiente al ID indicado por pause_type.
+  Sólo presente para pause_class igual a break.
+* pause_start: Fecha registrada como inicio de la pausa. Formato yyyy-mm-dd hh:mm:ss
+
+Ejemplo:
+Para inicio de pausa de break:
+<event>
+    <pausestart>
+        <agent_number>Agent/9000</agent_number>
+        <pause_class>break</pause_class>
+        <pause_type>2</pause_type>
+        <pause_name>Baño</pause_name>
+        <pause_start>2011-09-30 14:32:17</pause_start>
+    </pausestart>
+</event>
+
+Para inicio de pausa de hold:
+<event>
+    <pausestart>
+        <agent_number>Agent/9000</agent_number>
+        <pause_class>hold</pause_class>
+        <pause_start>2011-09-30 14:32:17</pause_start>
+    </pausestart>
+</event>
+
+
+Evento "pauseend"
+
+Este evento se genera cuando el agente indicado sale de una pausa o hold.
+
+Elementos informativos:
+* agent_number: Agente que ha salido de pausa. Este identificador está de la 
+  forma 'Agent/9000'.
+* pause_class: Uno de los tipos 'break' o 'hold'
+* pause_type: ID de la pausa que se ha indicado en el requerimiento pauseagent.
+  Sólo presente para pause_class igual a break.
+* pause_name: Nombre de la pausa correspondiente al ID indicado por pause_type.
+  Sólo presente para pause_class igual a break.
+* pause_start: Fecha registrada como inicio de la pausa. Formato yyyy-mm-dd hh:mm:ss
+* pause_end: Fecha registrada como final de la pausa. Formato yyyy-mm-dd hh:mm:ss
+* pause_duration: Duración de la pausa en segundos.
+
+Ejemplo:
+Para final de pausa de break:
+<event>
+    <pauseend>
+        <agent_number>Agent/9000</agent_number>
+        <pause_class>break</pause_class>
+        <pause_type>2</pause_type>
+        <pause_name>Baño</pause_name>
+        <pause_start>2011-09-30 14:32:17</pause_start>
+        <pause_end>2011-09-30 14:32:26</pause_end>
+        <pause_duration>9</pause_duration>
+    </pauseend>
+</event>
+
+Para final de pausa de hold:
+<event>
+    <pauseend>
+        <agent_number>Agent/9000</agent_number>
+        <pause_class>hold</pause_class>
+        <pause_start>2011-09-30 14:32:17</pause_start>
+        <pause_end>2011-09-30 14:32:26</pause_end>
+        <pause_duration>9</pause_duration>
+    </pauseend>
+</event>
+
+
+Evento "callprogress"
+
+Este evento se genera para indicar el progreso de la llamada, especificamente la
+transición de estado de la llamada referenciada. Este evento no es normalmente
+generado para todos los clientes. Para recibir este evento, el cliente ECCP debe
+de ejecutar el requerimiento "callprogress" con la bandera "enable" puesta a 1.
+
+Elementos informativos:
+* datetime_entry: Fecha y hora en la que se produjo la transición de estado
+* campaign_type: Tipo de la campaña, uno de 'incoming' u 'outgoing'
+* campaign_id: ID en la base de datos de la campaña a la que pertenece la 
+  llamada. Este valor siempre está presente para una llamada saliente, pero 
+  puede no estar presente para una llamada entrante.
+* call_id: ID en la base de datos de la llamada que se hace referencia en evento.
+* new_status: El nuevo estado al cual ha llegado la llamada. Los eventos 
+  reportados pueden ser uno de los siguientes:
+  Placing: se ha empezado a colocar la llamada saliente. El único parámetro
+    válido es retry.
+  Dialing: se ha empezado a marcar la llamada saliente. Se conocen los valores
+    de retry y trunk.
+  Ringing: la llamada saliente está timbrando y va a conectarse a la cola. Se
+    conocen los valores de uniqueid, retry, trunk.
+  OnQueue: la llamada está en la cola esperando ser asignada un agente. Se
+    conocen los valores de uniqueid, retry, trunk.
+  Failure: la llamada no ha podido ser conectada. Los valores válidos son 
+    dependientes del estado en el cual se detectó el fallo.
+  OnHold: la llamada ha entrado en hold. Se conocen los valores de uniqueid, 
+    retry, trunk.
+  OffHold: la llamada ha salido de hold. Se conocen los valores de uniqueid, 
+    retry, trunk.
+* retry: Para llamadas salientes, el número de intento de marcado que 
+  corresponde a este cambio de estado. Siempre 0 para la llamada entrante.
+* uniqueid: ID único de Asterisk para la llamada correspondiente al intento.
+* trunk: Troncal a través de la cual se realiza la llamada saliente, o se recibe
+  la llamada entrante.
+* phone: número de teléfono de callerid o marcado
+* queue: número de la cola por la que se espera que pase la llamada
+
+Ejemplo:
+Para una llamada saliente, se puede esperar esta secuencia de eventos:
+<event>
+    <callprogress>
+        <datetime_entry>2012-12-14 17:34:34</datetime_entry>
+        <campaign_type>outgoing</campaign_type>
+        <campaign_id>7</campaign_id>
+        <call_id>85</call_id>
+        <new_status>Placing</new_status>
+        <retry>1</retry>
+        <phone>1099</phone>
+        <queue>8000</queue>
+    </callprogress>
+</event>
+<event>
+    <callprogress>
+        <datetime_entry>2012-12-14 17:34:34</datetime_entry>
+        <campaign_type>outgoing</campaign_type>
+        <campaign_id>7</campaign_id>
+        <call_id>85</call_id>
+        <new_status>Dialing</new_status>
+        <retry>1</retry>
+        <trunk>IAX2/1099</trunk>
+        <phone>1099</phone>
+        <queue>8000</queue>
+    </callprogress>
+</event>
+<event>
+    <callprogress>
+        <datetime_entry>2012-12-14 17:34:39</datetime_entry>
+        <campaign_type>outgoing</campaign_type>
+        <campaign_id>7</campaign_id>
+        <call_id>85</call_id>
+        <new_status>Ringing</new_status>
+        <uniqueid>1355524474.28</uniqueid>
+        <retry>1</retry>
+        <trunk>IAX2/1099</trunk>
+        <phone>1099</phone>
+        <queue>8000</queue>
+    </callprogress>
+</event>
+<event>
+    <callprogress>
+        <datetime_entry>2012-12-14 17:34:39</datetime_entry>
+        <campaign_type>outgoing</campaign_type>
+        <campaign_id>7</campaign_id>
+        <call_id>85</call_id>
+        <new_status>OnQueue</new_status>
+        <uniqueid>1355524474.28</uniqueid>
+        <retry>1</retry>
+        <trunk>IAX2/1099</trunk>
+        <phone>1099</phone>
+        <queue>8000</queue>
+    </callprogress>
+</event>
+
+
+Evento "queuemembership"
+
+Este evento se genera cuando se detecta que el conjunto de colas de atención a
+las que pertenece un agente ha cambiado. Para los agentes estáticos, el conjunto
+de colas de atención es el mismo que reporta Asterisk con el comando
+"queue show". Para agentes dinámicos, el conjunto de colas de atención es el que
+se almacena en la base de datos de Asterisk (astdb), y sólo es idéntico al
+conjunto reportado por "queue show" cuando el agente está logoneado. Para
+conveniencia de los reportes que consumen este evento, se incluye información
+del estado actual del agente afectado, en formato idéntico al disponible en
+el requerimiento "getcampaignstatus".
+
+Elementos informativos:
+* agentchannel: Canal del agente de la cola (normalmente Agent/NNNN)
+* status: Estado del agente. Puede ser 'online', 'offline', 'oncall', 'paused'
+  como se describe en la respuesta del requerimiento 'getagentstatus'
+* callid: ID en la base de datos de la llamada que atiende el agente. Sólo está
+  definido si el agente está logoneado y atendiendo alguna llamada.
+* callnumber: Número telefónico del cliente al que se conecta la llamada. Sólo
+  está definido si el agente está logoneado y atendiendo alguna llamada.
+* callclient: Canal asignado a la llamada del cliente atendido. Sólo está
+  definido si el agente está logoneado y atendiendo alguna llamada.
+* pausename: Nombre de la pausa en la que está el agente. Sólo está definido
+  si el agente está en pausa.
+* pauseid: ID de la pausa en la que está el agente. Sólo está definido si el 
+  agente está en pausa.
+* pausestart: Hora en la que inició la pausa, en formato HH:MM:SS de 24 horas.
+  Sólo está definido si el agente está en pausa.
+* dialstart: Hora en la que inició la marcación de la llamada que atiende el
+  agente. Sólo definido para campañas salientes, y si el agente está atendiendo
+  una llamada.
+* dialend: Hora en la que terminó la marcación de la llamada que atiende el
+  agente. Sólo definido para campañas salientes, y si el agente está atendiendo
+  una llamada.
+* queuestart: Hora en la que entró en la cola la llamada atendida por el agente.
+  Sólo definido si el agente está atendiendo una llamada.
+* linkstart: Hora en la que la llamada fue conectada con el agente. Sólo
+  definido si el agente está atendiendo una llamada.
+* trunk: Troncal a través de la cual se recibe llamada entrante, o se realiza
+  la llamada saliente. Sólo definido si el agente está atendiendo una llamada.
+* queues: Lista de colas a las cuales pertenece el agente. Este elemento 
+  contiene múltiples elementos 'queue', los cuales contienen el identificador
+  de la cola.
+
+Ejemplo:
+Al agregar o quitar el agente de una cola de atención:
+<event>
+    <queuemembership>
+        <agent_number>Agent/9000</agent_number>
+        <queues>
+            <queue>8001</queue>
+            <queue>8000</queue>
+        </queues>
+    </queuemembership>
+</event>
+
+
+Listado de requerimientos
+-------------------------
+Nota: Para facilitar la legibilidad del presente documento, se presentarán aquí 
+también las "respuestas" a cada requerimiento.
+
+Requerimiento "getrequestlist"
+Este requerimiento sirve para listar la lista completa de todos los requerimientos
+conocidos por esta versión del programa.
+
+Atributos o argumentos:
+Ninguno.
+
+Respuesta:
+* requests: Elemento que contiene uno o más elementos de tipo 'request'. Cada
+  elemento 'request' tiene como contenido el nombre de un requerimiento.
+  
+Ejemplo:
+<request id="2">
+    <getrequestlist/>
+</request> 
+
+Respuesta:
+<response id="2">
+    <getrequestlist_response>
+        <requests>
+            <request>getrequestlist</request>
+            <request>login</request>
+            <request>logout</request>
+            <request>loginagent</request>
+            ...
+            <request>setcontact</request>
+        </requests>
+    </getrequestlist_response>
+</response>
+
+
+Requerimiento "login"
+
+Este requerimiento sirve para autenticar una aplicación cliente y permitirle 
+establecer una sesión de comunicaciones con el servidor. El servidor ECCP no 
+transmitira evento alguno hasta que el cliente haya completado un login correcto
+con el servidor.
+
+Atributos o argumentos:
+* username: Nombre de usuario asignado al cliente
+* password: Contraseña correspondiente al nombre de usuario
+
+Respuesta:
+* app_cookie: Cadena de texto arbitraria que se genera como parte del login.
+  El cliente debe de almacenar esta cadena para poder realizar el requerimiento
+  loginagent.
+
+* Encriptación de la clave
+La clave va "encriptada" con MD5. El hash se calcula en base a una semilla, la 
+cual es un secreto compartido entre la aplicación cliente y el servidor. Es 
+decir que la aplicación cliente previamente se tendrá que configurar para 
+conocer dicho secreto.
+TODO: secreto compartido no implementado todavía. Se requiere acordar manera de
+usar semilla. Por ahora se acepta clave en plaintext, o md5 de la misma clave.
+
+Ejemplo:
+<request id="1">
+    <login>
+        <username>agentconsole</username>
+        <password>agentconsole</password>
+     </login>
+</request>
+Alternativamente:
+<request id="1">
+    <login>
+        <username>agentconsole</username>
+        <!-- El hash de abajo es md5 de la cadena "agentconsole" -->
+        <password>7e53aa92f7566f44f39f3f1842832581</password>
+    </login>
+</request>
+
+Respuesta:
+En caso de éxito: 
+<response id="1">
+    <login_response>
+        <success/>
+        <app_cookie>35d290884ef77a78cc6c0006b7e1d576</app_cookie>
+    </login_response>
+</response>
+
+En caso de usuario o clave inválida:
+<response id="1">
+    <login_response>
+        <failure>
+            <code>401</code>
+            <message>Invalid username or password</message>
+        </failure>
+    </login_response>
+</response>
+
+Requerimiento "logout"
+
+El requerimiento “logout” sirve para terminar la sesión entre la aplicación 
+cliente y el servidor. Luego de ejecutar este requerimiento, el servidor cerrará
+la sesión TCP con el cliente.
+
+Atributos o argumentos:
+Este requerimiento no tiene atributos.
+
+Ejemplo:
+<request id="1000">
+  <logout></logout>
+</request>
+
+Respuesta:
+<response id="1000">
+    <logout_response>
+        <success/>
+    </logout_response>
+</response>
+(y conexión TCP se cierra)
+
+Requerimiento "filterbyagent"
+
+Este requerimiento sirve para indicar al servidor ECCP que el cliente sólo está
+interesado en los eventos del agente indicado en la petición, y que los eventos
+asociados a otros agentes no deben ser enviados a esta sesión. De esta manera
+el cliente no debe de recibir eventos que no le interesa procesar, por ser de
+agentes distintos al que es representado por el cliente. Este filtrado afecta
+únicamente a los eventos - cualquier requerimiento que haga referencia a otro
+agente será contestado correctamente, incluso luego de aplicar el filtro. El
+filtro es local para la sesión activa - otras sesiones simultáneas con otros
+clientes no se ven afectadas.
+
+Atributos o argumentos:
+* agent_number: Agente que se filtra. Este identificador está de la forma 
+  'Agent/9000'. También se puede especificar la palabra 'any' para deshacer el
+  filtro y volver a escuchar eventos de todos los agentes.
+
+Ejemplo:
+Para recibir eventos del agente 9000 únicamente:
+<request id="4">
+    <filterbyagent>
+        <agent_number>Agent/9000</agent_number>
+    </filterbyagent>
+</request>
+
+Para recibir otra vez eventos de todos los agentes:
+<request id="4">
+    <filterbyagent>
+        <agent_number>any</agent_number>
+    </filterbyagent>
+</request>
+
+Respuesta:
+En caso de éxito:
+<response id="1000">
+    <filterbyagent_response>
+        <success/>
+    </filterbyagent_response>
+</response>
+
+En caso de agente en formato no reconocido:
+<response id="1">
+    <filterbyagent_response>
+        <failure>
+            <code>417</code>
+            <message>Invalid agent number</message>
+        </failure>
+    </filterbyagent_response>
+</response>
+
+
+Requerimiento "getagentstatus"
+
+El requerimiento "getagentstatus" informa el estado actual de disponibilidad del
+agente indicado. 
+
+Atributos o argumentos:
+* agent_number: Agente que se interroga. Este identificador está de la forma 
+  'Agent/9000'.
+
+Respuesta:
+* status: tiene uno de los siguientes posibles valores:
+  offline: Agente no ha iniciado sesión en la cola
+  online: Agente ha iniciado sesión, y está ocioso
+  oncall: Agente ha iniciado sesión, y está atendiendo una llamada
+  paused: Agente ha iniciado sesión, y está pausado (en break)
+* channel: contiene el canal de Asterisk usado para el login del agente. 
+* extension: contiene la extensión (derivada del canal) usada para el login del
+  agente. Si los elementos "channel" y "extension" están ausentes con "status" 
+  igual a "offline", el agente está deslogoneado. Si están presentes con 
+  "status" igual a "offline", el agente está en proceso de ingresar la 
+  contraseña de ingreso a la cola, a través del canal y extensión indicados. En 
+  todos los otros valores de "status", los elementos "channel" y "extension"
+  están siempre presentes.
+* onhold: 1 si el agente ha iniciado un hold con el requerimiento "hold", o 0.
+* pauseinfo: elemento que contiene información de la pausa (break) en la que está
+  puesto el agente. Sólo está presente en status paused. Contiene los siguientes 
+  elementos:
+  * pauseid: ID de la pausa usada en pauseagent
+  * pausename: Nombre de la pausa correspondiente al ID de pauseid
+  * pausestart: Fecha y hora correspondiente al inicio de la pausa. Si la fecha
+    es la misma fecha de hoy, sólo se reporta la hora. Formato [yyyy-mm-dd] hh:mm:ss.
+* remote_channel: canal de la llamada que ha sido enlazada con el agente. Sólo
+  presente si el agente está atendiendo una llamada.
+* callinfo: elemento que contiene información de la llamada enlazada al agente.
+  Sólo está presente si el agente está atendiendo una llamada. Contiene los
+  siguientes elementos:
+  * calltype: Valor de "outgoing" o "incoming"
+  * campaign_id: ID de la campaña correspondiente a la llamada, o ausente si la 
+    llamada entrante no pertenece a una campaña.
+  * callid: ID de la llamada.
+  * callnumber: Número telefónico marcado (llamada saliente) o Caller-ID (llamada
+    entrante) correspondiente a la llamada enlazada.
+  * dialstart: Fecha y hora en formato [yyyy-mm-dd] hh:mm:ss para inicio del 
+    marcado de la llamada saliente. Ausente para llamadas entrantes.
+  * dialend: Fecha y hora en formato [yyyy-mm-dd] hh:mm:ss para final del
+    marcado de la llamada saliente. Ausente para llamadas entrantes.
+  * queuestart: Fecha y hora en formato [yyyy-mm-dd] hh:mm:ss para entrada de
+    la llamada a la cola de la campaña.
+  * linkstart: Fecha y hora en formato [yyyy-mm-dd] hh:mm:ss para enlace de la
+    llamada al agente.
+  * queuenumber: Cola a través de la cual se asignó la llamada al agente. Sólo
+    está presente si la llamada ha sido asignada a través de una cola. 
+
+Ejemplo:
+<request id="4">
+    <getagentstatus>
+        <agent_number>Agent/9000</agent_number>
+    </getagentstatus>
+</request>
+
+Respuesta:
+En caso de que existe el agente, y no está logoneado:
+<response id="4">
+    <getagentstatus_response>
+        <status>offline</status>
+    </getagentstatus_response>
+</response>
+
+En caso de que existe el agente, y está logoneado y ocioso:
+<response id="4">
+    <getagentstatus_response>
+        <status>online</status>
+        <channel>SIP/1064-00000001</channel>
+        <extension>1064</extension>
+        <onhold>0</onhold>
+    </getagentstatus_response>
+</response>
+
+En caso de que existe el agente, y atiende llamada saliente, habiendo indicado 
+pausa:
+<response id="4">
+    <getagentstatus_response>
+        <status>paused</status>
+        <channel>SIP/1064-00000021</channel>
+        <extension>1064</extension>
+        <onhold>0</onhold>
+        <pauseinfo>
+            <pauseid>2</pauseid>
+            <pausename>Baño</pausename>
+            <pausestart>17:31:17</pausestart>
+        </pauseinfo>
+        <remote_channel>SIP/1065-00000022</remote_channel>
+        <callinfo>
+            <calltype>outgoing</calltype>
+            <callid>74</callid>
+            <campaign_id>7</campaign_id>
+            <callnumber>1065</callnumber>
+            <dialstart>17:30:16</dialstart>
+            <dialend>17:30:24</dialend>
+            <queuestart>17:30:24</queuestart>
+            <linkstart>17:30:24</linkstart>
+            <queuenumber>8000</queuenumber>
+        </callinfo>
+    </getagentstatus_response>
+</response>
+
+En caso de que no exista el agente:
+<response id="4">
+    <getagentstatus_response>
+        <status>offline</status>
+        <failure>
+            <code>417</code>
+            <message>Invalid agent number</message>
+        </failure>
+    </getagentstatus_response>
+</response>
+
+
+Requerimiento "getmultipleagentstatus"
+
+Este requerimiento es una optimización del requerimiento "getagentstatus". La
+diferencia principal es que el requerimiento "getmultipleagentstatus" permite
+interrogar el estado de muchos agentes a la vez. De esta manera se reducen la
+cantidad de llamadas ECCP necesarias para implementar monitoreos.
+
+Atributos o argumentos:
+* agents: Lista de agentes para los que se requiere el reporte de estado de los
+  agentes. Este elemento contiene múltiples elementos 'agent_number', cada
+  uno de los cuales identifica al agente, en formato Agent/9000.
+
+Respuesta:
+* agents: Lista de agentes para los que se reporta el estado actual.
+  Este elemento contiene múltiples elementos 'agent', los cuales contienen los
+  mismos campos que el elemento getagentstatus_response del requerimiento
+  "getagentstatus", a excepción de pauseinfo. Además, cada elemento 'agent'  
+  contiene los siguientes campos:
+  * agent_number: Agente identificado por el elemento
+
+Véase getagentstatus para los detalles de los campos.
+
+Requerimiento "loginagent"
+
+Este requerimiento inicia la conexión de una extensión, bajo la identidad de un
+agente específico, hacia una cola. En la implementación actual, Asterisk inicia
+una llamada hacia la extensión, la cual al ser contestada, reproduce una 
+petición de contraseña. Al digitar la contraseña correctamente, el agente queda
+logoneado a la cola, y se emite el evento "agentloggedin". Si no se contesta
+la llamada, o si la contraseña se digita incorrectamente, se emite el evento
+"agentfailedlogin". La respuesta a este requerimiento indica únicamente que la
+llamada hacia el agente ha sido iniciada, no que el agente haya sido aceptado
+en la cola. Opcionalmente, se puede especificar un intervalo máximo de 
+inactividad. Si el agente no tiene actividad alguna desde un login exitoso hasta
+que transcurre el intervalo, el dialer deslogonea automáticamente al agente. 
+Para mantener activa una sesión de agente con un timeout, véase el requerimiento
+pingagent.
+
+Atributos o argumentos:
+* agent_number: El número de agente a logonear. Este identificador está de la 
+  forma 'Agent/9000'.
+* agent_hash: Hash de autenticación para el agente.
+* extension: El número de extensión a ingresar bajo la identidad del agente.
+* password: (opcional) Clave telefónica del agente (no se usa en la implementación actual)
+* timeout: (opcional) Intervalo máximo de inactividad, en segundos.
+
+Ejemplo:
+<request id="2">
+    <loginagent>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+        <extension>1064</extension>
+    </loginagent>
+</request>
+
+Respuesta: 
+Al marcarse la llamada e iniciar el proceso de login:
+<response id="2">
+    <loginagent_response>
+        <status>logging</status>
+    </loginagent_response>
+</response>
+
+Al ocurrir un error de extensión:
+<response id="2">
+    <loginagent_response>
+        <status>logged-out</status>
+        <failure>
+            <code>417</code>
+            <message>Invalid extension number</message>
+        </failure>
+    </loginagent_response>
+</response>
+
+El elemento "status" tiene uno de los siguientes posibles valores:
+* logging: Llamada ha sido marcada y espera respuesta
+* logged-in: Agente ya estaba anteriormente logoneado con ECCP en la misma extensión
+* logged-out: No se puede iniciar el proceso de login. Posibles causas:
+  * Agente indicado no existe
+  * Extensión indicada no existe
+  * Agente ya logoneado con un medio distinto al ECCP
+  * Agente ya logoneado en una extensión distinta
+
+Requerimiento "logoutagent"
+
+Este requerimiento termina la sesión de un agente en las colas a la que 
+pertenece. Luego de finalizada la sesión, se emite un evento "agentlogoff".
+
+Atributos o argumentos:
+* agent_number: El número de agente a logonear. Este identificador está de la 
+  forma 'Agent/9000'.
+* agent_hash: Hash de autenticación para el agente.
+
+Ejemplo:
+<request id="3">
+    <logoutagent>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+    </logoutagent>
+</request>
+
+Respuesta:
+En caso de agente que existe y está logoneado:
+<response id="3">
+    <logoutagent_response>
+        <status>logged-out</status>
+    </logoutagent_response>
+</response>
+
+En caso de que el agente no existe:
+<response id="3">
+    <logoutagent_response>
+        <status>logged-out</status>
+        <failure>
+            <code>417</code>
+            <message>Invalid agent number</message>
+        </failure>
+    </logoutagent_response>
+</response>
+
+
+Requerimiento "getqueuescript"
+
+Este requerimiento recupera el texto asociado a una cola de campaña entrante. 
+Este texto es el que debe mostrarse al agente cuando se recibe una llamada
+entrante en una cola monitoreada, y no existe una campaña entrante creada que
+use la cola en cuestión. Si existe una campaña entrante, debe usarse su texto
+asociado en lugar del que se recupera con este requerimiento.
+
+Atributos o argumentos:
+* queue: Número de la cola para el que se recupera el script.
+
+Respuesta:
+* script: Texto libre que debe de presentarse en la interfaz gráfica del agente.
+
+Ejemplo:
+<request id="6">
+    <getqueuescript>
+        <queue>8001</queue>
+    </getqueuescript>
+</request>
+
+Respuesta:
+En caso de éxito:
+<response id="6">
+    <getqueuescript_response>
+        <script>Texto a mostrar al agente.</script>
+    </getqueuescript_response>
+</response>
+
+En caso de cola incorrecta:
+<response id="6">
+    <getqueuescript_response>
+        <failure>
+            <code>404</code>
+            <message>Queue not found in incoming queues</message>
+        </failure>
+    </getqueuescript_response>
+</response>
+
+
+Requerimiento "getcampaignlist"
+
+Este requerimiento lista todas las campañas del sistema.
+
+Atributos o argumentos:
+* campaign_type: Opcional. Si se especifica, debe ser 'incoming' o 'outgoing'.
+  Si no se especifica, se leen todas las campañas.
+* status: Opcional. Si se especifica, debe ser 'active', 'inactive', 'finished'.
+* filtername: Opcional. Si se especifica, el nombre de la campaña se filtrará
+  para que contenga este texto.
+* datetime_start: Opcional. El inicio de la campaña deberá ser igual o posterior
+  a esta fecha. Formato yyyy-mm-dd.
+* datetime_end: Opcional. El final de la campaña deberá ser igual o posterior a
+  esta fecha. Formato yyyy-mm-dd.
+* offset: Opcional. Si se especifica, debe también indicarse limit. Se devuelven
+  registros a partir del número indicado, con el primer registro siendo 0. Se 
+  asume 0 por omisión en caso de especificar limit sin offset.
+* limit: Opcional. Si se especifica, se devuelve como máximo el número de 
+  registros indicado por el parámetro. Si no se especifica, se devuelven todos
+  los registros posibles.
+  
+Respuesta:
+* campaigns: Elemento que contiene cero o más elementos 'campaign'. Cada elemento
+  'campaign' contiene:
+  * id: ID de la campaña
+  * type: Tipo de la campaña: 'outgoing' o 'incoming'
+  * name: Nombre de la campaña
+  * status: Una de 'active', 'inactive', 'finished'
+
+Ejemplo:
+<request id="6">
+    <getcampaignlist>
+        <campaign_type>outgoing</campaign_type>
+    </getcampaignlist>
+</request>
+
+Respuesta: 
+Campaña saliente:
+<response id="6">
+    <getcampaignlist_response>
+        <campaigns>
+            <campaign>
+                <id>2</id>
+                <type>outgoing</type>
+                <name>Prueba</name>
+                <status>inactive</status>
+            </campaign>
+            <campaign>
+                <id>2</id>
+                <type>outgoing</type>
+                <name>Prueba 2</name>
+                <status>active</status>
+            </campaign>
+        </campaigns>
+    </getcampaignlist_response>
+</response>
+
+
+Requerimiento "getcampaigninfo"
+
+Este requerimiento recupera información estática sobre la campaña. Por 
+información estática, se entiende la información que no cambia como consecuencia
+del progreso de las llamadas pertenecientes a la campaña.
+
+Atributos o argumentos:
+* campaign_type: Estilo de la campaña. Uno de los valores 'incoming','outgoing'
+* campaign_id: ID de la campaña. 
+
+Respuesta:
+* name: Nombre de la campaña
+* type: Tipo de la campaña, uno de 'incoming' u 'outgoing'
+* startdate: Fecha desde la cual tiene vigencia la campaña.
+* enddate: Fecha hasta la cual tiene vigencia la campaña
+* working_time_starttime: Hora desde la que se considera activa la campaña
+* working_time_endtime: Hora hasta la que se considera activa la campaña
+* queue: Cola usada para la campaña
+* retries: (Sólo campañas salientes) Máximo número de reintentos para mismo número
+* context: (Sólo campañas salientes) Contexto Asterisk desde el que se marca
+* maxchan: (Sólo campañas salientes) Máximo número de llamadas a realizar
+* trunk: (Opcional, sólo campañas salientes) Troncal a usar para las llamadas.
+  Si no aparece, las llamadas se generan a través del plan de marcado de FreePBX
+* status: Uno de los valores 'active', 'inactive', 'finished' (sólo campañas 
+  salientes)
+* urltemplate: Si no está vacío, una plantilla para poder construir un URL a una
+  página Web que debe de cargarse cuando la llamada es conectada. La plantilla 
+  de URL puede contener identificadores con nombres entre llaves, como por ejemplo 
+  {HomeAddress}, los cuales deben de ser reemplazados con los verdaderos valores
+  escapados para cada llamada conectada. Los identificadores disponibles son los
+  nombres de los atributos de la llamada (con distinción de mayúsculas y 
+  minúsculas), además de los siguientes atributos por omisión de la llamada:
+  {__AGENT_NUMBER__} Identificador del canal de agente, por ejemplo Agent/9000
+  {__CALL_TYPE__} uno de los valores 'incoming', 'outgoing'
+  {__CAMPAIGN_ID__} ID interno de la campaña en curso
+  {__CALL_ID__} ID interno de la llamada actualmente conectada
+  {__PHONE__} Número marcado o Caller-ID de la llamada conectada
+  {__REMOTE_CHANNEL__} Identificador de canal de la llamada conectada
+* urlopentype: La manera recomendada de abrir el URL indicado por urltemplate:
+  window:   El URL debe de abrirse en una ventana nueva del navegador, o equivalente.
+  embedded: El URL debe de abrirse en un marco embebido dentro de la consola.
+  jsonp:    El URL debe interpretarse como código Javascript que debe de 
+            inyectarse en la consola Web.
+* script: Texto a usar como el guión de la campaña. NOTA: en la implementación
+  actual, el texto almacenado se genera con un widget de edición que agrega
+  estilos HTML/CSS en este campo. El cliente debe estar preparado para mostrar
+  tales estilos, o de filtrarlos y mostrar únicamente el texto.
+* forms: Elemento que contiene uno o más elementos 'form'
+  * form: Elemento presente una o más veces. Representa un formulario que se puede
+    usar para recoger información sobre las llamadas asociadas a la campaña. El
+    elemento tiene los siguientes atributos:
+    * id: ID de la base de datos para el formulario.
+    * name: Nombre corto del formulario
+    * description: Descripción larga del formulario 
+    Además, el elemento contiene uno o más elementos:
+    * field: Campo de entrada de información para este formulario. 
+    Cada elemento field tiene los siguientes atributos:
+    * order: Orden de presentación del campo
+    * id: ID de base de datos del campo de entrada
+    Además cada elemento field contiene a su vez los siguientes elementos:
+    * label: Etiqueta asociada al campo
+    * type: Uno de los siguientes: TEXT TEXTAREA DATE LABEL LIST
+    * maxsize: (Opcional) Especifica la longitud máxima de la entrada, en caracteres
+    * default_value: (Opcional) Un valor por omisión sugerido al cliente que
+      muestra el formulario. ATENCION: este valor debe de ser guardado como 
+      el valor elegido, como si hubiese sido ingresado por el agente.
+    * options: (Opcional): Sólo presente cuando type es LIST. Contiene múltiples
+      elementos 'value'.
+      * value: Uno de los múltiples valores que se aceptan como entrada para 
+        este campo.
+
+Ejemplo:
+<request id="6">
+    <getcampaigninfo>
+        <campaign_type>outgoing</campaign_type>
+        <campaign_id>4</campaign_id>
+    </getcampaigninfo>
+</request>
+
+Respuesta: 
+Campaña saliente:
+<response id="6">
+    <getcampaigninfo_response>
+        <name>Campa&#xF1;a de prueba</name>
+        <type>outgoing</type>
+        <startdate>2011-01-14</startdate>
+        <enddate>2011-02-14</enddate>
+        <working_time_starttime>00:00:00</working_time_starttime>
+        <working_time_endtime>23:59:00</working_time_endtime>
+        <queue>8000</queue>
+        <retries>5</retries>
+        <context>from-internal</context>
+        <maxchan>23</maxchan>
+        <status>inactive</status>
+        <script>Prueba ...</script>
+        <forms>
+            <form id="1" name="Prueba" description="Formulario de prueba">
+                <field order="1" id="1">
+                    <label>CampoDeTexto</label>
+                    <type>TEXT</type>
+                    <maxsize>250</maxsize>
+                </field>
+                <field order="2" id="2">
+                    <label>CampoDeLista</label>
+                    <type>LIST</type>
+                    <maxsize>250</maxsize>
+                    <options>
+                        <value>aaa</value>
+                        <value>bbb</value>
+                        <value>ccc</value>
+                    </options>
+                </field>
+                <field order="3" id="3">
+                    <label>CampoDeFecha</label>
+                    <type>DATE</type>
+                    <default_value>2011-01-01</default_value>
+                </field>
+                <field order="4" id="4">
+                    <label>CampoDeTextarea</label>
+                    <type>TEXTAREA</type>
+                    <maxsize>250</maxsize>
+                    <default_value>Un texto bien grande</default_value>
+                </field>
+                <field order="5" id="5">
+                    <label>CampoDeEtiqueta</label>
+                    <type>LABEL</type>
+                </field>
+            </form>
+        </forms>
+    </getcampaigninfo_response>
+</response>
+
+Campaña entrante:
+<response id="7">
+    <getcampaigninfo_response>
+        <name>Prueba campania entrante</name>
+        <type>incoming</type>
+        <startdate>2011-01-20</startdate>
+        <enddate>2011-02-01</enddate>
+        <working_time_starttime>00:00:00</working_time_starttime>
+        <working_time_endtime>23:59:59</working_time_endtime>
+        <queue>8001</queue>
+        <status>active</status>
+        <script>Gatito lindo</script>
+        <forms>
+            <form id="1">
+                <field order="1" id="1">
+                    <label>CampoDeTexto</label>
+                    <type>TEXT</type>
+                    <maxsize>250</maxsize>
+                </field>
+                <field order="2" id="2">
+                    <label>CampoDeLista</label>
+                    <type>LIST</type>
+                    <maxsize>250</maxsize>
+                    <options>
+                        <value>aaa</value>
+                        <value>bbb</value>
+                        <value>ccc</value>
+                    </options>
+                </field>
+                <field order="3" id="3">
+                    <label>CampoDeFecha</label>
+                    <type>DATE</type>
+                    <default_value>2011-01-01</default_value>
+                </field>
+                <field order="4" id="4">
+                    <label>CampoDeTextarea</label>
+                    <type>TEXTAREA</type>
+                    <maxsize>250</maxsize>
+                    <default_value>Un texto bien grande</default_value>
+                </field>
+                <field order="5" id="5">
+                    <label>CampoDeEtiqueta</label>
+                    <type>LABEL</type>
+                </field>
+            </form>
+        </forms>
+    </getcampaigninfo_response>
+</response>
+
+En caso de campaña no encontrada:
+<response id="7">
+    <getcampaigninfo_response>
+        <failure>
+            <code>404</code>
+            <message>Campaign not found</message>
+        </failure>
+    </getcampaigninfo_response>
+</response>
+
+Requerimiento "getcampaignstatus"
+
+Este requerimiento recupera información dinámica o volátil sobre la campaña. 
+Esta información incluye el estado de los agentes disponibles en la cola de la 
+campaña activa, el número de llamadas en los varios estados reconocidos, y las
+llamadas activas que todavía no han sido asignadas a agentes. 
+
+Atributos o argumentos:
+* campaign_type: Estilo de la campaña. Uno de los valores 'incoming','outgoing'
+* campaign_id: ID de la campaña.
+* datetime_start: Opcional. Si se especifica, las estadísticas que involucren
+  llamadas se calcularán sólo con las llamadas realizadas a partir de la fecha
+  indicada (yyyy-mm-dd)  
+
+Respuesta:
+* statuscount: elemento que contiene los siguientes atributos:
+    * total: Para llamadas salientes, este es el total de llamadas registradas
+      como parte de la campaña. Para llamadas entrantes, este es el total de
+      llamadas que se han recibido hasta el momento en la cola.
+    * pending: Cantidad de llamadas que no ha sido marcada todavía en ningún intento. 
+    * placing: Para llamadas salientes, cantidad de llamadas para las que se
+      ha mandado a Asterisk la orden de generar la llamada, pero todavía no se
+      recibe noticia de éxito o fracaso de la generación (en el evento
+      OriginateResponse). No definido para llamadas entrantes.
+    * ringing: Para llamadas salientes, cantidad de llamadas para las que se
+      recibió noticia de éxito en marcado, pero todavía no entran a la cola de
+      la campaña. No definido para llamadas entrantes.
+    * onqueue: Para llamadas salientes o entrantes, cantidad de llamadas 
+      conectadas que esperan en la cola a ser asignadas a un agente.
+    * success: Para llamadas salientes o entrantes, cantidad de llamadas que 
+      fueron asignadas a un agente. Para llamadas salientes, esta cuenta incluye
+      las llamadas que han sido terminadas correctamente luego de ser atendidas
+      por un agente. 
+    * onhold: Para llamadas salientes o entrantes, cantidad de llamadas que han
+      sido puestas en espera.
+    * failure: Para llamadas salientes, cantidad de llamadas para las cuales el
+      marcado ha fallado al menos una vez. No definido para llamadas entrantes.
+    * shortcall: Para llamadas salientes, cantidad de llamadas que fueron
+      asignadas a un agente, pero duraron muy poco como para representar una
+      interacción adecuada. No definido para llamadas entrantes.
+    * noanswer: Para llamadas salientes, cantidad de llamadas que se 
+      desconectaron luego de haber sido conectadas (según OriginateResponse) 
+      pero antes de haber entrado a la cola de la campaña. No definido para 
+      llamadas entrantes.
+    * abandoned: Para llamadas salientes y entrantes, cantidad de llamadas que
+      se desconectaron luego de haber entrado a una cola, pero antes de ser
+      asignadas a un agente.
+    * finished: Para llamadas entrantes, cantidad de llamadas ya terminadas luego
+      de ser atendidas por un agente. No definido para llamadas salientes.
+    * losttrack: Para llamadas entrantes, cantidad de llamadas que no pudieron
+      ser vigiladas hasta terminar porque se reinició el marcador. No definido
+      para llamadas salientes.
+* agents: Agentes asociados a la cola de la campaña. Este elemento es una lista
+  que contiene múltiples elementos 'agent'. Cada elemento contiene los siguientes
+  atributos:
+  * agentchannel: Canal del agente de la cola (normalmente Agent/NNNN)
+  * status: Estado del agente. Puede ser 'online', 'offline', 'oncall', 'paused'
+    como se describe en la respuesta del requerimiento 'getagentstatus'
+  * callid: ID en la base de datos de la llamada que atiende el agente. Sólo está
+    definido si el agente está logoneado y atendiendo alguna llamada.
+  * callnumber: Número telefónico del cliente al que se conecta la llamada. Sólo
+    está definido si el agente está logoneado y atendiendo alguna llamada.
+  * callclient: Canal asignado a la llamada del cliente atendido. Sólo está
+    definido si el agente está logoneado y atendiendo alguna llamada.
+  * pausename: Nombre de la pausa en la que está el agente. Sólo está definido
+    si el agente está en pausa.
+  * pauseid: ID de la pausa en la que está el agente. Sólo está definido si el 
+    agente está en pausa.
+  * pausestart: Hora en la que inició la pausa, en formato HH:MM:SS de 24 horas.
+    Sólo está definido si el agente está en pausa.
+  * dialstart: Hora en la que inició la marcación de la llamada que atiende el
+    agente. Sólo definido para campañas salientes, y si el agente está atendiendo
+    una llamada.
+  * dialend: Hora en la que terminó la marcación de la llamada que atiende el
+    agente. Sólo definido para campañas salientes, y si el agente está atendiendo
+    una llamada.
+  * queuestart: Hora en la que entró en la cola la llamada atendida por el agente.
+    Sólo definido si el agente está atendiendo una llamada.
+  * linkstart: Hora en la que la llamada fue conectada con el agente. Sólo
+    definido si el agente está atendiendo una llamada.
+  * trunk: Troncal a través de la cual se recibe llamada entrante, o se realiza
+    la llamada saliente. Sólo definido si el agente está atendiendo una llamada.
+* activecalls: Llamadas de la campaña que todavía no han sido asignadas a un 
+  agente. Este elemento es una lista que contiene múltiples elementos 'activecall'.
+  Cada elemento contiene los siguientes atributos:
+  * callid: ID en la base de datos de la llamada conectada al cliente
+  * callnumber: Número telefónico de la llamada conectada al cliente
+  * callstatus: Estado de la llamada de la campaña. Puede ser uno de los valores
+    'Placing' (sólo campañas salientes), 'Ringing' (sólo campañas salientes),
+    'OnQueue' (campañas entrantes o salientes)
+  * dialstart: Hora en la que inició la marcación de la llamada. Solamente
+    definido para campañas salientes.
+  * dialend: Hora en la que se terminó la marcación de la llamada. Sólamente
+    definido para campañas salientes, y si el estado en 'callstatus' es 
+    'ringing' o 'onqueue'.
+  * queuestart: Hora en la que la llamada ingresó a la cola. Sólamente definido
+    para campañas salientes, y si el estado en 'callstatus' es 'onqueue'.
+  * trunk: Troncal a través de la cual se recibe llamada entrante, o se realiza
+    la llamada saliente.
+* stats: Contadores globales de la campaña Este elemento contiene los siguientes
+  atributos:
+  * total_sec: Suma de todas las duraciones en segundos de todas las llamadas
+    completadas.
+  * max_duration: Máxima duración de llamada en la campaña.
+
+Ejemplo:
+<request id="7">
+    <getcampaignstatus>
+        <campaign_type>outgoing</campaign_type>
+        <campaign_id>7</campaign_id>
+    </getcampaignstatus>
+</request>
+
+Respuesta:
+Campaña saliente:
+<response id="7">
+    <getcampaignstatus_response>
+        <statuscount>
+            <total>12</total>
+            <pending>10</pending>
+            <placing>1</placing>
+            <ringing>0</ringing>
+            <onqueue>0</onqueue>
+            <success>2</success>
+            <onhold>0</onhold>
+            <failure>0</failure>
+            <shortcall>0</shortcall>
+            <noanswer>0</noanswer>
+            <abandoned>0</abandoned>
+        </statuscount>
+        <agents>
+            <agent>
+                <agentchannel>Agent/9000</agentchannel>
+                <status>online</status>
+            </agent>
+        </agents>
+        <activecalls>
+            <activecall>
+                <callnumber>1065</callnumber>
+                <callid>65</callid>
+                <callstatus>placing</callstatus>
+                <dialstart>18:24:54</dialstart>
+            </activecall>
+        </activecalls>
+        <stats>
+            <total_sec>34786</total_sec>
+            <max_duration>195</max_duration>
+        </stats>
+    </getcampaignstatus_response>
+</response>
+
+Campaña entrante:
+<response id="3">
+    <getcampaignstatus_response>
+        <statuscount>
+            <total>13</total>
+            <onqueue>0</onqueue>
+            <success>0</success>
+            <onhold>0</onhold>
+            <abandoned>0</abandoned>
+            <finished>12</finished>
+            <losttrack>1</losttrack>
+        </statuscount>
+        <agents>
+            <agent>
+                <agentchannel>Agent/9000</agentchannel>
+                <status>offline</status>
+            </agent>
+        </agents>
+        <activecalls/>
+    </getcampaignstatus_response>
+</response>
+
+En caso de campaña no encontrada:
+<response id="7">
+    <getcampaignstatus_response>
+        <failure>
+            <code>404</code>
+            <message>Campaign not found</message>
+        </failure>
+    </getcampaignstatus_response>
+</response>
+
+
+Requerimiento "getcampaignqueuewait"
+
+Este requerimiento calcula un histograma de la cantidad de segundos que tarda
+una llamada en la campaña elegida desde que entra a la cola hasta que es 
+asignada a un agente. El histograma se calcula en intervalos de 5 segundos hasta
+30 segundos, más una categoría de llamadas atendidas luego de 30 segundos, y 
+además una cuenta de llamadas abandonadas.
+
+Atributos o argumentos:
+* campaign_type: Estilo de la campaña. Uno de los valores 'incoming','outgoing'
+* campaign_id: ID de la campaña. 
+
+Respuesta:
+* histogram: lista que contiene elementos "interval". Cada elemento interval
+  contiene los siguientes campos:
+  * lower: Valor inferior de tiempo de espera (inclusive) abarcado por intervalo
+  * upper: Valor superior de tiempo de espera (inclusive) abarcado por intervalo.
+    Para el último intervalo, se omite este elemento porque representa las 
+    llamadas iguales o mayores a 30 segundos.
+  * count: Número de llamadas que han caído dentro del intervalo
+* abandoned: Contiene el número de llamadas que fueron abandonadas, es decir, 
+  que entraron a la cola, pero terminaron antes de ser asignadas a un agente.
+
+Ejemplo:
+<request id="7">
+    <getcampaignqueuewait>
+        <campaign_type>incoming</campaign_type>
+        <campaign_id>1</campaign_id>
+    </getcampaignqueuewait>
+</request>
+
+Respuesta:
+<response id="3">
+    <getcampaignqueuewait_response>
+        <histogram>
+            <interval>
+                <lower>0</lower>
+                <upper>4</upper>
+                <count>86</count>
+            </interval>
+            <interval>
+                <lower>5</lower>
+                <upper>9</upper>
+                <count>0</count>
+            </interval>
+            <interval>
+                <lower>10</lower>
+                <upper>14</upper>
+                <count>1</count>
+            </interval>
+            <interval>
+                <lower>15</lower>
+                <upper>19</upper>
+                <count>2</count>
+            </interval>
+            <interval>
+                <lower>20</lower>
+                <upper>24</upper>
+                <count>1</count>
+            </interval>
+            <interval>
+                <lower>25</lower>
+                <upper>29</upper>
+                <count>2</count>
+            </interval>
+            <interval>
+                <lower>30</lower>
+                <count>3</count>
+            </interval>
+        </histogram>
+        <abandoned>6</abandoned>
+    </getcampaignqueuewait_response>
+</response>
+
+
+Requerimiento "getcallinfo"
+
+Este requerimiento recupera información sobre una llamada específica de una
+campaña. Actualmente sólo se recupera información que se puede leer desde la
+base de datos, y no información sobre la posible llamada en curso.
+
+Atributos o argumentos:
+* campaign_type: Tipo de la campaña, uno de 'incoming' u 'outgoing'
+* campaign_id: ID en la base de datos de la campaña a la que pertenece la 
+  llamada. Este valor es opcional para una llamada entrante, pero es requerido
+  para una llamada saliente.
+* call_id: ID en la base de datos de la llamada que se interroga
+
+Respuesta:
+* agent_number: Agente que ha sido enlazado con la llamada. Este identificador 
+  está de la forma 'Agent/9000'.
+* call_type: Uno de los dos valores 'incoming' u 'outgoing', para indicar si la
+  llamada es entrante o saliente, respectivamente.
+* campaign_id: ID de la base de datos de la campaña, un entero. Este valor es
+  requerido para identificar una llamada saliente. Para una llamada entrante,
+  este valor es opcional, e incluso puede estar omitido, si la llamada entrante
+  no está asociada a una campaña.
+* call_id: ID de la base de datos de la llamada, un entero. Con este ID, y el 
+  valor de call_type (y campaign_id para llamadas salientes), el código cliente
+  puede identificar la llamada a procesar para formularios.
+* phone: El número que fue marcado, o el Caller-ID que fue recibido.
+* status: El estado de la llamada. Usualmente es 'Success' para llamada saliente
+  y 'activa' para llamada entrante.
+* uniqueid: ID interno de Asterisk que identifica a la llamada remota.
+* datetime_originate: (Sólo llamada saliente) Fecha y hora en que se inició el
+  marcado de la llamada.
+* datetime_originateresponse: (Sólo llamada saliente) Fecha y hora en que se
+  recibió respuesta del marcado de la llamada.
+* datetime_join: Fecha y hora en que la llamada ingresó a la cola.
+* datetime_linkstart: Fecha y hora en que la llamada fue enlazada al agente.
+* retries: (Opcional) Número de veces que la llamada ha sido reintentada.
+* trunk: (Sólo llamada entrante) Troncal a través de la cual se recibió la llamada.
+  Por ejemplo: DAHDI/4 o SIP/unatroncal
+* queue: (Sólo llamada entrante) Cola que recibió la llamada
+* call_attributes: (Opcional) Atributos asociados a la llamada en la base de 
+  datos. Esta es una lista que contiene múltiples elementos 'attribute'. Cada
+  elemento attribute tiene los siguientes elementos:
+  * label: Etiqueta de texto asociada al atributo
+  * value: Valor de texto del atributo
+  * order: Orden en que se sugiere que se muestren los atributos
+* matching_contacts: (Opcional, sólo llamada entrante) Lista de contactos cuyo
+  número de teléfono coincide con el Caller-ID de la llamada. Si hay más de un
+  contacto, la interfaz debe usar el requerimiento setcontact para indicar cuál
+  contacto debe asociarse con la llamada recibida. Este elemento es una lista
+  que contiene múltiples elementos 'contact'. Cada elemento contact tiene un
+  atributo 'id' que debe usarse en el requerimiento setcontact. Además cada 
+  contacto tiene múltiples elementos 'attribute'. Cada elemento attribute
+  contiene los siguientes elementos:
+  * label: Etiqueta de texto asociada al atributo del contacto
+  * value: Valor de texto del atributo del contacto
+  * order: Orden en que se sugiere que se muestren los atributos del contacto
+* call_survey: (Opcional) Lista de formularios con los datos recogidos para esta
+  llamada. Este elemento sólo está presente si se ha recogido previamente datos
+  para esta llamada. Este elemento es una lista que contiene múltiples elementos
+  'form'. Cada elemento form tiene un atributo 'id' que debe usarse en el 
+  requerimiento saveformdata. Además cada form tiene múltiples elementos 
+  'field'. Cada elemento field tiene un atributo 'id' que pueden usarse también
+  en el requerimiento saveformdata. El elemento field tiene ademas los 
+  siguientes elementos:
+  * label: Etiqueta del elemento de formulario
+  * value: Valor que fue recogido en el formulario
+
+Ejemplo:
+<request id="8">
+    <getcallinfo>
+        <campaign_type>outgoing</campaign_type>
+        <campaign_id>5</campaign_id>
+        <call_id>25</call_id>
+    </getcallinfo>
+</request>
+
+Respuesta:
+Llamada saliente:
+<response id="8">
+    <getcallinfo_response>
+        <calltype>outgoing</calltype>
+        <call_id>27</call_id>
+        <campaign_id>5</campaign_id>
+        <phone>1065</phone>
+        <status>Success</status>
+        <uniqueid>1296517619.3</uniqueid>
+        <duration>187</duration>
+        <datetime_originate>2011-01-31 18:46:59</datetime_originate>
+        <datetime_originateresponse>2011-01-31 18:47:07</datetime_originateresponse>
+        <datetime_join>2011-01-31 18:47:07</datetime_join>
+        <datetime_linkstart>2011-01-31 18:47:07</datetime_linkstart>
+        <datetime_linkend>2011-01-31 18:50:14</datetime_linkend>
+        <retries>1</retries>
+        <agent_number>Agent/9000</agent_number>
+        <call_attributes>
+            <attribute><label>Nombre</label><value>Zoila</value><order>1</order></attribute>
+            <attribute><label>Apellido</label><value>Chacha</value><order>2</order></attribute>
+            <attribute><label>Campo1</label><value>gato</value><order>3</order></attribute>
+            <attribute><label>Campo2</label><value>perro</value><order>4</order></attribute>
+            <attribute><label>Campo3</label><value>mono</value><order>5</order></attribute>
+        </call_attributes>
+        <call_survey>
+            <form id="1">
+                <field id="1">
+                    <label>CampoDeTexto</label>
+                    <value>Texto de campo de texto</value>
+                </field>
+                <field id="2">
+                    <label>CampoDeLista</label>
+                    <value>bbb</value>
+                </field>
+                <field id="3">
+                    <label>CampoDeFecha</label>
+                    <value>2011-02-01</value>
+                </field>
+                <field id="4">
+                    <label>CampoDeTextarea</label>
+                    <value>Texto de campo de textarea</value>
+                </field>
+            </form>
+        </call_survey>
+    </getcallinfo_response>
+</response>
+
+Llamada entrante:
+<response id="8">
+    <getcallinfo_response>
+        <calltype>incoming</calltype>
+        <call_id>8</call_id>
+        <campaign_id>1</campaign_id>
+        <phone>1065</phone>
+        <status>terminada</status>
+        <uniqueid>1296256837.24</uniqueid>
+        <duration>205</duration>
+        <datetime_join>2011-01-28 18:20:38</datetime_join>
+        <datetime_linkstart>2011-01-28 18:20:38</datetime_linkstart>
+        <datetime_linkend>2011-01-28 18:24:03</datetime_linkend>
+        <trunk>SIP/1065</trunk>
+        <queue>8001</queue>
+        <agent_number>Agent/9000</agent_number>
+        <call_attributes>
+            <attribute><label>first_name</label><value>Usuario</value><order>1</order></attribute>
+            <attribute><label>last_name</label><value>Windows</value><order>2</order></attribute>
+            <attribute><label>phone</label><value>1065</value><order>3</order></attribute><attribute>
+            <label>cedula_ruc</label><value>0915172176</value><order>4</order></attribute>
+        </call_attributes>
+        <matching_contacts>
+            <contact id="2">
+                <attribute><label>first_name</label><value>Usuario</value><order>1</order></attribute>
+                <attribute><label>last_name</label><value>Windows</value><order>2</order></attribute>
+                <attribute><label>phone</label><value>1065</value><order>3</order></attribute>
+                <attribute><label>cedula_ruc</label><value>0915172176</value><order>4</order></attribute>
+            </contact>
+        </matching_contacts>
+        <call_survey>
+            <form id="1">
+                <field id="1">
+                    <label>CampoDeTexto</label>
+                    <value>Texto de campo de texto</value>
+                </field>
+                <field id="2">
+                    <label>CampoDeLista</label>
+                    <value>bbb</value>
+                </field>
+                <field id="3">
+                    <label>CampoDeFecha</label>
+                    <value>2011-02-01</value>
+                </field>
+                <field id="4">
+                    <label>CampoDeTextarea</label>
+                    <value>Texto de campo de textarea</value>
+                </field>
+            </form>
+        </call_survey>
+    </getcallinfo_response>
+</response>
+
+
+Requerimiento "setcontact"
+
+Este requerimiento ordena asignar el ID de contacto para la llamada entrante, en
+el caso de que existan múltiples contactos cuyo número telefónico coincida con 
+el Caller-ID anunciado para la llamada entrante. No es necesario que la llamada
+esté activa al momento de asignar.
+
+Atributos o argumentos:
+* agent_number: Agente que está asignando el contacto. Este identificador está
+  de la forma Agent/9000.
+* agent_hash: Hash de autenticación para el agente.
+* call_id: ID en la base de datos de la llamada que se asigna su contacto
+* contact_id: ID en la base de datos del contacto a asociar con esta llamada.
+
+Ejemplo:
+
+<request id="10">
+    <setcontact>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+        <call_id>8</call_id>
+        <contact_id>3</contact_id>
+    </setcontact>
+</request>
+
+Respuesta:
+Para caso de éxito:
+<response id="10">
+    <setcontact_response>
+        <success/>
+    </setcontact_response>
+</response>
+
+Para ID de contacto no encontrado:
+<response id="10">
+    <setcontact_response>
+        <failure>
+            <code>404</code>
+            <message>Contact ID not found</message>
+        </failure>
+    </setcontact_response>
+</response>
+
+Para ID de llamada no encontrada:
+<response id="10">
+    <setcontact_response>
+        <failure>
+            <code>404</code>
+            <message>Call ID not found</message>
+        </failure>
+    </setcontact_response>
+</response>
+
+Requerimiento "saveformdata"
+
+Este requerimiento ordena almacenar la información recogida de los formularios,
+y la asocia a una llamada en particular. 
+
+Atributos o argumentos:
+* agent_number: Agente que manda a guardar los datos. Este identificador está 
+  de la forma Agent/9000
+* agent_hash: Hash de autenticación para el agente.
+* campaign_type: Tipo de la campaña, uno de 'incoming' u 'outgoing'
+* call_id: ID en la base de datos de la llamada que se almacena
+* forms: Colección de múltiples elementos 'form':
+  * form: Posee el siguiente atributo:
+    * id: ID en la base de datos del formulario a usar. Este valor se puede
+      obtener con las llamadas getcallinfo y getcampaigninfo.
+    Contiene múltiples elementos 'field':
+    * field: Posee el siguiente atributo:
+      * id: ID en la base de datos del campo de formulario a usar. Este valor 
+        se puede obtener con las llamadas getcallinfo y getcampaigninfo.
+      Contiene como texto de la etiqueta el valor a almacenar en la base de datos.
+
+Ejemplo:
+<request id="9">
+    <saveformdata>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+        <campaign_type>outgoing</campaign_type>
+        <call_id>27</call_id>
+        <forms>
+            <form id="1">
+                <field id="1">Texto de campo de texto</field>
+                <field id="2">bbb</field>
+                <field id="3">2011-02-01</field>
+                <field id="4">Texto de campo de textarea</field>
+                <field id="5">xxx</field>
+            </form>
+        </forms>
+    </saveformdata>
+</request>
+
+Respuesta:
+En caso de éxito:
+<response id="9">
+    <saveformdata_response>
+        <success/>
+    </saveformdata_response>
+</response>
+
+En caso de formulario no encontrado:
+<response id="9">
+    <saveformdata_response>
+        <failure>
+            <code>404</code>
+            <message>Form ID not found: 0</message>
+        </failure>
+    </saveformdata_response>
+</response>
+
+En caso de campo no encontrado:
+<response id="9">
+    <saveformdata_response>
+        <failure>
+            <code>404</code>
+            <message>Field ID not found in form: 1 - 0</message>
+        </failure>
+    </saveformdata_response>
+</response>
+
+En caso de valor de texto demasiado grande:
+<response id="9">
+    <saveformdata_response>
+        <failure>
+            <code>413</code>
+            <message>Form value too large: 1 - 4</message>
+        </failure>
+    </saveformdata_response>
+</response>
+
+En caso de valor de campo LIST no permitido:
+<response id="9">
+    <saveformdata_response>
+        <failure>
+            <code>406</code>
+            <message>Value not in list of accepted values: 1 - 2</message>
+        </failure>
+    </saveformdata_response>
+</response>
+
+En caso de formato de fecha inválido para campo DATE:
+<response id="9">
+    <saveformdata_response>
+        <failure>
+            <code>406</code>
+            <message>Date format not acceptable, must be yyyy-mm-dd or yyyy-mm-dd hh:mm:ss: 1 - 3</message>
+        </failure>
+    </saveformdata_response>
+</response>
+Nota: para ayudar a la depuración, se adjunta el ID de formulario y el ID del campo que produjeron el error.
+
+Requerimiento "hold"
+
+Este requerimiento se usa para poner una llamada en hold. Internamente se manda
+la llamada a una de las extensiones de parqueo. Al poner la llamada en hold, el
+abonado remoto debería escuchar música en espera, y el agente escucha la música
+de la cola, pero no recibirá más llamadas. 
+
+Atributos o argumentos:
+* agent_number: Agente que se va a pausar. Este identificador está de la forma 
+  'Agent/9000'.
+* agent_hash: Hash de autenticación para el agente.
+
+Ejemplo:
+<request id="11">
+    <hold>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+    </hold>
+</request>
+
+Respuesta:
+Para caso de éxito:
+<response id="11">
+    <hold_response>
+        <success/>
+    </hold_response>
+</response>
+
+Para agente no encontrado, o no logoneado vía ECCP:
+<response id="11">
+    <hold_response>
+        <failure>
+            <code>404</code>
+            <message>Agent not found or not logged in through ECCP</message>
+        </failure>
+    </hold_response>
+</response>
+
+En caso de que FreePBX no haya activado el soporte de parqueo:
+<response id="11">
+    <hold_response>
+        <failure>
+            <code>500</code>
+            <message>Parked call extension is disabled</message>
+        </failure>
+    </hold_response>
+</response>
+
+Para agente que está logoneado pero no está atendiendo una llamada: 
+<response id="11">
+    <hold_response>
+        <failure>
+            <code>417</code>
+            <message>Agent currenty not handling a call</message>
+        </failure>
+    </hold_response>
+</response>
+
+Para error en Asterisk o en base de datos que impide completar:
+<response id="11">
+    <hold_response>
+        <failure>
+            <code>500</code>
+            <message>Unable to start agent hold</message>
+        </failure>
+    </hold_response>
+</response>
+
+Requerimiento "unhold"
+Este requerimiento se usa para recuperar la llamada que se haya mandado a hold,
+y volver a hablar con el abonado.
+
+Atributos o argumentos:
+* agent_number: Agente que se va a pausar. Este identificador está de la forma 
+  'Agent/9000'.
+* agent_hash: Hash de autenticación para el agente.
+
+Ejemplo:
+<request id="11">
+    <unhold>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+    </unhold>
+</request>
+
+Respuesta:
+Para caso de éxito:
+<response id="11">
+    <unhold_response>
+        <success/>
+    </unhold_response>
+</response>
+
+Para agente no encontrado, o no logoneado vía ECCP:
+<response id="11">
+    <unhold_response>
+        <failure>
+            <code>404</code>
+            <message>Agent not found or not logged in through ECCP</message>
+        </failure>
+    </unhold_response>
+</response>
+
+En caso de que FreePBX no haya activado el soporte de parqueo:
+<response id="11">
+    <unhold_response>
+        <failure>
+            <code>500</code>
+            <message>Parked call extension is disabled</message>
+        </failure>
+    </unhold_response>
+</response>
+
+Para agente que ha recibido una llamada mientras estaba en hold: 
+<response id="11">
+    <unhold_response>
+        <failure>
+            <code>417</code>
+            <message>Agent currenty handling a call</message>
+        </failure>
+    </unhold_response>
+</response>
+
+Para error en Asterisk o en base de datos que impide completar:
+<response id="11">
+    <unhold_response>
+        <failure>
+            <code>500</code>
+            <message>Unable to stop agent hold</message>
+        </failure>
+    </unhold_response>
+</response>
+
+Requerimiento "transfercall"
+
+Este requerimiento se usa para transferir la llamada que atiende el agente, a
+otra extensión o a otro número externo. Al momento de transferir la llamada, el
+agente queda libre para recibir otra llamada, como si se hubiese colgado la 
+llamada. Actualmente no está soportada la transferencia hacia otro agente de 
+campaña, o hacia una cola de campañas.
+
+Atributos o argumentos:
+* agent_number: Agente que se va a pausar. Este identificador está de la forma 
+  'Agent/9000'.
+* agent_hash: Hash de autenticación para el agente.
+* extension:  Número de la extensión o número externo al cual mandar la llamada.
+
+Ejemplo:
+<request id="11">
+    <transfercall>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+        <extension>4321</extension>
+    </transfercall>
+</request>
+
+Respuesta:
+Para caso de éxito:
+<response id="11">
+    <transfercall_response>
+        <success/>
+    </transfercall_response>
+</response>
+
+Para agente no encontrado, o no logoneado vía ECCP:
+<response id="11">
+    <transfercall_response>
+        <failure>
+            <code>404</code>
+            <message>Agent not found or not logged in through ECCP</message>
+        </failure>
+    </transfercall_response>
+</response>
+
+Requerimiento "atxfercall"
+
+Este requerimiento se usa para transferir la llamada que atiende el agente, a
+otra extensión o a otro número externo, con confirmación del número transferido.
+Al momento de transferir la llamada, el agente se conecta con el número destino
+de la transferencia, y si el agente usa el requerimiento hangup para colgar,
+queda libre para recibir otra llamada. Actualmente no está soportada la 
+transferencia hacia otro agente de campaña, o hacia una cola de campañas.
+
+Atributos o argumentos:
+* agent_number: Agente que se va a pausar. Este identificador está de la forma 
+  'Agent/9000'.
+* agent_hash: Hash de autenticación para el agente.
+* extension:  Número de la extensión o número externo al cual mandar la llamada.
+
+Ejemplo:
+<request id="11">
+    <atxfercall>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+        <extension>4321</extension>
+    </atxfercall>
+</request>
+
+Respuesta:
+Para caso de éxito:
+<response id="11">
+    <atxfercall_response>
+        <success/>
+    </atxfercall_response>
+</response>
+
+Para agente no encontrado, o no logoneado vía ECCP:
+<response id="11">
+    <atxfercall_response>
+        <failure>
+            <code>404</code>
+            <message>Agent not found or not logged in through ECCP</message>
+        </failure>
+    </atxfercall_response>
+</response>
+
+
+Requerimiento "pauseagent"
+
+Este requerimiento se usa para poner al agente en pausa debido a un break conocido.
+El ID a usar para el break se obtiene con el requerimiento "getpauses". 
+
+Atributos o argumentos:
+* agent_number: Agente que se va a pausar. Este identificador está de la forma 
+  'Agent/9000'.
+* agent_hash: Hash de autenticación para el agente.
+* pause_type: ID de base de datos de la pausa (break) a usar.
+
+Ejemplo:
+<request id="11">
+    <pauseagent>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+        <pause_type>3</pause_type>
+    </pauseagent>
+</request>
+
+Respuesta:
+Para caso de éxito:
+<response id="11">
+    <pauseagent_response>
+        <success/>
+    </pauseagent_response>
+</response>
+
+Para agente que ya está en otro break:
+<response id="11">
+    <pauseagent_response>
+        <failure>   
+            <code>417</code>
+            <message>Agent already in incompatible break</message>
+        </failure>
+    </pauseagent_response>
+</response>
+
+Para break inválido:
+<response id="11">
+    <pauseagent_response>
+        <failure>
+            <code>404</code>
+            <message>Break ID not found or not active</message>
+        </failure>
+    </pauseagent_response>
+</response>
+
+Para agente no encontrado, o no logoneado vía ECCP:
+<response id="11">
+    <pauseagent_response>
+        <failure>
+            <code>404</code>
+            <message>Agent not found or not logged in through ECCP</message>
+        </failure>
+    </pauseagent_response>
+</response>
+
+Requerimiento "unpauseagent"
+
+Este requerimiento se usa para sacar al agente de la pausa en la cual se haya
+puesto previamente con el requerimiento "pauseagent".
+
+Atributos o argumentos:
+* agent_number: Agente que se va a sacar de pausa. Este identificador está de la
+  forma 'Agent/9000'.
+* agent_hash: Hash de autenticación para el agente.
+
+Ejemplo:
+<request id="12">
+    <unpauseagent>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+    </unpauseagent>
+</request>
+
+Respuesta:
+Para caso de éxito:
+<response id="12">
+    <unpauseagent_response>
+        <success/>
+    </unpauseagent_response>
+</response>
+
+Requerimiento "getpauses"
+
+Este requerimiento se usa para obtener el listado de las pausas (breaks) que
+el agente puede usar para entrar en una pausa auditada.
+
+Atributos o argumentos:
+Este requerimiento no tiene atributos:
+
+Respuesta:
+* pause: Elemento múltiple. Contiene el siguiente atributo:
+  * id: ID en la base de datos de la pausa
+  Contiene las siguientes etiquetas:
+  * name: Nombre corto de la pausa
+  * status: Estado de la pausa. Puede valer 'A' para activa, 'I' para inactiva.
+    Sólo deben usarse las pausas activas.
+  * type: Tipo de pausa. Actualmente sólo se devuelven las pausas de tipo 'B'
+    (break). La pausa de tipo 'H' (hold) está reservada para uso interno.
+  * description: Descripción larga de la pausa.
+
+Ejemplo:
+<request id="10"><getpauses /></request>
+
+Respuesta:
+<response id="10">
+    <getpauses_response>
+        <pause id="2">
+            <name>Ba&#xF1;o</name>
+            <status>A</status>
+            <type>B</type>
+            <description>Para ir al ba&#xF1;o</description>
+        </pause>
+        <pause id="3">
+            <name>Almuerzo</name>
+            <status>A</status>
+            <type>B</type>
+            <description>Para salir a comer</description>
+        </pause>
+    </getpauses_response>
+</response>
+
+Requerimiento "hangup"
+
+Este requerimiento manda a colgar la llamada en curso que está atendiendo el 
+agente. Se requiere que el agente esté logoneado y tenga una llamada activa.
+
+Atributos o argumentos:
+* agent_number: Agente que se va a sacar de pausa. Este identificador está de la
+  forma 'Agent/9000'.
+* agent_hash: Hash de autenticación para el agente.
+
+Ejemplo:
+<request id="13">
+    <hangup>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+    </hangup>
+</request>
+
+Respuesta:
+Para caso de éxito:
+<response id="13">
+    <hangup_response>
+        <success/>
+    </hangup_response>
+</response>
+
+Para agente inválido:
+<response id="13">
+    <hangup_response>
+        <failure>
+            <code>404</code>
+            <message>Specified agent not found</message>
+        </failure>
+    </hangup_response>
+</response>
+
+Para agente que no está atendiendo llamada, o que no está logoneado:
+<response id="13">
+    <hangup_response>
+        <failure>
+            <code>417</code>
+            <message>Agent not in call</message>
+        </failure>
+    </hangup_response>
+</response>
+
+Para error Asterisk al momento de colgar la llamada:
+<response id="13">
+    <hangup_response>
+        <failure>
+            <code>500</code>
+            <message>Cannot hangup agent call</message>
+        </failure>
+    </hangup_response>
+</response>
+
+
+Requerimiento "schedulecall"
+
+Este requerimiento intenta crear un nuevo registro de llamada en la campaña a 
+partir de la llamada que está atendiendo actualmente. Este requerimiento sólo
+funciona si el agente está atendiendo una llamada de una campaña saliente. Para
+la llamada reagendada, es posible especificar un intervalo de fechas (dentro
+del intervalo de fechas de la campaña) donde se debe de intentar la llamada
+nueva, así como un intervalo de horas en la que se intenta la llamada (también
+dentro del intervalo de horas de la campaña). También es posible marcar la 
+llamada para que se intente contactar al mismo agente que atendió la llamada 
+original, siempre que esté definido el contexto "llamada-agendada" en los
+contextos de Asterisk. Opcionalmente (por paridad con capacidades de la consola
+web para el agente) es posible especificar un número distinto para marcar, así
+como un nuevo nombre de contacto. 
+
+Los atributos que se hayan definido en la carga de las llamadas, se heredan al
+agendar la llamada. Los valores recogidos en formularios (si existen) para la 
+llamada NO SE HEREDAN en la llamada agendada.
+
+Atributos o argumentos:
+* agent_number: Agente que va a agendar la llamada. Este identificador está de la
+  forma 'Agent/9000'. Se espera que el agente esté atendiendo una llamada de 
+  campaña saliente.
+* agent_hash: Hash de autenticación para el agente.
+* schedule: Elemento que agrupa los siguientes subelementos:
+  * date_init: Fecha desde la cual debe intentarse llamada agendada. Formato YYYY-MM-DD.
+  * date_end: Fecha hasta la cual debe intentarse llamada agendada. Formato YYYY-MM-DD.
+  * time_init: Inicio de horario en que se intenta la llamada agendada. Formato HH:MM:SS.
+  * time_end: Final de horario en que se intenta la llamada agendada. Formato HH:MM:SS.
+  Si se especifica el elemento 'schedule', todos los subelementos son obligatorios.
+  Si no se especifica 'schedule', se asume que la llamada puede realizarse en 
+  cualquier momento dentro del horario de la campaña. Como detalle de 
+  implementación, la llamada tenderá a realizarse al final de todas las otras
+  llamadas.
+* sameagent: Si se especifica 1, se marcará la llamada para que se dirija al 
+  mismo agente que atendió la llamada original. Esto requiere obligatoriamente
+  especificar el horario con el elemento 'schedule'. Si 'sameagent' se omite o
+  se especifica como 0, la llamada será ruteada a cualquier agente disponible
+  en el momento de ser realizada.
+* newphone: Si se especifica, se marcará a este número en lugar de al número 
+  asociado a la llamada original.
+* newcontactname: Si se especificia, el primer atributo de la llamada (que se
+  asume es el nombre del contacto) se sobreescribe con el texto indicado. 
+  Mantenido por compatibilidad con la consola web.
+
+Ejemplo:
+<request id="14">
+    <schedulecall>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+        <schedule>
+            <date_init>2011-08-23</date_init>
+            <date_end>2011-08-25</date_end>
+            <time_init>09:25:00</time_init>
+            <time_init>17:30:00</time_init>
+        </schedule>
+        <sameagent>1</sameagent>
+        <newphone>5551234</newphone>
+        <newcontactname>John Doe</newcontactname>
+    </schedulecall>
+</request>
+
+Respuesta:
+Para caso de éxito:
+<response id="14">
+    <schedulecall_response>
+        <success/>
+    </schedulecall_response>
+</response>
+
+Para agente inválido:
+<response id="14">
+    <schedulecall_response>
+        <failure>
+            <code>404</code>
+            <message>Specified agent not found</message>
+        </failure>
+    </schedulecall_response>
+</response>
+
+Para agente que no está atendiendo llamada, o que no está logoneado:
+<response id="14">
+    <schedulecall_response>
+        <failure>
+            <code>417</code>
+            <message>Agent not in call</message>
+        </failure>
+    </schedulecall_response>
+</response>
+
+Para horario incompleto
+<response id="14">
+    <schedulecall_response>
+        <failure>
+            <code>400</code>
+            <message>Bad request: incomplete schedule</message>
+        </failure>
+    </schedulecall_response>
+</response>
+
+Para número de teléfono no numérico
+<response id="14">
+    <schedulecall_response>
+        <failure>
+            <code>400</code>
+            <message>Bad request: invalid new phone</message>
+        </failure>
+    </schedulecall_response>
+</response>
+
+Para formatos de fecha inválidos en horario
+<response id="14">
+    <schedulecall_response>
+        <failure>
+            <code>400</code>
+            <message>Bad request: invalid date_init</message>
+        </failure>
+    </schedulecall_response>
+</response>
+
+Para fecha de inicio anterior a la fecha actual
+<response id="14">
+    <schedulecall_response>
+        <failure>
+            <code>400</code>
+            <message>Bad request: date_init before current date</message>
+        </failure>
+    </schedulecall_response>
+</response>
+
+Para agente que está atendiendo llamada que no es de campaña saliente
+<response id="14">
+    <schedulecall_response>
+        <failure>
+            <code>417</code>
+            <message>Not in outgoing call</message>
+        </failure>
+    </schedulecall_response>
+</response>
+
+Para fecha fuera del rango indicado por la campaña
+<response id="14">
+    <schedulecall_response>
+        <failure>
+            <code>417</code>
+            <message>Supplied date range outside campaign range</message>
+        </failure>
+    </schedulecall_response>
+</response>
+
+Para llamada agendada duplicada en misma fecha y hora y número telefónico
+<response id="14">
+    <schedulecall_response>
+        <failure>
+            <code>417</code>
+            <message>Found duplicate scheduled call</message>
+        </failure>
+    </schedulecall_response>
+</response>
+
+
+Requerimiento "getagentqueues"
+
+Este requerimiento lista las colas a las que está suscrito un agente. Esta 
+información era anteriormente reportada por los eventos agentloggedin y 
+agentloggedout pero fue extraída a un requerimiento separado por razones de 
+eficiencia de implementación
+
+Atributos o argumentos:
+* agent_number: Agente que se interroga. Este identificador está de la forma 
+  'Agent/9000'.
+
+Respuesta:
+* queues: Lista de colas a la que pertenece el agente. Este elemento contiene
+  múltiples elementos 'queue', que contienen cada uno una cola a la que 
+  pertenece el agente.
+
+Ejemplo:
+<request id="4">
+    <getagentqueues>
+        <agent_number>Agent/9000</agent_number>
+    </getagentqueues>
+</request>
+
+Respuesta:
+Para caso de éxito:
+
+<response id="4">
+    <getagentqueues_response>
+        <queues>
+            <queue>8001</queue>
+            <queue>8000</queue>
+        </queues>
+    </getagentqueues_response>
+</response>
+
+En caso de que no exista el agente:
+<response id="4">
+    <getagentqueues_response>
+        <failure>
+            <code>404</code>
+            <message>Specified agent not found</message>
+        </failure>
+    </getagentqueues_response>
+</response>
+
+
+Requerimiento "getmultipleagentqueues"
+
+Este requerimiento cumple una función parecida a la del requerimiento 
+getagentqueues. La diferencia principal es que el requerimiento
+getmultipleagentqueues permite preguntar la información de una cantidad
+arbitraria de agentes simultáneamente. El uso de este requerimiento se recomienda
+en lugar de una secuencia de llamadas a getagentqueues cuando se requiere la
+información de colas de múltiples agentes.
+
+Atributos o argumentos:
+* agents: Lista de agentes para los que se requiere el reporte de pertenencia a
+  las colas. Este elemento contiene múltiples elementos 'agent_number', cada
+  uno de los cuales identifica al agente, en formato Agent/9000.
+
+Respuesta:
+* agents: Lista de agentes para los que se reporta la pertenencia a las colas.
+  Este elemento contiene múltiples elementos 'agent', los cuales contienen los
+  siguientes campos:
+  * agent_number: Agente identificado por el elemento
+  * queues: Lista de colas a las cuales pertenece el agente. Este elemento 
+    contiene múltiples elementos 'queue', los cuales contienen el identificador
+    de la cola.
+
+Ejemplo:
+<request id="4">
+    <getmultipleagentqueues>
+        <agents>
+            <agent_number>Agent/9000</agent_number>
+            <agent_number>Agent/9001</agent_number>
+        <agents>    
+    </getmultipleagentqueues>
+</request>
+
+Respuesta:
+Para caso de éxito:
+
+<response id="4">
+    <getmultipleagentqueues_response>
+        <agents>
+            <agent>
+                <agent_number>Agent/9000</agent_number>
+                <queues>
+                    <queue>8001</queue>
+                    <queue>8000</queue>
+                </queues>
+            </agent>
+            <agent>
+                <agent_number>Agent/9001</agent_number>
+                <queues>
+                    <queue>8000</queue>
+                </queues>
+            </agent>
+        <agents>
+    </getmultipleagentqueues_response>
+</response>
+
+
+
+Requerimiento "getagentactivitysummary"
+
+Este requerimiento lista, para un rango de fechas, un reporte de actividad de
+cada uno de los agentes activos. Este reporte de actividad incluye el total de
+segundos de todas las sesiones, el total de llamadas recibidas y el total de
+segundos de llamada en cada una de las colas, y el inicio y final de la última
+sesión y de la última pausa del agente.
+
+Atributos o argumentos:
+* datetime_start: Fecha inicial del rango, en formato yyyy-mm-dd. Si se omite,
+  se asume la fecha actual.
+* datetime_end: Fecha final del rango, en formato yyyy-mm-dd. Si se omite, se
+  asume la fecha actual.
+
+Respuesta:
+* agents: Lista de agentes encontrados en el rango de fechas indicado. Este 
+  elemento contiene múltiples elementos 'agent', los cuales contienen los 
+  siguientes campos:
+  * agentchannel: Agente descrito por el elemento. Este identificador está de la
+    forma 'Agent/9000'.
+  * agentname: Nombre del agente descrito.
+  * logintime: Segundos que el agente ha pasado en sesiones durante el intervalo
+    especificado. No se incluyen sesiones activas en el momento de la petición.
+  * lastsessionstart: Si hay al menos una sesión en el intervalo especificado,
+    este elemento indica el inicio de la última sesión, en formato 
+    yyyy-mm-dd hh:mm:ss. De otro modo no aparece.
+  * lastsessionend: Si hay al menos una sesión en el intervalo especificado, y
+    la sesión ha terminado, este elemento indica el final de la última sesión,
+    en formato yyyy-mm-dd hh:mm:ss. De otro modo no aparece. Si el agente está
+    actualmente en una sesión activa, lastsessionstart estará presente, y 
+    lastsessionend NO estará presente.
+  * lastpausestart: Si hay al menos una pausa en el intervalo especificado, este
+    elemento indica el inicio de la última pausa, en formato 
+    yyyy-mm-dd hh:mm:ss. De otro modo no aparece. No hay garantía alguna de que
+    la última pausa informada sea posterior al último inicio de sesión.
+  * lastpauseend: Si hay al menos una pausa en el intervalo especificado, y la
+    pausa ha terminado, este elemento indica el final de la última pausa, en
+    formato yyyy-mm-dd hh:mm:ss. De otro modo no aparece. Si el agente está
+    actualmente en pausa, lastpausestart estará presente, y lastpauseend NO
+    estará presente.
+  * callsummary: elemento que contiene dos subelementos, 'incoming' y 'outgoing'
+    según los tipos de campañas. Cada uno de los elementos tiene cero o más 
+    elementos 'queue'. Cada elemento queue tiene un atributo 'id' que indica 
+    el número de la cola. Además del atributo, existen los siguientes elementos:
+    * sec_calls: suma del tiempo en segundos en llamadas atendidas que entraron
+      a través de la cola indicada bajo el tipo de campaña indicado.
+    * num_calls: número de llamadas atendidas que entraron a través de la cola.
+
+Ejemplo:
+<request id="4">
+    <getagentactivitysummary>
+        <datetime_start>2010-01-01</datetime_start>
+        <datetime_end>2010-01-02</datetime_end>
+    </getagentactivitysummary>
+</request>
+
+Respuesta:
+<response id="4">
+    <getagentactivitysummary_response>
+        <agents>
+            <agent>
+                <agentchannel>Agent/9000</agentchannel>
+                <agentname>Over 9000!!!</agentname>
+                <logintime>1135</logintime>
+                <lastsessionstart>2010-01-01 11:40:34</lastsessionstart>
+                <lastsessionend>2010-01-01 11:55:22</lastsessionend>
+                <lastpausestart>2010-01-01 11:45:20</lastpausestart>
+                <lastpauseend>2010-01-01 11:46:00</lastpauseend>
+                <callsummary>
+                    <incoming>
+                        <queue id="8001">
+                            <sec_calls>172</sec_calls>
+                            <num_calls>3</num_calls>
+                        </queue>
+                        <queue id="8002">
+                            <sec_calls>20</sec_calls>
+                            <num_calls>1</num_calls>
+                        </queue>
+                    </incoming>
+                    <outgoing>
+                        <queue id="8000">
+                            <sec_calls>515</sec_calls>
+                            <num_calls>7</num_calls>
+                        </queue>
+                    </outgoing>
+                </callsummary>
+            </agent>
+            <agent>
+                <agentchannel>Agent/9001</agentchannel>
+                <agentname>Agente 9001</agentname>
+                <logintime>2031</logintime>
+                <lastsessionstart>2010-01-01 11:40:34</lastsessionstart>
+                <lastsessionend>2010-01-01 11:55:22</lastsessionend>
+                <lastpausestart>2010-01-01 11:45:20</lastpausestart>
+                <lastpauseend>2010-01-01 11:46:00</lastpauseend>
+                <callsummary>
+                    <incoming>
+                        <queue id="8004">
+                            <sec_calls>172</sec_calls>
+                            <num_calls>3</num_calls>
+                        </queue>
+                        <queue id="8005">
+                            <sec_calls>20</sec_calls>
+                            <num_calls>1</num_calls>
+                        </queue>
+                    </incoming>
+                    <outgoing>
+                        <queue id="8000">
+                            <sec_calls>515</sec_calls>
+                            <num_calls>7</num_calls>
+                        </queue>
+                    </outgoing>
+                </callsummary>
+            </agent>
+        </agents>
+    </getagentactivitysummary_response>
+</response>
+
+
+Requerimiento "getchanvars"
+Este requerimiento lista, para el agente indicado, las variables de canal 
+definidas para la llamada activa que esté atendiendo. Este requerimiento permite
+construir contextos y/o AGIs que asignen variables de canal que luego pueden
+obtenerse a través de este requerimiento.
+
+Atributos o argumentos:
+* agent_number: Agente que va a agendar la llamada. Este identificador está de la
+  forma 'Agent/9000'.
+* agent_hash: Hash de autenticación para el agente.
+
+Respuesta:
+* clientchannel: Canal Asterisk correspondiente a la llamada remota que se
+  atiende. Por ejemplo: SIP/troncal/5551234-abcdef. Este es el canal del cual
+  se reportan las variables de canal.
+* chanvars: Lista de variables de canal encontradas en el canal de la llamada.
+  Este elemento contiene múltiples elementos 'chanvar', los cuales contienen los
+  siguientes campos:
+  * label: Nombre de la variable de canal
+  * value: Valor de la variable de canal
+
+Ejemplo:
+<request id="14">
+    <getchanvars>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+    </getchanvars>
+</request>
+
+Respuesta:
+<response id="14">
+    <getchanvars_response>
+        <clientchannel>SIP/troncal/5551234-abcdef</clientchannel>
+        <chanvars>
+            <chanvar>
+                <label>AAA</label>
+                <value>xxx</value>
+            </chanvar>
+            <chanvar>
+                <label>BBB</label>
+                <value>yyy</value>
+            </chanvar>
+        </chanvars>
+    </getchanvars_response>
+</response>
+
+
+Requerimiento "callprogress"
+Este requerimiento activa o desactiva la emisión de eventos de progreso de 
+llamada. Por omisión los eventos de progreso de llamada están desactivados, para
+compatibilidad con versiones anteriores de clientes ECCP. Si un cliente puede
+hacer uso de los eventos, debe activarlos con este requerimiento.
+
+Atributos o argumentos:
+* enable: Valor de bandera: 1 para activar, 0 para desactivar
+
+Ejemplo:
+Para activar los eventos de progreso de llamada:
+<request id="4">
+    <callprogress>
+        <enable>1</enable>
+    </callprogress>
+</request>
+
+Para desactivar los eventos de progreso:
+<request id="4">
+    <callprogress>
+        <enable>0</enable>
+    </callprogress>
+</request>
+
+Respuesta:
+En caso de éxito:
+<response id="4">
+    <callprogress_response>
+        <success/>
+    </callprogress_response>
+</response>
+
+
+Requerimiento "campaignlog"
+Este requerimiento lista los eventos de progreso de una campaña determinada, en
+un intervalo de tiempo. Si se omite el intervalo, se asume el día actual del 
+sistema.
+
+Atributos o argumentos:
+* campaign_type: Tipo de la campaña, uno de 'incoming' u 'outgoing'
+* campaign_id: ID en la base de datos de la campaña a listar. Para campañas
+  salientes, este parámetro es requerido. Para campañas entrantes, se omite este
+  parámetro si se deben listar eventos para llamadas entrantes no asociadas a
+  una campaña.
+* queue: Cola entrante a seleccionar. Para campañas salientes, este parámetro
+  se ignora. Para campañas entrantes, este parámetro selecciona los eventos
+  asociados a llamadas entrantes no asociadas a una campaña entrante. Si se
+  indica a la vez queue y campaign_id, campaign_id tiene prioridad y queue se
+  ignora.
+* datetime_start: Fecha inicial del rango, en formato yyyy-mm-dd. Si se omite,
+  se asume la fecha actual.
+* datetime_end: Fecha final del rango, en formato yyyy-mm-dd. Si se omite, se
+  asume la fecha actual.
+
+Respuesta:
+* logentries: Lista de elementos de tipo logentry. Cada elemento logentry tiene
+  los siguientes campos:
+    * id: ID interno de base de datos del registro.
+    * datetime_entry: Fecha y hora en la que se produjo la transición de estado
+    * campaign_type: Tipo de la campaña, uno de 'incoming' u 'outgoing'
+    * campaign_id: ID en la base de datos de la campaña a la que pertenece la 
+      llamada. Este valor siempre está presente para una llamada saliente, pero 
+      puede no estar presente para una llamada entrante.
+    * call_id: ID en la base de datos de la llamada que se hace referencia en evento.
+    * new_status: El nuevo estado al cual ha llegado la llamada. Los eventos 
+      reportados pueden ser uno de los siguientes:
+      Placing: se ha empezado a colocar la llamada saliente. El único parámetro
+        válido es retry.
+      Dialing: se ha empezado a marcar la llamada saliente. Se conocen los valores
+        de retry y trunk.
+      Ringing: la llamada saliente está timbrando y va a conectarse a la cola. Se
+        conocen los valores de uniqueid, retry, trunk.
+      OnQueue: la llamada está en la cola esperando ser asignada un agente. Se
+        conocen los valores de uniqueid, retry, trunk.
+      Failure: la llamada no ha podido ser conectada. Los valores válidos son 
+        dependientes del estado en el cual se detectó el fallo.
+      OnHold: la llamada ha entrado en hold. Se conocen los valores de uniqueid, 
+        retry, trunk.
+      OffHold: la llamada ha salido de hold. Se conocen los valores de uniqueid, 
+        retry, trunk.
+      Success: la llamada ha sido conectada con un agente
+      Hangup: la llamada ha sido desconectada del agente.
+      ShortCall: la llamada ha durado muy poco para una interacción con el agente.
+    * retry: Para llamadas salientes, el número de intento de marcado que 
+      corresponde a este cambio de estado. Siempre 0 para la llamada entrante.
+    * uniqueid: ID único de Asterisk para la llamada correspondiente al intento.
+    * trunk: Troncal a través de la cual se realiza la llamada saliente, o se recibe
+      la llamada entrante.
+    * phone: número de teléfono de callerid o marcado
+    * queue: número de la cola por la que se espera que pase la llamada
+    * agentchannel: Canal de agente que atendió la llamada. Sólo válido para 
+      estados Success, Hangup, ShortCall.
+    * duration: Duración de la llamada, en segundos. Sólo válido para estados
+      Hangup y ShortCall.
+Los campos son esencialmente idénticos a los del evento callprogress, a 
+excepción de id, agentchannel. El estado Success corresponde al evento agentlinked,
+y el estado Hangup/ShortCall corresponde al evento agentunlinked.
+
+Ejemplo:
+<request id="4">
+    <campaignlog>
+        <campaign_type>outgoing</campaign_type>
+        <campaign_id>9</campaign_id>
+        <datetime_start>2010-01-01</datetime_start>
+        <datetime_end>2013-01-02</datetime_end>
+    </campaignlog>
+</request>
+
+Respuesta:
+En caso de éxito:
+<response id="4">
+<campaignlog_response>
+  <logentries>
+    <logentry>
+      <id>168</id>
+      <datetime_entry>2013-01-07 12:02:23</datetime_entry>
+      <phone>1065</phone>
+      <queue>8000</queue>
+      <campaign_type>outgoing</campaign_type>
+      <campaign_id>9</campaign_id>
+      <call_id>111</call_id>
+      <new_status>Placing</new_status>
+      <retry>2</retry>
+    </logentry>
+    <logentry>
+      <id>169</id>
+      <datetime_entry>2013-01-07 12:02:24</datetime_entry>
+      <phone>1065</phone>
+      <queue>8000</queue>
+      <campaign_type>outgoing</campaign_type>
+      <campaign_id>9</campaign_id>
+      <call_id>111</call_id>
+      <new_status>Dialing</new_status>
+      <retry>2</retry>
+      <trunk>SIP/1065</trunk>
+    </logentry>
+    <logentry>
+      <id>170</id>
+      <datetime_entry>2013-01-07 12:02:26</datetime_entry>
+      <phone>1065</phone>
+      <queue>8000</queue>
+      <campaign_type>outgoing</campaign_type>
+      <campaign_id>9</campaign_id>
+      <call_id>111</call_id>
+      <new_status>Ringing</new_status>
+      <retry>2</retry>
+      <uniqueid>1357578143.3</uniqueid>
+      <trunk>SIP/1065</trunk>
+    </logentry>
+    <logentry>
+      <id>171</id>
+      <datetime_entry>2013-01-07 12:02:26</datetime_entry>
+      <phone>1065</phone>
+      <queue>8000</queue>
+      <campaign_type>outgoing</campaign_type>
+      <campaign_id>9</campaign_id>
+      <call_id>111</call_id>
+      <new_status>OnQueue</new_status>
+      <retry>2</retry>
+      <uniqueid>1357578143.3</uniqueid>
+      <trunk>SIP/1065</trunk>
+    </logentry>
+    <logentry>
+      <id>172</id>
+      <datetime_entry>2013-01-07 12:02:29</datetime_entry>
+      <phone>1065</phone>
+      <queue>8000</queue>
+      <campaign_type>outgoing</campaign_type>
+      <campaign_id>9</campaign_id>
+      <call_id>111</call_id>
+      <new_status>Success</new_status>
+      <retry>2</retry>
+      <uniqueid>1357578143.3</uniqueid>
+      <trunk>SIP/1065</trunk>
+      <agentchannel>SIP/1064</agentchannel>
+    </logentry>
+    <logentry>
+      <id>173</id>
+      <datetime_entry>2013-01-07 12:03:24</datetime_entry>
+      <phone>1065</phone>
+      <queue>8000</queue>
+      <campaign_type>outgoing</campaign_type>
+      <campaign_id>9</campaign_id>
+      <call_id>111</call_id>
+      <new_status>OnHold</new_status>
+      <retry>2</retry>
+      <uniqueid>1357578143.3</uniqueid>
+      <trunk>SIP/1065</trunk>
+      <agentchannel>SIP/1064</agentchannel>
+    </logentry>
+    <logentry>
+      <id>174</id>
+      <datetime_entry>2013-01-07 12:03:38</datetime_entry>
+      <phone>1065</phone>
+      <queue>8000</queue>
+      <campaign_type>outgoing</campaign_type>
+      <campaign_id>9</campaign_id>
+      <call_id>111</call_id>
+      <new_status>OffHold</new_status>
+      <retry>2</retry>
+      <uniqueid>1357578204.7</uniqueid>
+      <trunk>SIP/1065</trunk>
+      <agentchannel>SIP/1064</agentchannel>
+    </logentry>
+    <logentry>
+      <id>175</id>
+      <datetime_entry>2013-01-07 12:03:57</datetime_entry>
+      <phone>1065</phone>
+      <queue>8000</queue>
+      <campaign_type>outgoing</campaign_type>
+      <campaign_id>9</campaign_id>
+      <call_id>111</call_id>
+      <new_status>Hangup</new_status>
+      <retry>2</retry>
+      <uniqueid>1357578204.7</uniqueid>
+      <trunk>SIP/1065</trunk>
+      <duration>88</duration>
+      <agentchannel>SIP/1064</agentchannel>
+    </logentry>
+  </logentries>
+</campaignlog_response>
+</response>
+
+
+Requerimiento "getincomingqueuelist"
+Este requerimiento lista las colas entrantes disponibles en el sistema.
+
+Atributos o argumentos:
+* offset: Opcional. Si se especifica, debe también indicarse limit. Se devuelven
+  registros a partir del número indicado, con el primer registro siendo 0. Se 
+  asume 0 por omisión en caso de especificar limit sin offset.
+* limit: Opcional. Si se especifica, se devuelve como máximo el número de 
+  registros indicado por el parámetro. Si no se especifica, se devuelven todos
+  los registros posibles.
+  
+
+Respuesta:
+* queues: lista de elementos de tipo queue. Cada elemento queue tiene los
+  siguientes campos:
+  * id: ID interno de identificación de la cola entrante
+  * queue: Número de la cola entrante
+  * status: Uno de los valores 'active' o 'inactive'
+
+Ejemplo:
+<request id="4">
+<getincomingqueuelist />
+</request> 
+
+Respuesta:
+<response id="4">
+<getincomingqueuelist_response>
+  <queues>
+    <queue>
+      <id>1</id>
+      <queue>8001</queue>
+      <status>active</status>
+    </queue>
+    <queue>
+      <id>2</id>
+      <queue>6000</queue>
+      <status>active</status>
+    </queue>
+    <queue>
+      <id>4</id>
+      <queue>11627</queue>
+      <status>inactive</status>
+    </queue>
+  </queues>
+</getincomingqueuelist_response>
+</response>
+
+
+Requerimiento "getincomingqueuestatus"
+
+Este requerimiento recupera información dinámica o volátil sobre la cola 
+entrante indicada. Esta información incluye el estado de los agentes disponibles
+en la cola de la campaña activa, el número de llamadas en los varios estados 
+reconocidos, y las llamadas activas que todavía no han sido asignadas a agentes. 
+En este aspecto, este requerimiento es parecido a getcampaignstatus. Sin
+embargo, este requerimiento devuelve información sobre las llamadas que entraron
+a la cola pero no fueron asignadas como pertenecientes a una campaña entrante.
+
+Atributos o argumentos:
+* queue: Número de la cola entrante
+* datetime_start: Opcional. Si se especifica, las estadísticas que involucren
+  llamadas se calcularán sólo con las llamadas realizadas a partir de la fecha
+  indicada (yyyy-mm-dd)  
+
+Respuesta:
+* statuscount: elemento que contiene los siguientes atributos:
+    * total: Total de llamadas que se han recibido hasta el momento en la cola.
+    * onqueue: Cantidad de llamadas conectadas que esperan en la cola a ser 
+      asignadas a un agente.
+    * success: Cantidad de llamadas que fueron asignadas a un agente.
+    * onhold: Para llamadas salientes o entrantes, cantidad de llamadas que han
+      sido puestas en espera.
+    * abandoned: Cantidad de llamadas que se desconectaron luego de haber 
+      entrado a una cola, pero antes de ser asignadas a un agente.
+    * finished: Cantidad de llamadas ya terminadas luego de ser atendidas por un
+      agente.
+    * losttrack: Para llamadas entrantes, cantidad de llamadas que no pudieron
+      ser vigiladas hasta terminar porque se reinició el marcador.
+* agents: Agentes asociados a la cola de la campaña. Este elemento es una lista
+  que contiene múltiples elementos 'agent'. Cada elemento contiene los siguientes
+  atributos:
+  * agentchannel: Canal del agente de la cola (normalmente Agent/NNNN)
+  * status: Estado del agente. Puede ser 'online', 'offline', 'oncall', 'paused'
+    como se describe en la respuesta del requerimiento 'getagentstatus'
+  * callid: ID en la base de datos de la llamada que atiende el agente. Sólo está
+    definido si el agente está logoneado y atendiendo alguna llamada.
+  * callnumber: Número telefónico del cliente al que se conecta la llamada. Sólo
+    está definido si el agente está logoneado y atendiendo alguna llamada.
+  * callclient: Canal asignado a la llamada del cliente atendido. Sólo está
+    definido si el agente está logoneado y atendiendo alguna llamada.
+  * pausename: Nombre de la pausa en la que está el agente. Sólo está definido
+    si el agente está en pausa.
+  * pauseid: ID de la pausa en la que está el agente. Sólo está definido si el 
+    agente está en pausa.
+  * pausestart: Hora en la que inició la pausa, en formato HH:MM:SS de 24 horas.
+    Sólo está definido si el agente está en pausa.
+  * queuestart: Hora en la que entró en la cola la llamada atendida por el agente.
+    Sólo definido si el agente está atendiendo una llamada.
+  * linkstart: Hora en la que la llamada fue conectada con el agente. Sólo
+    definido si el agente está atendiendo una llamada.
+  * trunk: Troncal a través de la cual se recibe llamada entrante. Sólo definido
+    si el agente está atendiendo una llamada.
+* activecalls: Llamadas de la campaña que todavía no han sido asignadas a un 
+  agente. Este elemento es una lista que contiene múltiples elementos 'activecall'.
+  Cada elemento contiene los siguientes atributos:
+  * callid: ID en la base de datos de la llamada conectada al cliente
+  * callnumber: Número telefónico de la llamada conectada al cliente
+  * callstatus: Estado de la llamada de la campaña. Puede ser uno de los valores
+    'OnQueue' (campañas entrantes o salientes)
+  * queuestart: Hora en la que la llamada ingresó a la cola. Sólamente definido
+    para campañas salientes, y si el estado en 'callstatus' es 'onqueue'.
+  * trunk: Troncal a través de la cual se recibe llamada entrante, o se realiza
+    la llamada saliente.
+* stats: Contadores globales de la cola Este elemento contiene los siguientes
+  atributos:
+  * total_sec: Suma de todas las duraciones en segundos de todas las llamadas
+    completadas.
+  * max_duration: Máxima duración de llamada en la cola.
+
+Ejemplo:
+<request id="7">
+    <getincomingqueuestatus>
+        <queue>8001</queue>
+    </getincomingqueuestatus>
+</request>
+
+Respuesta:
+Campaña saliente:
+<response id="7">
+<getincomingqueuestatus_response>
+  <statuscount>
+    <total>29</total>
+    <onqueue>1</onqueue>
+    <success>0</success>
+    <onhold>0</onhold>
+    <abandoned>2</abandoned>
+    <finished>22</finished>
+    <losttrack>4</losttrack>
+  </statuscount>
+  <agents>
+    <agent>
+      <agentchannel>Agent/9003</agentchannel>
+      <status>offline</status>
+    </agent>
+    <agent>
+      <agentchannel>Agent/9000</agentchannel>
+      <status>offline</status>
+    </agent>
+    <agent>
+      <agentchannel>SIP/1064</agentchannel>
+      <status>offline</status>
+    </agent>
+  </agents>
+  <activecalls>
+    <activecall>
+      <callnumber>1064</callnumber>
+      <callid>229</callid>
+      <callstatus>OnQueue</callstatus>
+      <queuestart>17:50:28</queuestart>
+      <trunk>SIP/1064</trunk>
+    </activecall>
+  </activecalls>
+    <stats>
+        <total_sec>34786</total_sec>
+        <max_duration>195</max_duration>
+    </stats>
+</getincomingqueuestatus_response>
+</response>
+
+
+Requerimiento "pingagent"
+Este requerimiento reinicia el contador de inactividad de un agente específico.
+Si se usa la característica de intervalo de inactividad de login, este 
+requerimiento debe de invocarse regularmente para indicar que el cliente está
+todavía activo.
+
+Atributos o argumentos:
+* agent_number: Agente que va a agendar la llamada. Este identificador está de la
+  forma 'Agent/9000'.
+* agent_hash: Hash de autenticación para el agente.
+
+Ejemplo:
+<request id="14">
+    <pingagent>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+    </pingagent>
+</request>
+
+Respuesta:
+<response id="14">
+    <pingagent_response>
+        <success/>
+    </pingagent_response>
+</response>
+

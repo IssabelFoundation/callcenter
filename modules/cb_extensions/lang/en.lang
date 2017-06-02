@@ -1,0 +1,72 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.2 2007/08/09 00:31:28 jmartinez Exp $ */
+global $arrLangModule;
+$arrLangModule=array(
+"Agents" => "Agents",
+"New agent"=>"New Agent",
+"Agent List"=>"Agent List",
+"Edit agent"=>"Edit agent",
+"Agent Number"=>"Agent Number",
+"View agent"=>"View agent",
+"Queue" => "Queue",
+"Error Delete Agent"=>"Error when trying to delete an agent.",
+"Error Update Agent"=>"Error when trying to update an agent.",
+"Error Insert Agent"=>"Error when trying to insert an agent.",
+"Error Agent Number"=>"Agent Number is in a bad format.",
+"Error saving agent in file"=>"Error saving agent in file",
+"Error updating agent in file"=>"Error updating agent in file",
+"Error when deleting agent in file"=>"Error when deleting agent in file",
+"Agent number already exists"=>"Agent number already exists.",
+"Agent doesn't exist in configuration file"=>"Agent doesn't exist in configuration file",
+"Agent doesn't exist in database"=>"Agent doesn't exist in database",
+"To rapair is necesary delete agent from configuration file. Do you want to continue?"=>"To repair, it is necessary to delete the agent from the configuration file. Continue?",
+"To rapair is necesary add an agent in configuration file. Do you want to continue?"=>"To repair, it is necessary to add the agent to the configuration file. Continue?",
+// desconectar agentes
+"Number"=>"Number",
+"Disconect"=>"Disconnect",
+"Configure"=>"Configure",
+"Offline"=>"Off Line",
+"Online"=>"On Line",
+"Not Status"=>"Not Status",
+"Repair"=>"By repair",
+"All"=>"All",
+"No call"=>"No call",
+"Name" => "Name",
+"Retype password" => "Retype password",
+'View' => 'View',
+'Status' => 'Status',
+'With selection' => 'With selection',
+'Disconnect' => 'Disconnect',
+"The passwords aren't numeric values" => "The passwords aren't numeric values",
+"The passwords are empty or don't match" => "The passwords are empty or don't match",
+"ECCP Password" => "ECCP Password",
+"Retype ECCP password" => "Retype ECCP password",
+"ECCP passwords don't match" => "ECCP passwords don't match",
+);
+?>

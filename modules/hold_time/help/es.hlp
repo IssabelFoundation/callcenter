@@ -1,0 +1,13 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+<h1>{$node_name}</h1>
+<p align="Justify">Esta opción muestra el número de llamadas clasificadas por cola y por rangos de tiempo de espera tanto para llamadas entrantes o salientes según se especifique en el filtro. También muestra un promedio de tiempo de espera, el tiempo de espera más largo y la cantidad total de llamadas.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_hold_time.png" border="0" />
+<p>Figura 1</p></div><br/>
+<p>Usted puede descargar este reporte en diferentes formatos tales como CSV, XLS y PDF.</p>
+</body>
+</html>

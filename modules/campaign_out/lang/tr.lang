@@ -1,0 +1,174 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.2 2007/08/09 00:31:28 jmartinez Exp $ */
+global $arrLangModule;
+$arrLangModule=array(
+"Outgoing Campaigns" => "Dış Arama Kampanyaları",
+"Campaigns" => "Kampanyalar",
+"New Campaign" => "Yeni Kampanya",
+"Campaigns List" => "Kampanya Listesi",
+"View Campaign" => "Kampanya Göster",
+"Create New Campaign" => "Yeni Kampanya Oluştur",
+"Name Campaign" => "Kampanya Adı",
+"Start Date" => "Başlama Tarihi",
+"End Date" => "Bitiş Tarihi",
+"Start Time" => "Başlama Saati",
+"End Time" => "Bitiş Saati",
+"Retries" => "Tekrar Arama",
+"Trunk" => "Trunk",
+"Queue" => "Kuyruk",
+"Context"=>"Context",
+"Script"=>"Script",
+"Form"=>"Form",
+"Completed Calls" => "Tamamlanan çağrılar",
+"Average Time" => "Ortalama Süre",
+"File name" => "Dosya adı",
+"Unable to parse start date specification" => "Unable to parse start date specification",
+"Unable to parse end date specification" => "Unable to parse end date specification",
+"Unable to parse start time specification" => "Unable to parse start time specification",
+"Unable to parse end time specification" => "Unable to parse end time specification",
+"Campaign ID is not valid" => "Campaign ID is not valid",
+"Name Campaign can't be empty" => "Name Campaign can't be empty",
+"Trunk can't be empty" => "Trunk can't be empty",
+"Context can't be empty" => "Context can't be empty",
+"Retries must be numeric" => "Retries must be numeric",
+"Queue can't be empty" => "Queue can't be empty",
+"Invalid Start Date"=>"Invalid Start Date",
+"Invalid End Date" => "Invalid End Date",
+"Invalid Start Time" => "Invalid Start Time",
+"Invalid End Time" => "Invalid End Time",
+"Start Date must be greater than End Date" => "Start Date must be greater than End Date",
+"Name Campaign already exists" => "Kampanya adı zaten var",
+"Invalid Campaign ID" => "Hatalı Kampanya ID",
+"Invalid CSV File" => "Hatalı CSV Dosyası",
+"Element without phone number" => "Element without phone number",
+"Edit Campaign" => "Kampanya Düzenle",
+"Error when Activating the Campaign" => "Error when Activating the Campaign",
+"Error when eliminating the Campaign" => "Error when eliminating the Campaign",
+"Start Time must be greater than End Time" => "Start Time must be greater than End Time",
+"Invalid number" => "Invalid number",
+"Invalid CSV File Line" => "Invalid CSV File Line ",
+"CSV Data" => "CSV İndir",
+"Phone Customer" => "Telefon",
+"Name Customer" => "Müşteri Adı",
+"Status Call"=>"Arama Durumu",
+"Status"=>"Durum",
+"Options"=>"Seçenek",
+"Success" => "Başarılı",
+"Failure" => "Hatalı",
+"ShortCall" => "KısaÇağrı",
+"Error when deleting the Campaign" => "Error when deleting the Campaign",
+"This campaign have calls done"=>"This campaign have calls done",
+"Delete Error"=>"Delete Error",
+"Error when deleting the Campaign" => "Error when deleting the Campaign",
+"There aren't form selected"=>"There aren't form selected",
+"To rapair is necesary delete agent from configuration file. Do you want to continue?"=>"To repair is necessary to delete agent from configuration file. Do you want to continue?",
+"To rapair is necesary add an agent in configuration file. Do you want to continue?"=>"To repair is necessary to add an agent in configuration file. Do you want to continue?",
+"Error when desactivating the Campaign" => "Error when deactivating the Campaign",
+"Desactivate" => "Pasif", //Bruno agrego
+"Activate Error" => "Aktif Hata", //Bruno agrego
+"Desactivate Error" => "Pasif Hata", //Bruno agrego
+"Campaign ID is not valid" => "Kampanya ID geçersiz",
+"Queue must be numeric"=> "Kuyruk sayısal olmalıdır",
+"Queue is being used, choose other one"=>"Kuyruk kullanımda, başka bir tane seçin",
+"Address"=>"Adres",
+"Date & Time"=>"Tarih & Saat",
+"Duration"=>"Bekleme(Seg)",
+"Are you sure you wish to delete campaign?"=>"Kampanyayı silmek istediğinize emin misiniz?",
+"Finish"=>"Bitti",
+"Active"=>"Aktif",
+"All"=>"Hepsi",
+"Inactive"=>"Pasif",
+"Range Date" => "Mesafe Tarihi",
+"Start" => "Başla",
+"End" => "Bitir",
+"Schedule per Day" => "Günlük Randevu",
+"Start time" => "Başlangıç saati",
+"End time" => "Bitiş saati",
+'Max. used channels' => 'Max. kullanılan kanal',
+'View'=>'Göster',
+'Activate' => 'Aktif',
+'Campaign state'  => 'Kampanya durumu',
+'With selection' => 'Seçilerek',
+'Call File' => 'Çağrı Dosyası',
+'By Dialplan' => 'Arama Planı',
+'Manage Trunks'=>'Manage Trunks',
+'Manage Queues'=>'Manage Queues',
+'Manage Forms'=>'Manage Forms',
+'External URLs' => 'Harici URL',
+'Manage External URLs' => 'Manage External URLs',
+'At least 1 used channel must be allowed.' => 'At least 1 used channel must be allowed.',
+'Campaign must allow at least one call retry' => 'Campaign must allow at least one call retry',
+
+'Call File Encoding'    =>  'Call File Encoding',
+'Invalid character encoding' => 'Invalid character encoding',
+'UTF-8'         =>  'UTF-8 - Universal',
+'auto'          =>  'Automatic (use with caution)',
+'ISO-8859-1'    =>  'ISO-8859-1 - Western Europe',
+'ISO-8859-2'    =>  'ISO-8859-2 - Western and Central Europe',
+'ISO-8859-3'    =>  'ISO-8859-3 - Western Europe and South European',
+'ISO-8859-4'    =>  'ISO-8859-4 - Western Europe and Baltic countries',
+'ISO-8859-5'    =>  'ISO-8859-5 - Cyrillic alphabet',
+'ISO-8859-6'    =>  'ISO-8859-6 - Arabic',
+'ISO-8859-7'    =>  'ISO-8859-7 - Greek',
+'ISO-8859-8'    =>  'ISO-8859-8 - Hebrew',
+'ISO-8859-9'    =>  'ISO-8859-9 - Western Europe + Turkey',
+'ISO-8859-10'   =>  'ISO-8859-10 - Western Europe + Nordic languages',
+'ISO-8859-11'   =>  'ISO-8859-11 - Thai',
+'ISO-8859-13'   =>  'ISO-8859-13 - Baltic languages + Polish',
+'ISO-8859-14'   =>  'ISO-8859-14 - Celtic languages',
+'ISO-8859-15'   =>  'ISO-8859-15 - ISO-8859-1 + Euro',
+'ISO-8859-16'   =>  'ISO-8859-16 - Central, Eastern and Southern European languages',
+'EUC-JP'        =>  'EUC-JP - Japanese, Korean, Simplified Chinese',
+'eucJP-win'     =>  'eucJP-win - Japanese, Korean, Simplified Chinese (Windows)',
+'SJIS'          =>  'Shift JIS - Japanese',
+'SJIS-win'      =>  'Shift JIS - Japanese (Windows)',
+'JIS'           =>  'JIS - Japanese',
+'ISO-2022-JP'   =>  'ISO-2022-JP - Japanese',
+'Windows-1251'  =>  'Windows-1251 - Cyrillic alphabet',
+'Windows-1252'  =>  'Windows-1252 - Western Europe',
+'EUC-CN'        =>  'EUC-CN - Simplified Chinese',
+'CP936'         =>  'CP936 - Chinese',
+'HZ'            =>  'HZ - Chinese',
+'EUC-TW'        =>  'EUC-TW - Chinese (Taiwan)',
+'BIG-5'         =>  'BIG-5 - Traditional Chinese',
+'EUC-KR'        =>  'EUC-KR - Korean',
+'UHC'           =>  'UHC - Korean',
+'ISO-2022-KR'   =>  'ISO-2022-KR - Korean',
+'CP866'         =>  'CP866 - Cyrillic alphabet',
+'KOI8-R'        =>  'KOI8-R - Russian',
+'ArmSCII-8'     =>  'ArmSCII-8 - Armenian',
+
+'Call file not specified or failed to be uploaded' => 'Call file not specified or failed to be uploaded',
+'Change Status' => 'Durumu Değiştir',
+'(Leave as 0 to disable channel limit)' => '(Limitsiz olması için 0 girin)',
+'(No external URL)'=>'(Harici URL Olmadan)',
+'Load Contacts'=>'Data Yükle',
+'Load Contacts for Campaign'=>'Load Contacts for Campaign',
+);
+?>

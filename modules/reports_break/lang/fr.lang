@@ -1,0 +1,59 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "List Break" => "Liste des Pauses",
+    "break" => "Type de Pause",
+    "time_init" => "Heure de D&eacute;but",
+    "time_end" => "Heure de Fin",
+    "duration" => "Dur&eacute;e",
+    "Name" => "Nom",
+    "Reports Break" => "Rapport des Pauses",
+    "Agent Name" => "Nom Agent",
+    "Break" => "Pause",
+    "query" => "Chercher",
+    "date" => "Date",
+    "generate file" => "G&eacute;n&eacute;rer Fichier",
+    "Agent Number" => "N&deg;. Agent",
+    "Error" => "Erreur",
+    "Warning" => "Attention",
+    "Error when connecting to database" => "Erreur de connexion &agrave; la base de donn&eacute;es",
+    "Error when creating object paloSantoReportsBreak" => "Erreur en cr&eacute;ant paloSantoReportsBreak",
+    "Error cargando listado de tipos de breaks" => "Erreur en chargeant la liste des types de pauses",
+    "Error cargando listado de agentes" => "Erreur en chargeant la liste des agents",
+    "Error cargando listado de breaks tomados" => "Erreur en chargeant la liste des pauses prises",
+    "Debe ingresar una fecha" => "Vous devez entrer une date",
+    "Debe ingresar una fecha valida" => "Vous devez entrer une date valide",
+    "Validation Error" => "Erreur de validation",
+    "The following fields contain errors" => "Les champs suivants contiennent des erreurs",
+    "No register break in database" => "Aucune pause enregistr&eacute;e dans la base de donn&eacute;es",
+    "Start Date" => "D&eacute;but",
+    "End Date" => "Fin",
+);
+?>

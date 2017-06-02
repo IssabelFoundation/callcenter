@@ -1,0 +1,73 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Time conecction of agents" => "Tiempo de conexión de agentes",
+    "Start Date" => "Fecha Inicio",
+    "End Date" => "Fecha Fin",
+    "Query" => "Consultar",
+    "No.Agent" => "No. Agente",
+    "Agent" => "Agente",
+    "Queue" => "Cola",
+    "Type" => "Tipo",
+    "Column" => "Columna",
+    "Text" => "Texto",
+    "Transfer" => "Transferencia",
+    "Duration" => "Duración",
+    "Average" => "Promedio",
+    "Call longest" => "Llamada más Larga",
+    "Calls answered" => "Llamadas Contestadas",
+    "Error when connecting to database" => "Error cuando se conectaba a la base de datos",
+    "Error when creating object paloSantoReportsBreak" => "Error al crear el objeto paloSantoReportsBreak",
+    "Debe ingresar una fecha valida" => "Debe ingresar una fecha válida",
+    "Conecction Data" => "Datos sobre la Conexion",
+    "First Conecction" => "Primera Conexión",
+    "Last Conecction" => "Última Desconexión",
+    "Time Conecction" => "Tiempo de Conexión",
+    "Count Conecction" => "Conteo de Conexiones",
+    "Calls Entry" => "Llamadas Entrantes",
+    "Reason No Ready" => "Motivo No-Disponibilidad",
+    "Break" => "Receso",
+    "Bathroom" => "Banio",
+    "Call" => "Llamada",
+    "Count Calls Entry" => "Conteo llamadas entrantes",
+    "Calls/h" => "Llamadas/h",
+    "Time Call Entry" => "Tiempo Llamadas entrantes",
+    "Average Calls Entry" => "Media Llamadas entrantes",
+    "Porcent compare whit time not ready" => "Porcentaje de no-disponibilidad",
+    "Count" => "Conteo",
+    "Hour" => "Hora",
+    "Monitored" => "Monitoreadas",
+    "Unmonitored" => "No Monitoreadas",
+    "Monitored only" => "Sólo monitoredas",
+    "There aren't records to show" => "No hay registros para mostrar",
+    "Agent name" => "Nombre Agente",
+    "Agent Information" => "Información del Agente",
+);
+?>

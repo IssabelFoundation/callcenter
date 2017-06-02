@@ -1,0 +1,63 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Calls Detail" => "呼叫细节",
+    "Start Date" => "开始日期",
+    "End Date" => "结束日期",
+    "Start Time" => "开始时间",
+    "End Time" => "结束时间",
+    "Query" => "疑问",
+    "No.Agent" => "代理编号",
+    "Agent" => "代理编号",
+    "Queue" => "列对",
+    "Type" => "型号",
+    "Phone" => "电话",
+    "Column" => "专栏",
+    "Text" => "内容",
+    "Error" => "错误",
+    "Transfer" => "转移",
+    "Duration" => "持续时间",
+    "Total" => "总数",
+    "Status" => "状态",
+    "Success" => "成功",
+    "Abandoned" => "已放弃的呼叫",
+    "End Monitor" => "结束监控",
+    "Failure" => "失败",
+    "NoAnswer" => "无应答",
+    "OnQueue" => "排队",
+    "Placing" => "放置",
+    "Ringing" => "铃声响起",
+    "ShortCall" => "短时通话",
+    "Duration Wait" => "等待的时间",
+    "Error when connecting to database" => "连接数据库时出现错误",
+    "Debe ingresar una fecha" => "应输入任何数据",
+    "Debe ingresar una fecha valida" => "应输入有效的数字",
+);
+?>

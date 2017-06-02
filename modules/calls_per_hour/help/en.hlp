@@ -1,0 +1,13 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+<h1>{$node_name}</h1>
+<p align="Justify">This option shows the amount of accomplished incoming and outgoing calls. They are arranged by hours (24 hours) and queues so you can see the total of calls for a queue in a specific hour or all the hours, and the total of calls for an hour in a specific queue or all the queues. Use the filters to find more specific information (See Figure 1). You can download this report in different formats such as CSV, XLS and PDF.</p>
+
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/hlp_call_x_hour.png" border="0" />
+<p>Figure 1</p></div><br/>
+</body>
+</html>

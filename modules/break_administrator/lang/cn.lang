@@ -1,0 +1,51 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Name Break" => "名称",
+    "Description Break" => "描述",
+    "New Break" => "新暂停",
+    "View Break" => "查看暂停",
+    "Edit Break" => "编辑暂停",
+    "Active" => "可用",
+    "Inactive" => "不可用",
+    "Breaks List" => "暂停列表",
+    "Create New Break" => "新建暂停",
+    "Error when Activating the Break" => "激活暂停产生时出现错误",
+    "Activate Error" => "激活时错误",
+    "Break ID is not valid" => "暂停地址无效",
+    "Name Break can't be empty" => "暂停名称不能为空",
+    "Name Break already exists" => "暂停名称已经存在",
+    "Id Break is empty" => "暂停地址为空",
+    "Desactivate Error" => "终止时错误",
+    "Error when desactivating the Break" => "终止暂停时出现错误",
+    "Desactivate" => "终止",
+    "Activate" => "激活",
+);
+?>

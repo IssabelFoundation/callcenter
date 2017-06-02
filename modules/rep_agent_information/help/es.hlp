@@ -1,0 +1,15 @@
+<html>
+<header>
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+  <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+</header>
+<body>
+<h1>{$node_name}</h1>
+
+<p align="Justify">Esta opción muestra información acerca de la actividad de un agente en una cola. Aquí puede ver los detalles de los datos de conexión, llamadas entrantes, recesos y otra informacón respecto a la operación de un agente en una cola específica. Use el filtro para escoger el rango de fecha, el número de agente y la cola (Ver Figura 1).</p>
+
+<p>Usted puede descargar este reporte en diferentes formatos tales como CSV, XLS y PDF.</p>
+<div class="hlp_figures"><img src="../modules/{$node_id}/images/es_hlp_agent_info.png" border="0" />
+<p>Figura 1</p></div><br />
+</body>
+</html>

@@ -1,0 +1,53 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Name Break" => "Nombre",
+    "Description Break" => "Descripción",
+    "New Break" => "Nuevo Receso",
+    "View Break" => "Ver Receso",
+    "Edit Break" => "Editar Receso",
+    "Active" => "Activo",
+    "Inactive" => "Inactivo",
+    "Breaks List" => "Lista de Recesos",
+    "Create New Break" => "Crear Nuevo Receso",
+    "Error when Activating the Break" => "Error al activar el Receso",
+    "Activate Error" => "Error al Activar",
+    "Break ID is not valid" => "Id Receso no es válido",
+    "Name Break can't be empty" => "Nombre de Receso no puede ser vacío",
+    "Name Break already exists" => "Nombre de Receso ya existe",
+    "Id Break is empty" => "Id Receso esta Vacío",
+    "Desactivate Error" => "Error al Desactivar",
+    "Error when desactivating the Break" => "Error al desactivar el receso",
+    "Desactivate" => "Desactivar",
+    "Activate" => "Activar",
+    "Status" => "Estado",
+    "Apply Changes" => "Aplicar Cambios",
+);
+?>

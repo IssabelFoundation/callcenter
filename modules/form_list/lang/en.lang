@@ -1,0 +1,27 @@
+<?php
+global $arrLangModule;
+$arrLangModule=array(
+"Form List"=>"Form List",
+"Form Name" => "Name",
+"Form Description" => "Description",
+"Status"=>"Status",
+"Options"=>"Options",
+"List Item"=>"List Item",
+"Type"=>"Type",
+"Preview"=>"Preview",
+"All"=>"All",
+"Active"=>"Active",
+"Inactive"=>"Inactive",
+"Type Label"=>"Type Label",
+"Type Text"=>"Type Text",
+"Type List"=>"Type List",
+"Type Date"=>"Type Date",
+"Type Text Area"=>"Type Text Area",
+"View Form"=>"View Form",
+"Cancel"=>"Cancel",
+"Form"=>"Form",
+"Forms" => "Forms",
+);
+
+
+?>

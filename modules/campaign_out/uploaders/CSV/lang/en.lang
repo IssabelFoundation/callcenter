@@ -1,0 +1,75 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Elastix version 0.5                                                  |
+  | http://www.elastix.com                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
+  | Telfs. 2283-268, 2294-440, 2284-356                                  |
+  | Guayaquil - Ecuador                                                  |
+  | http://www.palosanto.com                                             |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Original Code is: Elastix Open Source.                           |
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+global $arrLangModule;
+$arrLangModule = array(
+    "Call File Encoding" => "Call File Encoding",
+    "Call File" => "Call File",
+    "Invalid character encoding" => "Invalid character encoding",
+    "Call file not specified or failed to be uploaded" => "Call file not specified or failed to be uploaded",
+    "Invalid CSV File" => "Invalid CSV File",
+    "Invalid CSV File Line" => "Invalid CSV File Line",
+    "Invalid number" => "Invalid number",
+    "UTF-8" => "UTF-8 - Universal",
+    "auto" => "Automatic (use with caution)",
+    "ISO-8859-1" => "ISO-8859-1 - Western Europe",
+    "ISO-8859-2" => "ISO-8859-2 - Western and Central Europe",
+    "ISO-8859-3" => "ISO-8859-3 - Western Europe and South European",
+    "ISO-8859-4" => "ISO-8859-4 - Western Europe and Baltic countries",
+    "ISO-8859-5" => "ISO-8859-5 - Cyrillic alphabet",
+    "ISO-8859-6" => "ISO-8859-6 - Arabic",
+    "ISO-8859-7" => "ISO-8859-7 - Greek",
+    "ISO-8859-8" => "ISO-8859-8 - Hebrew",
+    "ISO-8859-9" => "ISO-8859-9 - Western Europe + Turkey",
+    "ISO-8859-10" => "ISO-8859-10 - Western Europe + Nordic languages",
+    "ISO-8859-11" => "ISO-8859-11 - Thai",
+    "ISO-8859-13" => "ISO-8859-13 - Baltic languages + Polish",
+    "ISO-8859-14" => "ISO-8859-14 - Celtic languages",
+    "ISO-8859-15" => "ISO-8859-15 - ISO-8859-1 + Euro",
+    "ISO-8859-16" => "ISO-8859-16 - Central, Eastern and Southern European languages",
+    "EUC-JP" => "EUC-JP - Japanese, Korean, Simplified Chinese",
+    "eucJP-win" => "eucJP-win - Japanese, Korean, Simplified Chinese (Windows)",
+    "SJIS" => "Shift JIS - Japanese",
+    "SJIS-win" => "Shift JIS - Japanese (Windows)",
+    "JIS" => "JIS - Japanese",
+    "ISO-2022-JP" => "ISO-2022-JP - Japanese",
+    "Windows-1251" => "Windows-1251 - Cyrillic alphabet",
+    "Windows-1252" => "Windows-1252 - Western Europe",
+    "EUC-CN" => "EUC-CN - Simplified Chinese",
+    "CP936" => "CP936 - Chinese",
+    "HZ" => "HZ - Chinese",
+    "EUC-TW" => "EUC-TW - Chinese (Taiwan)",
+    "BIG-5" => "BIG-5 - Traditional Chinese",
+    "EUC-KR" => "EUC-KR - Korean",
+    "UHC" => "UHC - Korean",
+    "ISO-2022-KR" => "ISO-2022-KR - Korean",
+    "CP866" => "CP866 - Cyrillic alphabet",
+    "KOI8-R" => "KOI8-R - Russian",
+    "ArmSCII-8" => "ArmSCII-8 - Armenian",
+);
+?>
