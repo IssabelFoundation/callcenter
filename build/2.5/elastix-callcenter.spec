@@ -1,7 +1,7 @@
 %define modname callcenter
 
-Summary: Issabel Call Center
-Name:    issabel-callcenter
+Summary: Elastix Call Center
+Name:    elastix-callcenter
 Version: 2.2.0
 Release: 17
 License: GPL
@@ -10,13 +10,13 @@ Source0: %{modname}_%{version}-%{release}.tgz
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 BuildArch: noarch
 # TODO: usar getCurrentElastixModule() desde elastix-framework-2.4.0-3
-Requires(pre): issabel-framework >= 2.4.0-1
+Prereq: elastix-framework >= 2.4.0-1
 Requires: asterisk
-Requires: issabelPBX
+Requires: freePBX
 Requires: php-mbstring
 
 %description
-Issabel Call Center
+Elastix Call Center
 
 %prep
 %setup -n %{modname}
