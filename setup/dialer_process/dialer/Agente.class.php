@@ -295,12 +295,12 @@ class Agente
 
     public function resetTimeout() { $this->_ultima_actividad = time(); }
 
-    public function setBreak($ami, $id_break, $id_audit_break)
+    public function setBreak($ami, $id_break, $id_audit_break, $nombre_pausa)
     {
         if (!is_null($id_break) && !is_null($id_audit_break)) {
             $this->_id_break = (int)$id_break;
             $this->_id_audit_break = (int)$id_audit_break;
-            $this->_incrementarPausas($ami);
+            $this->_incrementarPausas($ami,$id_break, $nombre_pausa); 
         }
         $this->resetTimeout();
     }
@@ -345,7 +345,7 @@ class Agente
         if (!is_null($id_hold) && !is_null($id_audit_hold)) {
             $this->_id_hold = (int)$id_hold;
             $this->_id_audit_hold = (int)$id_audit_hold;
-            $this->_incrementarPausas($ami);
+            $this->_incrementarPausas($ami,$id_hold,'Hold');
             if (!is_null($this->_llamada))
                 $this->_llamada->request_hold = TRUE;
         }
@@ -365,11 +365,11 @@ class Agente
         $this->resetTimeout();
     }
 
-    private function _incrementarPausas($ami)
+    private function _incrementarPausas($ami,$reason,$nombre_pausa)
     {
         $this->_num_pausas++;
         if ($this->_num_pausas == 1 && count($this->colas_actuales) > 0) {
-            $this->asyncQueuePause($ami, TRUE);
+            $this->asyncQueuePause($ami, TRUE, NULL, $nombre_pausa);
         }
     }
 
@@ -383,12 +383,12 @@ class Agente
         }
     }
 
-    public function asyncQueuePause($ami, $nstate, $queue = NULL)
+    public function asyncQueuePause($ami, $nstate, $queue = NULL, $reason = '')
     {
         $ami->asyncQueuePause(
             array($this, '_cb_QueuePause'),
             array($this->channel, $nstate),
-            $queue, $this->channel, $nstate);
+            $queue, $this->channel, $nstate, $reason);
     }
 
     public function iniciarLoginAgente($sExtension)

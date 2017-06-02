@@ -1278,7 +1278,7 @@ class AMIEventProcess extends TuberiaProcess
             $this->_log->output('DEBUG: '.__METHOD__.' recibido: '.print_r($datos, 1));
         }
 
-        list($sAgente, $idBreak, $idAuditBreak) = $datos;
+        list($sAgente, $idBreak, $idAuditBreak, $nombrePausa) = $datos;
         $r = array(0, '');
         $a = $this->_listaAgentes->buscar('agentchannel', $sAgente);
         if (is_null($a)) {
@@ -1288,7 +1288,7 @@ class AMIEventProcess extends TuberiaProcess
         } elseif (!is_null($a->id_break)) {
             $r = array(417, 'Agent already in break');
         } else {
-            $a->setBreak($this->_ami, $idBreak, $idAuditBreak);
+            $a->setBreak($this->_ami, $idBreak, $idAuditBreak, $nombrePausa);
         }
         $this->_tuberia->enviarRespuesta($sFuente, $r);
     }

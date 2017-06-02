@@ -1693,7 +1693,7 @@ LEER_CAMPANIA;
         // Se comunica a AMIEventProcess la pausa elegida para que la inicie.
         // Esto puede fallar si el estado del agente ha cambiado.
         list($errcode, $errdesc) = $this->_tuberia->AMIEventProcess_iniciarBreakAgente(
-            $sAgente, $idBreak, $idAuditBreak);
+            $sAgente, $idBreak, $idAuditBreak, $tupla['name']);
         if ($errcode != 0) {
             // Ha fallado el inicio de pausa, se deshace auditoría
             try {

@@ -154,7 +154,9 @@ class AMIClientConn extends MultiplexConn
             array(),
         'QueuePause' =>
             array('Queue' => FALSE, 'Interface' => TRUE,
-                'Paused' => array('required' => FALSE, 'default' => TRUE, 'cast' => 'bool')),
+                'Paused' => array('required' => FALSE, 'default' => TRUE, 'cast' => 'bool'),
+                'Reason' => array('required' => FALSE, 'default' => '')
+                ),
         'QueueStatus' =>
             array('Queue' => FALSE, 'ActionID' => FALSE),
         'Redirect' =>
