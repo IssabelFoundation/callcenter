@@ -7,7 +7,7 @@ Objetivo
 --------
 El protocolo ECCP es un protocolo basado en XML cuya finalidad es la de proveer 
 de un API de comunicaciones a través de un puerto TCP para que aplicaciones externas
-puedan comunicarse con el motor de call center que provee Elastix.
+puedan comunicarse con el motor de call center que provee Issabel.
 
 La carencia de un mecanismo de comunicación entre el motor de call center y las 
 aplicaciones cliente, que permita la transmisión de eventos asincrónicos, fue una 
@@ -24,7 +24,7 @@ En la mayor parte de este documento, cuando se refiera a “atributos” y “el
 estos términos estarán relacionados con su definición dentro del lenguaje XML.
 
 Cuando se mencione la palabra servidor (a secas) se estará haciendo referencia al 
-servidor de call center, que viene junto con el módulo de call center de Elastix. 
+servidor de call center, que viene junto con el módulo de call center de Issabel. 
 Este programa también recibe el nombre de “dialerd”.
 
 Toda fecha tendrá formato yyyy-mm-dd y todo hora tendrá formato hh:mm:ss. La zona
@@ -32,7 +32,7 @@ horaria con la que se opera es siempre la que se ha configurado en el servidor
 que ejecuta el programa dialerd. 
 
 La palabra 'CallCenter' (sensitiva a mayusculas) se utilizará para referirse
-al módulo CallCenter de Elastix.
+al módulo CallCenter de Issabel.
 
 Arquitectura
 ------------
@@ -112,12 +112,12 @@ lugar de tres.
 
 En un futuro nos referirnos a esta aplicación intermediara como *servidor de 
 concurrencia*. Un servidor de concurrencia es útil en varios sentidos. Uno de
-ellos es que se liberan recursos del servidor Elastix, pues el servidor de 
-concurrencia puede estar instalado en un equipo remoto. El servidor Elastix ya 
+ellos es que se liberan recursos del servidor Issabel, pues el servidor de 
+concurrencia puede estar instalado en un equipo remoto. El servidor Issabel ya 
 no tiene que encargarse de gestionar las sesiones para las aplicaciones 'cliente'.
 
 El servidor de concurrencia también puede servir de servidor de caché para 
-descongestionar los requerimientos al servidor Elastix. Por ejemplo, podría hacer 
+descongestionar los requerimientos al servidor Issabel. Por ejemplo, podría hacer 
 caché de información de las campañas. 
 
 Consideraciones de seguridad
@@ -313,7 +313,7 @@ Un agente estático tiene un número asociado, que es independiente de la
 extensión telefónica usada para hacer uso de este agente. Por ejemplo, una cola
 puede tener un agente 9000, el cual es usado por la extensión 1064. Para que una
 extensión haga uso de un agente estático, debe de completar el procedimiento de
-'login' a la cola. En Elastix, se ha configurado el número *8888 como login de
+'login' a la cola. En Issabel, se ha configurado el número *8888 como login de
 cola arbitraria. Al marcar este número, la extensión oye una grabación para 
 ingresar el número de agente que se va a usar. Luego de digitado, se reproduce 
 otra grabación para que ingrese la contraseña del agente. Si se digita 

@@ -1,7 +1,7 @@
 Soporte para mecanismos personalizados de carga de contactos
 ------------------------------------------------------------
 
-Como parte de la integración de Elastix CallCenter al flujo de trabajo de un
+Como parte de la integración de Issabel CallCenter al flujo de trabajo de un
 cliente, algunas veces resulta necesario alimentar los contactos para una
 campaña saliente a partir de una fuente de datos distinta a un archivo CSV. Por
 ejemplo, contactos que son resultado de una consulta a una base de datos externa,
@@ -80,9 +80,9 @@ uploader_action se usa para construir el nombre del método handleJSON_ACCION. A
 pesar de lo que sugiere el nombre, la función puede devolver como resultado
 cualquier contenido requerido, en cualquier formato generable. La función tiene
 la responsabilidad de llamar a Header() con el parámetro "Content-Type" adecuado
-al tipo de contenido generado. De acuerdo al estándar del framework Elastix, se
+al tipo de contenido generado. De acuerdo al estándar del framework Issabel, se
 debe incluir en la petición el parámetro "rawmode=yes" para que no se envuelva
-el resultado en el HTML de los menús de Elastix. El valor de "id_campaign" es
+el resultado en el HTML de los menús de Issabel. El valor de "id_campaign" es
 obligatorio y se puede obtener del control con nombre "id_campaign". Con jQuery,
 se puede obtener el valor con la expresión: $('input[name="id_campaign"]').val() .
 

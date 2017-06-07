@@ -72,7 +72,7 @@ para construir el nombre del método handleJSON_ACCION. A pesar de lo que sugier
 el nombre, la función puede devolver como resultado cualquier contenido requerido,
 en cualquier formato generable. La función tiene la responsabilidad de llamar
 a Header() con el parámetro "Content-Type" adecuado al tipo de contenido generado.
-De acuerdo al estándar del framework Elastix, se debe incluir en la petición el
+De acuerdo al estándar del framework Issabel, se debe incluir en la petición el
 parámetro "rawmode=yes" para que no se envuelva el resultado en el HTML de los
-menús de Elastix.
+menús de Issabel.
 

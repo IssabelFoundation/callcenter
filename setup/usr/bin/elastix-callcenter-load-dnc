@@ -10,7 +10,7 @@ require_once "modules/dont_call_list/configs/default.conf.php";
 require_once "modules/dont_call_list/libs/paloSantoDontCall.class.php";
 
 if (count($argv) < 2) {
-    fputs(STDERR, "Do Not Call List bulk uploader for Elastix Callcenter.\n\n".
+    fputs(STDERR, "Do Not Call List bulk uploader for Issabel Callcenter.\n\n".
         "{$argv[0]} /path/to/csv/file\n\n");
     exit(1);
 }

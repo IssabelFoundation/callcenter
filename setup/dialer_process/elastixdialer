@@ -7,7 +7,7 @@
 #   con privilegios de usuario normal (no root)
 #
 #   chkconfig: 2345 91 19
-#   description: Elastix Dialer
+#   description: IssabelDialer
 #
 
 # Biblioteca de funciones de scripts
@@ -21,7 +21,7 @@ fi
 
 # Los siguientes parametros deben de configurarse segn el demonio
 DAEMON=dialerd
-PROGRAMA="Elastix Dialer"
+PROGRAMA="Issabel Dialer"
 DIR_TRABAJO=/opt/elastix/dialer
 USUARIO=asterisk
 

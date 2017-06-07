@@ -223,8 +223,8 @@ function instalarContextosEspeciales()
         $contenido[] =
 '
 [llamada_agendada]
-exten => _X.,1,NoOP("Elastix CallCenter: AGENTCHANNEL=${AGENTCHANNEL}")
-exten => _X.,n,NoOP("Elastix CallCenter: QUEUE_MONITOR_FORMAT=${QUEUE_MONITOR_FORMAT}")
+exten => _X.,1,NoOP("Issabel CallCenter: AGENTCHANNEL=${AGENTCHANNEL}")
+exten => _X.,n,NoOP("Issabel CallCenter: QUEUE_MONITOR_FORMAT=${QUEUE_MONITOR_FORMAT}")
 exten => _X.,n,GotoIf($["${QUEUE_MONITOR_FORMAT}" = ""]?skiprecord)
 exten => _X.,n,Set(CALLFILENAME=${STRFTIME(${EPOCH},,%Y%m%d-%H%M%S)}-${UNIQUEID})
 exten => _X.,n,MixMonitor(${MIXMON_DIR}${CALLFILENAME}.${MIXMON_FORMAT},,${MIXMON_POST})

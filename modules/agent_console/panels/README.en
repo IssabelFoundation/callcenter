@@ -69,5 +69,5 @@ The "ACTION" string is used to build the functionname handleJSON_ACTION. Despite
 what the prefix suggests, the function may return any required string content,
 in any format that can be generated. The function is responsible to call the
 Header() function to set Content-Type as necessary to match the intented output
-format. According to the Elastix framework standard, the request must also include
-"rawmode=yes" as a parameter to switch off the output of the Elastix HTML menus.
+format. According to the Issabel framework standard, the request must also include
+"rawmode=yes" as a parameter to switch off the output of the Issabel HTML menus.
