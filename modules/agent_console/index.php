@@ -37,7 +37,7 @@ function _moduleContent(&$smarty, $module_name)
     global $arrConf;
     global $arrLang;
 
-    require_once "modules/$module_name/libs/elastix2.lib.php";
+    require_once "modules/$module_name/libs/issabel2.lib.php";
     require_once "modules/$module_name/libs/paloSantoConsola.class.php";
     require_once "modules/$module_name/configs/default.conf.php";
     require_once "modules/$module_name/libs/JSON.php";

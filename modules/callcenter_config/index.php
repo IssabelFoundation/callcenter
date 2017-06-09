@@ -27,7 +27,7 @@
   +----------------------------------------------------------------------+
   $Id: default.conf.php,v 1.1 2008-09-03 01:09:56 Alex Villacís Lasso Exp $ */
 
-require_once "modules/agent_console/libs/elastix2.lib.php";
+require_once "modules/agent_console/libs/issabel2.lib.php";
 
 function _moduleContent(&$smarty, $module_name)
 {

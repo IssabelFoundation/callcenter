@@ -32,7 +32,7 @@ require_once "libs/paloSantoDB.class.php";
 require_once "libs/paloSantoGrid.class.php";
 require_once "libs/misc.lib.php";
 
-require_once "modules/agent_console/libs/elastix2.lib.php";
+require_once "modules/agent_console/libs/issabel2.lib.php";
 
 function _moduleContent(&$smarty, $module_name)
 {  

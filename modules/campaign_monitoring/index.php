@@ -28,7 +28,7 @@
   $Id: default.conf.php,v 1.1.1.1 2007/03/23 00:13:58 elandivar Exp $ */
 
 
-require_once "modules/agent_console/libs/elastix2.lib.php";
+require_once "modules/agent_console/libs/issabel2.lib.php";
 require_once "modules/agent_console/libs/JSON.php";
 require_once "modules/agent_console/libs/paloSantoConsola.class.php";
 
