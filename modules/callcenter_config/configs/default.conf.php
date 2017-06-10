@@ -30,5 +30,5 @@
         $arrConfig['module_name'] = 'callcenter_config';
         $arrConfig['templates_dir'] = 'themes';
         $arrConfig['cadena_dsn'] = "mysql://asterisk:asterisk@localhost/call_center";
-        $arrConfig['pid_dialer'] = "/opt/elastix/dialer/dialerd.pid";
+        $arrConfig['pid_dialer'] = "/opt/issabel/dialer/dialerd.pid";
 ?>

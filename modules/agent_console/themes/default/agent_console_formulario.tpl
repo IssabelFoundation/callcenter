@@ -1,12 +1,12 @@
 {* Definición de las cejillas de información/script/formulario *}
-<div id="elastix-callcenter-cejillas-formulario">
+<div id="issabel-callcenter-cejillas-formulario">
    <ul>
 {foreach from=$FORMS key=ID_FORM item=FORM}
-       <li><a href="#elastix-callcenter-formulario-{$ID_FORM}">{$FORM.name}</a></li>
+       <li><a href="#issabel-callcenter-formulario-{$ID_FORM}">{$FORM.name}</a></li>
 {/foreach}
    </ul>
 {foreach from=$FORMS key=ID_FORM item=FORM}
-   <div id="elastix-callcenter-formulario-{$ID_FORM}">
+   <div id="issabel-callcenter-formulario-{$ID_FORM}">
     <table border="0" cellpadding="0">
             <tr>
                 <th colspan="2">{$FORM.description|escape:"html"}</th>
@@ -21,17 +21,17 @@
 {html_options
     name="field-`$ID_FORM`-`$FIELD.id`"
     id="field-`$ID_FORM`-`$FIELD.id`"
-    class="elastix-callcenter-field ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+    class="issabel-callcenter-field ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
     output=$FIELD.options
     values=$FIELD.options
     selected=$FIELD.current_value}
 {elseif $FIELD.type eq "DATE"}
-{* Depende de ejecutar datepicker sobre .elastix-callcenter-field-date *}
+{* Depende de ejecutar datepicker sobre .issabel-callcenter-field-date *}
 <input
     type="text"
     name="field-{$ID_FORM}-{$FIELD.id}"
     id="field-{$ID_FORM}-{$FIELD.id}"
-    class="elastix-callcenter-field elastix-callcenter-field-date ui-widget-content ui-corner-all"
+    class="issabel-callcenter-field issabel-callcenter-field-date ui-widget-content ui-corner-all"
     value="{if $FIELD.current_value == ''}{$FIELD.default_value|escape:"html"}{else}{$FIELD.current_value|escape:"html"}{/if}" />
 {elseif $FIELD.type eq "LABEL"}
                 <label>{$FIELD.label|escape:"html"}</label>
@@ -41,7 +41,7 @@
     id="field-{$ID_FORM}-{$FIELD.id}"
     rows="3" cols="50"
     maxlength="{$FIELD.maxsize}"
-    class="elastix-callcenter-field ui-widget-content ui-corner-all">{if $FIELD.current_value == ''}{$FIELD.default_value|escape:"html"}{else}{$FIELD.current_value|escape:"html"}{/if}</textarea>
+    class="issabel-callcenter-field ui-widget-content ui-corner-all">{if $FIELD.current_value == ''}{$FIELD.default_value|escape:"html"}{else}{$FIELD.current_value|escape:"html"}{/if}</textarea>
 {else}
 <input
     type="text"
@@ -49,7 +49,7 @@
     id="field-{$ID_FORM}-{$FIELD.id}"
     size="{if $FIELD.maxsize > 64}64{else}{$FIELD.maxsize}{/if}"
     maxlength="{$FIELD.maxsize}"
-    class="elastix-callcenter-field ui-widget-content ui-corner-all"
+    class="issabel-callcenter-field ui-widget-content ui-corner-all"
     value="{if $FIELD.current_value == ''}{$FIELD.default_value|escape:"html"}{else}{$FIELD.current_value|escape:"html"}{/if}" />
 {/if}
                 </td>
@@ -58,4 +58,4 @@
     </table>
    </div>
 {/foreach}{* from=$FORMS *}
-</div>{* elastix-callcenter-cejillas-formulario *}
+</div>{* issabel-callcenter-cejillas-formulario *}

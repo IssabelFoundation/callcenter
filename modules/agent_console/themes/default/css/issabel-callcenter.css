@@ -1,11 +1,11 @@
-#elastix-callcenter-area-principal {
+#issabel-callcenter-area-principal {
     position: relative;
     left: 0;
     right: 0;
     padding: 0;
 }
 
-#elastix-callcenter-titulo-consola {
+#issabel-callcenter-titulo-consola {
 	position: relative;
     left: 0;
     right: 0;
@@ -14,7 +14,7 @@
     padding: 0 0 0 0;
 }
 
-#elastix-callcenter-estado-agente {
+#issabel-callcenter-estado-agente {
     position: relative;
     left: 0;
     width: 100%;
@@ -25,45 +25,45 @@
     font-weight: bold;
 }
 
-#elastix-callcenter-estado-agente-texto {
+#issabel-callcenter-estado-agente-texto {
     position: absolute;
     top: 0;
     left: 0;
     padding: 0;
 }
 
-#elastix-callcenter-cronometro {
+#issabel-callcenter-cronometro {
     position: absolute;
     top: 0;
     right: 0;
     padding: 0;
 }
 
-.elastix-callcenter-class-estado-ocioso {
+.issabel-callcenter-class-estado-ocioso {
     background-color: #094895;
 }
-.elastix-callcenter-class-estado-esperando {
+.issabel-callcenter-class-estado-esperando {
     background-color: #75507b;
 }
-.elastix-callcenter-class-estado-activo {
+.issabel-callcenter-class-estado-activo {
     background-color: #06640D;
 }
-.elastix-callcenter-class-estado-break {
+.issabel-callcenter-class-estado-break {
     background-color: #BD0000;
 }
 
-td.elastix-callcenter-class-estado-esperando,
-td.elastix-callcenter-class-estado-activo {
+td.issabel-callcenter-class-estado-esperando,
+td.issabel-callcenter-class-estado-activo {
     background-image: none;
     color: #ffffff;
 }
 
-#elastix-callcenter-wrap {
+#issabel-callcenter-wrap {
     position: relative;
     height: 408pt;
 }
 
-#elastix-callcenter-controles {
+#issabel-callcenter-controles {
     position: absolute;
     padding: 3pt;
     left: 0;
@@ -73,7 +73,7 @@ td.elastix-callcenter-class-estado-activo {
     display: inline-block;
 }
 
-#elastix-callcenter-contenido {
+#issabel-callcenter-contenido {
     position: absolute;
     padding: 0;
     height: 380pt;
@@ -83,7 +83,7 @@ td.elastix-callcenter-class-estado-activo {
     top: 28pt;
 }
 
-#elastix-callcenter-cejillas-contenido {
+#issabel-callcenter-cejillas-contenido {
     position: absolute;
     left: 0;
     top: 0;
@@ -92,30 +92,30 @@ td.elastix-callcenter-class-estado-activo {
     padding: 0;
     overflow: auto;
 }
-#elastix-callcenter-cejillas-contenido label {
+#issabel-callcenter-cejillas-contenido label {
     font-weight: bold;
 }
 
-.elastix-callcenter-barra-llamada {
+.issabel-callcenter-barra-llamada {
     padding: 0;
     display: inline-block;
 }
 
-.elastix-callcenter-boton-activo {
+.issabel-callcenter-boton-activo {
 /*
     width: 95pt;
     height: 30pt;
 */
 }
 
-.elastix-callcenter-boton-break {
+.issabel-callcenter-boton-break {
 /*
     width: 95pt;
     height: 30pt;
     background-color:#094895;
 */
 }
-.elastix-callcenter-boton-unbreak {
+.issabel-callcenter-boton-unbreak {
 /*
     width: 95pt;
     height: 30pt;
@@ -123,28 +123,28 @@ td.elastix-callcenter-class-estado-activo {
 */
 }
 
-#elastix-callcenter-llamada-paneles {
+#issabel-callcenter-llamada-paneles {
     position: relative;
     height: 32em;
     padding: 0;
 }
-#elastix-callcenter-llamada-paneles > div {
+#issabel-callcenter-llamada-paneles > div {
     position: relative;
 }
-#elastix-callcenter-llamada-paneles > div fieldset {
+#issabel-callcenter-llamada-paneles > div fieldset {
     margin: 0;
     padding-top: 1.25em;
     padding-bottom: 0.5em;
     padding-left: 0.5em;
     padding-right: 0.5em;
 }
-#elastix-callcenter-llamada-paneles > div#elastix-callcenter-llamada-paneles-izq  > div
+#issabel-callcenter-llamada-paneles > div#issabel-callcenter-llamada-paneles-izq  > div
 {
 
 }
 
-#elastix-callcenter-llamada-paneles > div > fieldset,
-#elastix-callcenter-llamada-paneles > div#elastix-callcenter-llamada-paneles-izq  > div > fieldset{
+#issabel-callcenter-llamada-paneles > div > fieldset,
+#issabel-callcenter-llamada-paneles > div#issabel-callcenter-llamada-paneles-izq  > div > fieldset{
     overflow: auto;
     position: absolute;
     top: 0.25em;
@@ -153,8 +153,8 @@ td.elastix-callcenter-class-estado-activo {
     right: 0.5em;
 }
 
-#elastix-callcenter-llamada-paneles > div > fieldset > div,
-#elastix-callcenter-llamada-paneles > div#elastix-callcenter-llamada-paneles-izq  > div > fieldset > div {
+#issabel-callcenter-llamada-paneles > div > fieldset > div,
+#issabel-callcenter-llamada-paneles > div#issabel-callcenter-llamada-paneles-izq  > div > fieldset > div {
     overflow: auto;
     position: absolute;
     top: 1.25em;

@@ -199,8 +199,8 @@ EXISTE_INDICE;
 function instalarContextosEspeciales()
 {
 	$sArchivo = '/etc/asterisk/extensions_custom.conf';
-    $sInicioContenido = "; BEGIN ELASTIX CALL-CENTER CONTEXTS DO NOT REMOVE THIS LINE\n";
-    $sFinalContenido =  "; END ELASTIX CALL-CENTER CONTEXTS DO NOT REMOVE THIS LINE\n";
+    $sInicioContenido = "; BEGIN ISSABEL CALL-CENTER CONTEXTS DO NOT REMOVE THIS LINE\n";
+    $sFinalContenido =  "; END ISSABEL CALL-CENTER CONTEXTS DO NOT REMOVE THIS LINE\n";
 
     // Cargar el archivo, notando el inicio y el final del área de contextos de callcenter
     $bEncontradoInicio = $bEncontradoFinal = FALSE;

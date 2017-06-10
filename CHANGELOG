@@ -958,7 +958,7 @@
 * CHANGED: Form Designer: switch incorrect use of list control on button strip
   with proper dropdown filter. Add filter control.
 * FIXED: Incoming Calls Monitoring: explictly require paloSantoGrid class which
-  has been previously included via spl_elastix_class_autoload and therefore
+  has been previously included via spl_issabel_class_autoload and therefore
   fails to load in elastix-framework earlier than 2.4.0-7.
 * CHANGED: Update minimum elastix-framework to 2.4.0-7 or later.
 * CHANGED: Form Designer: add placeholder content for new field name.

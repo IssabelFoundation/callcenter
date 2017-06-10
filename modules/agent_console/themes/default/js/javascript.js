@@ -37,9 +37,9 @@ var externalurl = null;
 var externalurl_title = null;
 
 $(document).ready(function() {
-    $('#elastix-callcenter-error-message').hide();
-    $('#elastix-callcenter-info-message').hide();
-    $('#elastix-callcenter-agendar-llamada-error-message').hide();
+    $('#issabel-callcenter-error-message').hide();
+    $('#issabel-callcenter-info-message').hide();
+    $('#issabel-callcenter-agendar-llamada-error-message').hide();
 
     $('#label_extension_callback').hide();
     $('#input_extension_callback').hide();
@@ -59,7 +59,7 @@ $(document).ready(function() {
     $('#transfer_type_radio').buttonset();
     $('#btn_guardar_formularios').button();
     $('#schedule_date').hide();
-    $('#elastix-callcenter-cejillas-contenido').tabs({
+    $('#issabel-callcenter-cejillas-contenido').tabs({
         // Este evento sólo se dispara para jQueryUI < 1.9.0
         add:    function (event, ui) {
             if (externalurl != null)
@@ -90,9 +90,9 @@ $(document).ready(function() {
         }
     }
 
-    if ($('#elastix-callcenter-llamada-paneles').length > 0) {
-        $('#elastix-callcenter-llamada-paneles').layout({fxName: 'none', west: { size: 300 }});
-        $('#elastix-callcenter-llamada-paneles-izq').layout({fxName: 'none', south: { size: 250 }});
+    if ($('#issabel-callcenter-llamada-paneles').length > 0) {
+        $('#issabel-callcenter-llamada-paneles').layout({fxName: 'none', west: { size: 300 }});
+        $('#issabel-callcenter-llamada-paneles-izq').layout({fxName: 'none', south: { size: 250 }});
     }
 
     // Operaciones que deben de repetirse al obtener formulario vía AJAX
@@ -104,11 +104,11 @@ $(document).ready(function() {
 
     // El siguiente código se ejecuta al hacer click en el botón de break
     $('#btn_togglebreak').click(function() {
-    	if ($('#btn_togglebreak').hasClass('elastix-callcenter-boton-unbreak')) {
+    	if ($('#btn_togglebreak').hasClass('issabel-callcenter-boton-unbreak')) {
     		do_unbreak();
     	} else {
     		// Botón está en estado de elegir break
-    		$('#elastix-callcenter-seleccion-break').dialog('open');
+    		$('#issabel-callcenter-seleccion-break').dialog('open');
     	}
     });
 
@@ -116,10 +116,10 @@ $(document).ready(function() {
     $('#btn_guardar_formularios').click(do_save_forms);
 
     $('#btn_transfer').click(function() {
-		$('#elastix-callcenter-seleccion-transfer').dialog('open');
+		$('#issabel-callcenter-seleccion-transfer').dialog('open');
     });
     $('#btn_agendar_llamada').click(function() {
-		$('#elastix-callcenter-agendar-llamada').dialog('open');
+		$('#issabel-callcenter-agendar-llamada').dialog('open');
     });
 
     // El siguiente código se ejecuta al presionar el botón de VTiger
@@ -189,8 +189,8 @@ $(window).unload(function() {
 
 function apply_form_styles()
 {
-    $('#elastix-callcenter-cejillas-formulario').tabs();
-    $('.elastix-callcenter-field-date').datepicker({
+    $('#issabel-callcenter-cejillas-formulario').tabs();
+    $('.issabel-callcenter-field-date').datepicker({
     	showOn:			'both',
     	buttonImage:	'images/calendar.gif',
     	buttonImageOnly: true,
@@ -227,7 +227,7 @@ function iniciar_cronometro(timer_seconds)
 		timer = null;
 	}
 	fechaInicio = null;
-	$('#elastix-callcenter-cronometro').text('00:00:00');
+	$('#issabel-callcenter-cronometro').text('00:00:00');
 
 	// Iniciar el estado nuevo, si es válido
 	if (timer_seconds != null) {
@@ -250,7 +250,7 @@ function actualizar_cronometro()
 	tiempo[1] %= 60;
 	var i = 0;
 	for (i = 0; i < 3; i++) { if (tiempo[i] <= 9) tiempo[i] = "0" + tiempo[i]; }
-	$('#elastix-callcenter-cronometro').text(tiempo[2] + ':' + tiempo[1] + ':' + tiempo[0]);
+	$('#issabel-callcenter-cronometro').text(tiempo[2] + ':' + tiempo[1] + ':' + tiempo[0]);
 	timer = setTimeout(actualizar_cronometro, 500);
 }
 
@@ -275,7 +275,7 @@ function apply_ui_styles(uidata)
         $('#btn_guardar_formularios').button('disable');
     }
     schedule_call_error_msg_missing_date = uidata.schedule_call_error_msg_missing_date;
-    $('#elastix-callcenter-seleccion-break').dialog({
+    $('#issabel-callcenter-seleccion-break').dialog({
         autoOpen: false,
         width: 300,
         height: 150,
@@ -291,7 +291,7 @@ function apply_ui_styles(uidata)
             }
         ]
     });
-    $('#elastix-callcenter-seleccion-transfer').dialog({
+    $('#issabel-callcenter-seleccion-transfer').dialog({
         autoOpen: false,
         width: 400,
         height: 200,
@@ -307,7 +307,7 @@ function apply_ui_styles(uidata)
             }
         ]
     });
-    $('#elastix-callcenter-agendar-llamada').dialog({
+    $('#issabel-callcenter-agendar-llamada').dialog({
         autoOpen: false,
         width: 700,
         height: 350,
@@ -565,10 +565,10 @@ function do_schedule()
 	if ($('#schedule_type_bydate').is(':checked') &&
 		($('#schedule_date_start').datepicker('getDate') == null || $('#schedule_date_end').datepicker('getDate') == null )) {
 
-		$('#elastix-callcenter-agendar-llamada-error-message-text').text(schedule_call_error_msg_missing_date);
-		$('#elastix-callcenter-agendar-llamada-error-message').show('slow', 'linear', function() {
+		$('#issabel-callcenter-agendar-llamada-error-message-text').text(schedule_call_error_msg_missing_date);
+		$('#issabel-callcenter-agendar-llamada-error-message').show('slow', 'linear', function() {
 			setTimeout(function() {
-				$('#elastix-callcenter-agendar-llamada-error-message').fadeOut();
+				$('#issabel-callcenter-agendar-llamada-error-message').fadeOut();
 			}, 5000);
 		});
 		return false;
@@ -609,7 +609,7 @@ function do_save_forms()
 		menu:		module_name,
 		rawmode:	'yes',
 		action:		'saveforms',
-		data:		$('.elastix-callcenter-field').map(function() {
+		data:		$('.issabel-callcenter-field').map(function() {
 						return [[this.id, $(this).val()]];
 					}).get()
 	},
@@ -674,13 +674,13 @@ function manejarRespuestaStatus(respuesta)
 {
 	for (var i in respuesta) {
 		if (respuesta[i].txt_estado_agente_inicial != null)
-			$('#elastix-callcenter-estado-agente-texto').text(respuesta[i].txt_estado_agente_inicial);
+			$('#issabel-callcenter-estado-agente-texto').text(respuesta[i].txt_estado_agente_inicial);
 		if (respuesta[i].class_estado_agente_inicial != null)
-			$('#elastix-callcenter-estado-agente')
-				.removeClass('elastix-callcenter-class-estado-ocioso')
-				.removeClass('elastix-callcenter-class-estado-break')
-				.removeClass('elastix-callcenter-class-estado-activo')
-				.removeClass('elastix-callcenter-class-estado-esperando')
+			$('#issabel-callcenter-estado-agente')
+				.removeClass('issabel-callcenter-class-estado-ocioso')
+				.removeClass('issabel-callcenter-class-estado-break')
+				.removeClass('issabel-callcenter-class-estado-activo')
+				.removeClass('issabel-callcenter-class-estado-esperando')
 				.addClass(respuesta[i].class_estado_agente_inicial);
 		if (respuesta[i].timer_seconds != null) {
 			if (respuesta[i].timer_seconds !== '') {
@@ -699,16 +699,16 @@ function manejarRespuestaStatus(respuesta)
 			// El agente ha entrado en break
 			estadoCliente.break_id = respuesta[i].break_id;
 			$('#btn_togglebreak')
-				.removeClass('elastix-callcenter-boton-break')
-				.addClass('elastix-callcenter-boton-unbreak')
+				.removeClass('issabel-callcenter-boton-break')
+				.addClass('issabel-callcenter-boton-unbreak')
 				.children('span').text(respuesta[i].txt_btn_break);
 			break;
 		case 'breakexit':
 			// El agente ha salido del break
 			estadoCliente.break_id = null;
 			$('#btn_togglebreak')
-				.removeClass('elastix-callcenter-boton-unbreak')
-				.addClass('elastix-callcenter-boton-break')
+				.removeClass('issabel-callcenter-boton-unbreak')
+				.addClass('issabel-callcenter-boton-break')
 				.children('span').text(respuesta[i].txt_btn_break);
 			break;
 		case 'holdenter':
@@ -726,15 +726,15 @@ function manejarRespuestaStatus(respuesta)
 			estadoCliente.callid = respuesta[i].callid;
 			$('#btn_hangup').button('enable');
 			$('#btn_transfer').button('enable');
-			$('#elastix-callcenter-cronometro').text(respuesta[i].cronometro);
-			$('#elastix-callcenter-llamada-info')
+			$('#issabel-callcenter-cronometro').text(respuesta[i].cronometro);
+			$('#issabel-callcenter-llamada-info')
 			    .css('color', '')
 				.empty()
 				.append(respuesta[i].llamada_informacion);
-			$('#elastix-callcenter-llamada-script')
+			$('#issabel-callcenter-llamada-script')
 				.empty()
 				.append(respuesta[i].llamada_script);
-			$('#elastix-callcenter-llamada-form')
+			$('#issabel-callcenter-llamada-form')
 				.empty()
 				.append(respuesta[i].llamada_formulario);
 			$('#llamada_entrante_contacto_telefono, #llamada_saliente_contacto_telefono')
@@ -771,11 +771,11 @@ function manejarRespuestaStatus(respuesta)
 	        if (l_calltype == 'incoming') {
 	            $('#btn_agendar_llamada').button('disable');
 	        }
-	        $('#elastix-callcenter-cronometro').text('00:00:00');
+	        $('#issabel-callcenter-cronometro').text('00:00:00');
 
 	        // Vaciar las áreas para la llamada
-			$('#elastix-callcenter-llamada-script').empty();
-			$('#elastix-callcenter-llamada-info').css("color", "#778899");
+			$('#issabel-callcenter-llamada-script').empty();
+			$('#issabel-callcenter-llamada-info').css("color", "#778899");
 			break;
 		case 'waitingenter':
 			estadoCliente.waitingcall = true;
@@ -789,20 +789,20 @@ function manejarRespuestaStatus(respuesta)
 
 function mostrar_mensaje_info(s)
 {
-	$('#elastix-callcenter-info-message-text').text(s);
-	$('#elastix-callcenter-info-message').show('slow', 'linear', function() {
+	$('#issabel-callcenter-info-message-text').text(s);
+	$('#issabel-callcenter-info-message').show('slow', 'linear', function() {
 		setTimeout(function() {
-			$('#elastix-callcenter-info-message').fadeOut();
+			$('#issabel-callcenter-info-message').fadeOut();
 		}, 5000);
 	});
 }
 
 function mostrar_mensaje_error(s)
 {
-	$('#elastix-callcenter-error-message-text').text(s);
-	$('#elastix-callcenter-error-message').show('slow', 'linear', function() {
+	$('#issabel-callcenter-error-message-text').text(s);
+	$('#issabel-callcenter-error-message').show('slow', 'linear', function() {
 		setTimeout(function() {
-			$('#elastix-callcenter-error-message').fadeOut();
+			$('#issabel-callcenter-error-message').fadeOut();
 		}, 5000);
 	});
 }
@@ -814,23 +814,23 @@ function abrir_url_externo(urlopentype, url)
 		case 'iframe':
 			if (jqueryui_tabs_use_refresh) {
 			    // Se quita la cejilla anterior. Se asume que se fue marcada con clase .externalurl
-		    	$('#elastix-callcenter-cejillas-contenido').find('.ui-tabs-nav li.tab-externalurl').remove();
+		    	$('#issabel-callcenter-cejillas-contenido').find('.ui-tabs-nav li.tab-externalurl').remove();
 			    $('#tabs-externalurl').remove();
 
 			    // Se agrega la nueva cejilla, si existe
 			    if (url != null) {
-			        $('#elastix-callcenter-cejillas-contenido').append(
+			        $('#issabel-callcenter-cejillas-contenido').append(
 			            '<div id="tabs-externalurl"><iframe scrolling="auto" height="450" frameborder="0" width="100%" src="' + url + '" /></div>');
 			        $('<li class="tab-externalurl"><a href="#tabs-externalurl">'+externalurl_title+'</a></li>')
-			            .appendTo('#elastix-callcenter-cejillas-contenido > .ui-tabs-nav');
+			            .appendTo('#issabel-callcenter-cejillas-contenido > .ui-tabs-nav');
 			    }
 
 			    // Aplicar cambios
-			    $('#elastix-callcenter-cejillas-contenido').tabs('refresh');
+			    $('#issabel-callcenter-cejillas-contenido').tabs('refresh');
 		    } else {
                 externalurl = url;
-                $('#elastix-callcenter-cejillas-contenido').tabs('remove', '#tabs-externalurl');
-                $('#elastix-callcenter-cejillas-contenido').tabs('add', '#tabs-externalurl', externalurl_title);
+                $('#issabel-callcenter-cejillas-contenido').tabs('remove', '#tabs-externalurl');
+                $('#issabel-callcenter-cejillas-contenido').tabs('add', '#tabs-externalurl', externalurl_title);
 		    }
 			break;
 		case 'jsonp':

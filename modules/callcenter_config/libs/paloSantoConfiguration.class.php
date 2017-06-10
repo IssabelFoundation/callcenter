@@ -129,12 +129,12 @@ class paloSantoConfiguration {
         $retval = 1;
         if ($bNuevoEstado) {
             if (file_exists('/etc/init.d/generic-cloexec')) {
-                exec('sudo -u root service generic-cloexec elastixdialer start 1>/dev/null 2>/dev/null', $output, $retval);
+                exec('sudo -u root service generic-cloexec issabeldialer start 1>/dev/null 2>/dev/null', $output, $retval);
             } else {
-                exec('sudo -u root service elastixdialer start 1>/dev/null 2>/dev/null', $output, $retval);            	
+                exec('sudo -u root service issabeldialer start 1>/dev/null 2>/dev/null', $output, $retval);            	
             }
         } else {
-            exec('sudo -u root service elastixdialer stop', $output, $retval);
+            exec('sudo -u root service issabeldialer stop', $output, $retval);
         }
     }
 }

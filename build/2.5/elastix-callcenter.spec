@@ -1397,7 +1397,7 @@ fi
 
 * Thu Nov 20 2014 Alex Villacis Lasso <a_villacis@palosanto.com>
 - FIXED: Incoming Calls Monitoring: explictly require paloSantoGrid class which
-  has been previously included via spl_elastix_class_autoload and therefore
+  has been previously included via spl_issabel_class_autoload and therefore
   fails to load in elastix-framework earlier than 2.4.0-7.
 - CHANGED: Update minimum elastix-framework to 2.4.0-7 or later.
   SVN Rev[6776]

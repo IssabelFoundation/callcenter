@@ -37,7 +37,7 @@ function verificar_error_session(respuesta)
 }
 
 $(document).ready(function() {
-	$('#elastix-callcenter-error-message').hide();
+	$('#issabel-callcenter-error-message').hide();
 	
 	// Inicialización de Ember.js
 	App = Ember.Application.create({
@@ -528,10 +528,10 @@ $(document).ready(function() {
 
 function mostrar_mensaje_error(s)
 {
-	$('#elastix-callcenter-error-message-text').text(s);
-	$('#elastix-callcenter-error-message').show('slow', 'linear', function() {
+	$('#issabel-callcenter-error-message-text').text(s);
+	$('#issabel-callcenter-error-message').show('slow', 'linear', function() {
 		setTimeout(function() {
-			$('#elastix-callcenter-error-message').fadeOut();
+			$('#issabel-callcenter-error-message').fadeOut();
 		}, 5000);
 	});
 }

@@ -26,7 +26,7 @@
   | The Initial Developer of the Original Code is PaloSanto Solutions    |
   +----------------------------------------------------------------------+
   $Id: index.php,v 1.1 2010-12-02 08:12:41 Alberto Santos asantos.palosanto.com Exp $ */
-//include elastix framework
+//include issabel framework
 require_once "libs/paloSantoForm.class.php";
 require_once "libs/paloSantoDB.class.php";
 require_once "libs/paloSantoGrid.class.php";

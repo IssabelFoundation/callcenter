@@ -1,10 +1,10 @@
 {* Este DIV se usa para mostrar los mensajes de error *}
 <div
-    id="elastix-callcenter-error-message"
+    id="issabel-callcenter-error-message"
     class="ui-state-error ui-corner-all">
     <p>
         <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-        <span id="elastix-callcenter-error-message-text"></span>
+        <span id="issabel-callcenter-error-message-text"></span>
     </p>
 </div>
 <div id="campaignMonitoringApplication">

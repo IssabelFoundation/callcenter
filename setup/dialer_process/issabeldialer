@@ -22,11 +22,11 @@ fi
 # Los siguientes parametros deben de configurarse segn el demonio
 DAEMON=dialerd
 PROGRAMA="Issabel Dialer"
-DIR_TRABAJO=/opt/elastix/dialer
+DIR_TRABAJO=/opt/issabel/dialer
 USUARIO=asterisk
 
 # Los siguientes parametros son normalmente derivados de los dos primeros
-SERVICE_LOCK="/var/lock/subsys/elastixdialer"
+SERVICE_LOCK="/var/lock/subsys/issabeldialer"
 PIDFILE_USER="$DIR_TRABAJO/$DAEMON.pid"
 PIDFILE_SYSTEM="/var/run/$DAEMON.pid"
 

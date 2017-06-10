@@ -231,14 +231,14 @@ function manejarLogin_HTML($module_name, &$smarty, $sDirLocalPlantillas)
     	/* Si el usuario Elastix logoneado coincide con el número de agente de
          * la lista, se coloca este agente como opción por omisión para login.
          */
-        if (isset($listaAgentes['Agent/'.$_SESSION['elastix_user']]))
-            $smarty->assign('ID_AGENT', 'Agent/'.$_SESSION['elastix_user']);
+        if (isset($listaAgentes['Agent/'.$_SESSION['issabel_user']]))
+            $smarty->assign('ID_AGENT', 'Agent/'.$_SESSION['issabel_user']);
 
         /* Si el usuario Elastix logoneado tiene una extensión y aparece en la
          * lista, se sugiere esta extension como la extensión a usar para
          * marcar. */
-        $pACL = new paloACL($arrConf['elastix_dsn']['acl']);
-        $idUser = $pACL->getIdUser($_SESSION['elastix_user']);
+        $pACL = new paloACL($arrConf['issabel_dsn']['acl']);
+        $idUser = $pACL->getIdUser($_SESSION['issabel_user']);
         if ($idUser !== FALSE) {
         	$tupla = $pACL->getUsers($idUser);
             if (is_array($tupla) && count($tupla) > 0) {
@@ -611,8 +611,8 @@ function manejarSesionActiva_HTML($module_name, &$smarty, $sDirLocalPlantillas, 
         $iDuracionPausaActual = time() - strtotime($estado['pauseinfo']['pausestart']);
         $iDuracionPausa = $iDuracionPausaActual + $_SESSION['callcenter']['break_acumulado'];
         $smarty->assign(array(
-            'CLASS_BOTON_BREAK'             =>  'elastix-callcenter-boton-unbreak',
-            'CLASS_ESTADO_AGENTE_INICIAL'   =>  'elastix-callcenter-class-estado-break',
+            'CLASS_BOTON_BREAK'             =>  'issabel-callcenter-boton-unbreak',
+            'CLASS_ESTADO_AGENTE_INICIAL'   =>  'issabel-callcenter-class-estado-break',
             'BTN_BREAK'                     =>  _tr('End Break'),
             'TEXTO_ESTADO_AGENTE_INICIAL'   =>  _tr('On break').': '.$estado['pauseinfo']['pausename'],
 
@@ -636,9 +636,9 @@ function manejarSesionActiva_HTML($module_name, &$smarty, $sDirLocalPlantillas, 
         }
 
         $smarty->assign(array(
-            'CLASS_BOTON_BREAK'             =>  'elastix-callcenter-boton-break',
+            'CLASS_BOTON_BREAK'             =>  'issabel-callcenter-boton-break',
             'BTN_BREAK'                     =>  _tr('Take Break'),
-            'CLASS_ESTADO_AGENTE_INICIAL'   =>  'elastix-callcenter-class-estado-ocioso',
+            'CLASS_ESTADO_AGENTE_INICIAL'   =>  'issabel-callcenter-class-estado-ocioso',
             'TEXTO_ESTADO_AGENTE_INICIAL'   =>  _tr('No active call'),
         ));
         $_SESSION['callcenter']['break_iniciado'] = NULL;
@@ -678,7 +678,7 @@ function manejarSesionActiva_HTML($module_name, &$smarty, $sDirLocalPlantillas, 
         // Asignaciones independientes del tipo de llamada
         $bInactivarBotonColgar = false; // Se usa para botón hangup y botón transfer
         $smarty->assign(array(
-            'CLASS_ESTADO_AGENTE_INICIAL'   =>  'elastix-callcenter-class-estado-activo',
+            'CLASS_ESTADO_AGENTE_INICIAL'   =>  'issabel-callcenter-class-estado-activo',
             'TEXTO_ESTADO_AGENTE_INICIAL'   =>  _tr('Connected to call'),
             'CALLINFO_CALLTYPE'             =>  $estado['callinfo']['calltype'],
 
@@ -709,7 +709,7 @@ function manejarSesionActiva_HTML($module_name, &$smarty, $sDirLocalPlantillas, 
 
 
         $smarty->assign(array(
-            'CLASS_ESTADO_AGENTE_INICIAL'   =>  'elastix-callcenter-class-estado-esperando',
+            'CLASS_ESTADO_AGENTE_INICIAL'   =>  'issabel-callcenter-class-estado-esperando',
             'TEXTO_ESTADO_AGENTE_INICIAL'   =>  _tr('Waiting for call'),
             'CONTENIDO_LLAMADA_FORMULARIO'  =>  is_null($_SESSION['callcenter']['ultimo_calltype'])
                 ? ''
@@ -1507,22 +1507,22 @@ function manejarSesionActiva_checkStatus($module_name, $smarty,
         if ($iPosEvento >= 0 && $sDescInicial != $sDescFinal) switch ($sDescFinal) {
         case 'llamada':
             $respuesta[$iPosEvento]['txt_estado_agente_inicial'] = _tr('Connected to call');
-            $respuesta[$iPosEvento]['class_estado_agente_inicial'] = 'elastix-callcenter-class-estado-activo';
+            $respuesta[$iPosEvento]['class_estado_agente_inicial'] = 'issabel-callcenter-class-estado-activo';
             $respuesta[$iPosEvento]['timer_seconds'] = $iDuracionLlamada;
             break;
         case 'break':
             $respuesta[$iPosEvento]['txt_estado_agente_inicial'] = _tr('On break').': '.$sNombrePausa;
-            $respuesta[$iPosEvento]['class_estado_agente_inicial'] = 'elastix-callcenter-class-estado-break';
+            $respuesta[$iPosEvento]['class_estado_agente_inicial'] = 'issabel-callcenter-class-estado-break';
             $respuesta[$iPosEvento]['timer_seconds'] = $iDuracionPausa;
             break;
         case 'esperando':
             $respuesta[$iPosEvento]['txt_estado_agente_inicial'] = _tr('Waiting for call');
-            $respuesta[$iPosEvento]['class_estado_agente_inicial'] = 'elastix-callcenter-class-estado-esperando';
+            $respuesta[$iPosEvento]['class_estado_agente_inicial'] = 'issabel-callcenter-class-estado-esperando';
             $respuesta[$iPosEvento]['timer_seconds'] = '';
             break;
         case 'ocioso':
             $respuesta[$iPosEvento]['txt_estado_agente_inicial'] = _tr('No active call');
-            $respuesta[$iPosEvento]['class_estado_agente_inicial'] = 'elastix-callcenter-class-estado-ocioso';
+            $respuesta[$iPosEvento]['class_estado_agente_inicial'] = 'issabel-callcenter-class-estado-ocioso';
             $respuesta[$iPosEvento]['timer_seconds'] = '';
             break;
         }

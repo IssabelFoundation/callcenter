@@ -38,73 +38,73 @@
 
 {* Este DIV se usa para mostrar los mensajes de éxito *}
 <div
-    id="elastix-callcenter-info-message"
+    id="issabel-callcenter-info-message"
     class="ui-state-highlight ui-corner-all">
     <p>
         <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-        <span id="elastix-callcenter-info-message-text"></span>
+        <span id="issabel-callcenter-info-message-text"></span>
     </p>
 </div>
 {* Este DIV se usa para mostrar los mensajes de error *}
 <div
-    id="elastix-callcenter-error-message"
+    id="issabel-callcenter-error-message"
     class="ui-state-error ui-corner-all">
     <p>
         <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-        <span id="elastix-callcenter-error-message-text"></span>
+        <span id="issabel-callcenter-error-message-text"></span>
     </p>
 </div>
 {* Marco principal de la consola de agente *}
-<div id="elastix-callcenter-area-principal">
+<div id="issabel-callcenter-area-principal">
     {* Título con nombre del módulo *}
 {if !$FRAMEWORK_TIENE_TITULO_MODULO}
-    <div id="elastix-callcenter-titulo-consola" class="moduleTitle">&nbsp;<img src="{$icon}" border="0" align="absmiddle" alt="" />&nbsp;{$title}</div>
+    <div id="issabel-callcenter-titulo-consola" class="moduleTitle">&nbsp;<img src="{$icon}" border="0" align="absmiddle" alt="" />&nbsp;{$title}</div>
 {/if}
 	{* Estado del agente con número y nombre del agente *}
-	<div id="elastix-callcenter-estado-agente" class="{$CLASS_ESTADO_AGENTE_INICIAL}">
-	    <div id="elastix-callcenter-estado-agente-texto">{$TEXTO_ESTADO_AGENTE_INICIAL}</div>
-        <div id="elastix-callcenter-cronometro">{$CRONOMETRO}</div>{* elastix-callcenter-cronometro *}
-    </div>{* elastix-callcenter-estado-agente *}
-    <div id="elastix-callcenter-wrap">
+	<div id="issabel-callcenter-estado-agente" class="{$CLASS_ESTADO_AGENTE_INICIAL}">
+	    <div id="issabel-callcenter-estado-agente-texto">{$TEXTO_ESTADO_AGENTE_INICIAL}</div>
+        <div id="issabel-callcenter-cronometro">{$CRONOMETRO}</div>{* issabel-callcenter-cronometro *}
+    </div>{* issabel-callcenter-estado-agente *}
+    <div id="issabel-callcenter-wrap">
 	    {* Los controles que aparecen en la parte superior de la interfaz *}
-	    <div id="elastix-callcenter-controles">
-	        <button id="btn_hangup" class="elastix-callcenter-boton-activo">{$BTN_COLGAR_LLAMADA}</button>
+	    <div id="issabel-callcenter-controles">
+	        <button id="btn_hangup" class="issabel-callcenter-boton-activo">{$BTN_COLGAR_LLAMADA}</button>
 	        <button id="btn_togglebreak" class="{$CLASS_BOTON_BREAK}" >{$BTN_BREAK}</button>
-	        <button id="btn_transfer" class="elastix-callcenter-boton-activo" >{$BTN_TRANSFER}</button>
+	        <button id="btn_transfer" class="issabel-callcenter-boton-activo" >{$BTN_TRANSFER}</button>
             <button id="btn_agendar_llamada" {if $CALLINFO_CALLTYPE != 'outgoing'}disabled="disabled"{/if}>{$BTN_AGENDAR_LLAMADA}</button>
 	        <button id="btn_guardar_formularios">{$BTN_GUARDAR_FORMULARIOS}</button>
 {if $BTN_VTIGERCRM}
-	        <button id="btn_vtigercrm" class="elastix-callcenter-boton-activo">{$BTN_VTIGERCRM}</button>
+	        <button id="btn_vtigercrm" class="issabel-callcenter-boton-activo">{$BTN_VTIGERCRM}</button>
 {/if}
-	        <button id="btn_logout" class="elastix-callcenter-boton-activo">{$BTN_FINALIZAR_LOGIN}</button>
-	    </div> {* elastix-callcenter-controles *}
+	        <button id="btn_logout" class="issabel-callcenter-boton-activo">{$BTN_FINALIZAR_LOGIN}</button>
+	    </div> {* issabel-callcenter-controles *}
 	    {* El panel que aparece a la derecha como área principal del módulo *}
-	    <div id="elastix-callcenter-contenido">
+	    <div id="issabel-callcenter-contenido">
 			{* Definición de las cejillas de información/script/formulario *}
-			<div id="elastix-callcenter-cejillas-contenido">
+			<div id="issabel-callcenter-cejillas-contenido">
 			   <ul>
-                   <li><a href="#elastix-callcenter-llamada-paneles">{$TAB_LLAMADA}</a></li>
+                   <li><a href="#issabel-callcenter-llamada-paneles">{$TAB_LLAMADA}</a></li>
                    {foreach from=$CUSTOM_PANELS item=HTML_PANEL}
                    <li><a href="#tabs-{$HTML_PANEL.panelname}">{$HTML_PANEL.title}</a></li>
                    {/foreach}
 			   </ul>
-                <div id="elastix-callcenter-llamada-paneles">
-                    <div id="elastix-callcenter-llamada-paneles-izq" class="ui-layout-west">
-                        <div class="ui-layout-center"><fieldset class="ui-widget-content ui-corner-all"><legend><b>{$TAB_LLAMADA_INFO}</b></legend><div id="elastix-callcenter-llamada-info">{$CONTENIDO_LLAMADA_INFORMACION}</div></fieldset></div>
-                        <div class="ui-layout-south"><fieldset class="ui-widget-content ui-corner-all"><legend><b>{$TAB_LLAMADA_SCRIPT}</b></legend><div id="elastix-callcenter-llamada-script">{$CONTENIDO_LLAMADA_SCRIPT}</div></fieldset></div>
+                <div id="issabel-callcenter-llamada-paneles">
+                    <div id="issabel-callcenter-llamada-paneles-izq" class="ui-layout-west">
+                        <div class="ui-layout-center"><fieldset class="ui-widget-content ui-corner-all"><legend><b>{$TAB_LLAMADA_INFO}</b></legend><div id="issabel-callcenter-llamada-info">{$CONTENIDO_LLAMADA_INFORMACION}</div></fieldset></div>
+                        <div class="ui-layout-south"><fieldset class="ui-widget-content ui-corner-all"><legend><b>{$TAB_LLAMADA_SCRIPT}</b></legend><div id="issabel-callcenter-llamada-script">{$CONTENIDO_LLAMADA_SCRIPT}</div></fieldset></div>
                     </div>
-                    <div class="ui-layout-center"><fieldset class="ui-widget-content ui-corner-all"><legend><b>{$TAB_LLAMADA_FORM}</b></legend><div id="elastix-callcenter-llamada-form">{$CONTENIDO_LLAMADA_FORMULARIO}</div></fieldset></div>
+                    <div class="ui-layout-center"><fieldset class="ui-widget-content ui-corner-all"><legend><b>{$TAB_LLAMADA_FORM}</b></legend><div id="issabel-callcenter-llamada-form">{$CONTENIDO_LLAMADA_FORMULARIO}</div></fieldset></div>
                 </div>
                 {foreach from=$CUSTOM_PANELS item=HTML_PANEL}
                 <div id="tabs-{$HTML_PANEL.panelname}">
                     {$HTML_PANEL.content}
                 </div>
                 {/foreach}
-			</div>{* elastix-callcenter-cejillas-contenido *}
-		</div>{* elastix-callcenter-contenido *}
+			</div>{* issabel-callcenter-cejillas-contenido *}
+		</div>{* issabel-callcenter-contenido *}
 	</div>
-</div>{* elastix-callcenter-area-principal *}
-<div id="elastix-callcenter-seleccion-break" title="{$TITLE_BREAK_DIALOG}">
+</div>{* issabel-callcenter-area-principal *}
+<div id="issabel-callcenter-seleccion-break" title="{$TITLE_BREAK_DIALOG}">
     <form>
         <select
             name="break_select"
@@ -113,8 +113,8 @@
             style="width: 100%">{html_options options=$LISTA_BREAKS}
         </select>
     </form>
-</div>{* elastix-callcenter-seleccion-break *}
-<div id="elastix-callcenter-seleccion-transfer" title="{$TITLE_TRANSFER_DIALOG}">
+</div>{* issabel-callcenter-seleccion-break *}
+<div id="issabel-callcenter-seleccion-transfer" title="{$TITLE_TRANSFER_DIALOG}">
     <form>
         <table border="0" cellpadding="0" style="width: 100%;">
             <tr>
@@ -134,14 +134,14 @@
             </tr>
         </table>
     </form>
-</div>{* elastix-callcenter-seleccion-transfer *}
-<div id="elastix-callcenter-agendar-llamada" title="{$TITLE_SCHEDULE_CALL}">
+</div>{* issabel-callcenter-seleccion-transfer *}
+<div id="issabel-callcenter-agendar-llamada" title="{$TITLE_SCHEDULE_CALL}">
 	<div
-	    id="elastix-callcenter-agendar-llamada-error-message"
+	    id="issabel-callcenter-agendar-llamada-error-message"
 	    class="ui-state-error ui-corner-all">
 	    <p>
 	        <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-	        <span id="elastix-callcenter-agendar-llamada-error-message-text"></span>
+	        <span id="issabel-callcenter-agendar-llamada-error-message-text"></span>
 	    </p>
 	</div>
     <form>
