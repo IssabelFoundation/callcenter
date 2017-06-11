@@ -109,7 +109,7 @@ function reportReportsBreak($smarty, $module_name, $local_templates_dir, &$pDB)
     $oReportsBreak = new paloSantoReportsBreak($pDB);
     //begin grid parameters
     
-    $bElastixNuevo = method_exists('paloSantoGrid','setURL');
+    $bIssabelNuevo = method_exists('paloSantoGrid','setURL');
 
     $oGrid = new paloSantoGrid($smarty);
     $oGrid->enableExport();   // enable export.
@@ -119,7 +119,7 @@ function reportReportsBreak($smarty, $module_name, $local_templates_dir, &$pDB)
         _tr('Agent Number'),
         _tr('Agent Name')
     );
-    $bExportando = $bElastixNuevo
+    $bExportando = $bIssabelNuevo
         ? $oGrid->isExportAction()
         : ( (isset( $_GET['exportcsv'] ) && $_GET['exportcsv'] == 'yes') || 
             (isset( $_GET['exportspreadsheet'] ) && $_GET['exportspreadsheet'] == 'yes') || 
@@ -172,7 +172,7 @@ function reportReportsBreak($smarty, $module_name, $local_templates_dir, &$pDB)
     foreach ($mapa as $iPos) $filaTotales[$iPos] = $sTagInicio.formatoSegundos($filaTotales[$iPos]).$sTagFinal;
     $arrData[] = $filaTotales;
 
-    if ($bElastixNuevo) {
+    if ($bIssabelNuevo) {
         $oGrid->setURL(construirURL($arrFilterExtraVars));
         $oGrid->setData($arrData);
         $oGrid->setColumns($arrColumnas);

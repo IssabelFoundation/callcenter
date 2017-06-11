@@ -86,9 +86,9 @@ function _moduleContent(&$smarty, $module_name)
         "Filter"    =>  _tr('Show'),
     ));
 
-    $bElastixNuevo = method_exists('paloSantoGrid','setURL');
+    $bIssabelNuevo = method_exists('paloSantoGrid','setURL');
     $oGrid = new paloSantoGrid($smarty);
-    $bExportando = $bElastixNuevo
+    $bExportando = $bIssabelNuevo
         ? $oGrid->isExportAction()
         : (isset( $_GET['exportcsv'] ) && $_GET['exportcsv'] == 'yes');
 
@@ -237,7 +237,7 @@ NO_QUEUE_END;
 
     // La definición del grid
     $paramConsulta['menu'] = $module_name;
-    if($bElastixNuevo){
+    if($bIssabelNuevo){
         $oGrid->setURL(construirURL($paramConsulta));
         $oGrid->setData($arrData);
         $arrColumnas = array("","","","");

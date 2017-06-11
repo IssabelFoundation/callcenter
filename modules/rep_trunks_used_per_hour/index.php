@@ -124,11 +124,11 @@ function reportReportedeTroncalesusadasporHoraeneldia($smarty, $module_name, $lo
     //validacion para que los filtros se queden seteados con el valor correcto, correccion de bug que se estaba dando en caso de pagineo
     $_POST["filter_value"] = $filter_value;
 
-    $bElastixNuevo = method_exists('paloSantoGrid','setURL');
+    $bIssabelNuevo = method_exists('paloSantoGrid','setURL');
     // begin grid parameters
     $oGrid  = new paloSantoGrid($smarty);
     $oGrid->enableExport();
-    $bExportando = $bElastixNuevo
+    $bExportando = $bIssabelNuevo
         ? $oGrid->isExportAction()
         : (isset( $_GET['exportcsv'] ) && $_GET['exportcsv'] == 'yes');
 
@@ -152,7 +152,7 @@ function reportReportedeTroncalesusadasporHoraeneldia($smarty, $module_name, $lo
     $oGrid->setLimit($limit);
     $oGrid->setTotal($total);
     
-    if($bElastixNuevo)
+    if($bIssabelNuevo)
         $offset = $oGrid->calculateOffset();
     else{
         $action = getParameter("nav");
@@ -210,7 +210,7 @@ function reportReportedeTroncalesusadasporHoraeneldia($smarty, $module_name, $lo
     $htmlFilter = $oFilterForm->fetchForm("$local_templates_dir/filter.tpl","",$_POST, $_GET);
     //end section filter
     $oGrid->showFilter($htmlFilter);
-    if($bElastixNuevo){
+    if($bIssabelNuevo){
         $oGrid->setURL($url);
         $oGrid->setData($arrData);
         $arrColumnas = array(_tr("Time Period "), _tr("Entered"), _tr("Answered"), _tr("Abandoned"),_tr("In queue"),_tr("Without monitoring "));

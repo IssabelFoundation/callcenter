@@ -64,7 +64,7 @@ function reportCallsDetail($smarty, $module_name, $pDB, $local_templates_dir)
         'OUTGOING_CAMPAIGN' =>  0,
     ));
 
-    $bElastixNuevo = method_exists('paloSantoGrid','setURL');
+    $bIssabelNuevo = method_exists('paloSantoGrid','setURL');
 
     // Variables iniciales para posición de grid
     $offset = 0;
@@ -147,7 +147,7 @@ function reportCallsDetail($smarty, $module_name, $pDB, $local_templates_dir)
     $oGrid = new paloSantoGrid($smarty);
     $oGrid->enableExport();   // enable export.
     $oGrid->showFilter($htmlFilter);
-    $bExportando = $bElastixNuevo
+    $bExportando = $bIssabelNuevo
         ? $oGrid->isExportAction()
         : ( (isset( $_GET['exportcsv'] ) && $_GET['exportcsv'] == 'yes') ||
             (isset( $_GET['exportspreadsheet'] ) && $_GET['exportspreadsheet'] == 'yes') ||
@@ -168,7 +168,7 @@ function reportCallsDetail($smarty, $module_name, $pDB, $local_templates_dir)
             if ($bExportando) $limit = $total;
 
             // Calcular el offset de la petición de registros
-            if ($bElastixNuevo) {
+            if ($bIssabelNuevo) {
                 $oGrid->setLimit($limit);
                 $oGrid->setTotal($total);
                 $offset = $oGrid->calculateOffset();
@@ -264,7 +264,7 @@ function reportCallsDetail($smarty, $module_name, $pDB, $local_templates_dir)
     if (!$bExportando)
         $arrColumnas[] = _tr('Recording');
 
-    if($bElastixNuevo) {
+    if($bIssabelNuevo) {
         $oGrid->addFilterControl(_tr("Filter applied: ")._tr("Start Date")." = ".$paramLista['date_start'].", "._tr("End Date")." = ".
             $paramLista['date_end'], $paramLista, array('date_start' => date("d M Y"),'date_end' => date("d M Y")),true);
 
