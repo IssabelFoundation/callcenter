@@ -3,8 +3,8 @@
 /* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
   Codificación: UTF-8
   +----------------------------------------------------------------------+
-  | Issabel version 1.2-2                                               |
-  | http://www.elastix.org                                               |
+  | Issabel version 1.2-2                                                |
+  | http://www.issabel.org                                               |
   +----------------------------------------------------------------------+
   | Copyright (c) 2006 Palosanto Solutions S. A.                         |
   +----------------------------------------------------------------------+
@@ -168,10 +168,10 @@ Main log opened correctly
 ----------------------------------------
 $sBannerLog
       (PHP implementation, v1.0)
-    Powered by Palosanto Solutions
+         Powered by Issabel
 
-      Please report bugs/issues at:
-        http://bugs.elastix.org/
+     Please report bugs/issues at:
+  https://github.com/IssabelFoundation
 ----------------------------------------
 BANNEREND;
         $oMainLog->output($sBanner);
