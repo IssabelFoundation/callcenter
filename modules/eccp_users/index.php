@@ -5,11 +5,6 @@
   +----------------------------------------------------------------------+
   | Copyright (c) 1997-2003 Palosanto Solutions S. A.                    |
   +----------------------------------------------------------------------+
-  | Cdla. Nueva Kennedy Calle E 222 y 9na. Este                          |
-  | Telfs. 2283-268, 2294-440, 2284-356                                  |
-  | Guayaquil - Ecuador                                                  |
-  +----------------------------------------------------------------------+
-  | Este archivo fuente está sujeto a las políticas de licenciamiento    |
   | de Palosanto Solutions S. A. y no está disponible públicamente.      |
   | El acceso a este documento está restringido según lo estipulado      |
   | en los acuerdos de confidencialidad los cuales son parte de las      |
