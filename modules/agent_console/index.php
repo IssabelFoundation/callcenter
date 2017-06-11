@@ -222,13 +222,13 @@ function manejarLogin_HTML($module_name, &$smarty, $sDirLocalPlantillas)
         ));
 
     } else {
-    	/* Si el usuario Elastix logoneado coincide con el número de agente de
+    	/* Si el usuario Issabel logoneado coincide con el número de agente de
          * la lista, se coloca este agente como opción por omisión para login.
          */
         if (isset($listaAgentes['Agent/'.$_SESSION['issabel_user']]))
             $smarty->assign('ID_AGENT', 'Agent/'.$_SESSION['issabel_user']);
 
-        /* Si el usuario Elastix logoneado tiene una extensión y aparece en la
+        /* Si el usuario Issabel logoneado tiene una extensión y aparece en la
          * lista, se sugiere esta extension como la extensión a usar para
          * marcar. */
         $pACL = new paloACL($arrConf['issabel_dsn']['acl']);
