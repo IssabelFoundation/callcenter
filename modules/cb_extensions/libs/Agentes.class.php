@@ -255,7 +255,7 @@ class Agentes
     {
         $ip_asterisk = '127.0.0.1';
         $user_asterisk = 'admin';
-        $pass_asterisk = function_exists('obtenerClaveAMIAdmin') ? obtenerClaveAMIAdmin() : 'elastix456';
+        $pass_asterisk = function_exists('obtenerClaveAMIAdmin') ? obtenerClaveAMIAdmin() : 'issabel789';
         $astman = new AGI_AsteriskManager();
         if (!$astman->connect($ip_asterisk, $user_asterisk , $pass_asterisk)) {
             $this->errMsg = "Error when connecting to Asterisk Manager";
