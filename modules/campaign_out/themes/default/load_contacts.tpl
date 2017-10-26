@@ -10,7 +10,7 @@
     <table width="100%" valign="top" cellpadding="4" cellspacing="0" border="0">
       <tr>
         <td align="left">
-          <input class="button" type="submit" name="save" value="{$SAVE}" onclick="return enviar_datos();" />
+          <input class="button" type="submit" name="save" value="{$SAVE}" />
           <input class="button" type="submit" name="cancel" value="{$CANCEL}" />
         </td>
         <td align="right" nowrap><span class="letra12"><span  class="required">*</span> {$REQUIRED_FIELD}</span></td>
