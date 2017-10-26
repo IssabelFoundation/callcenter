@@ -10,7 +10,7 @@ Source0: %{modname}_%{version}-%{release}.tgz
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 BuildArch: noarch
 Requires(pre): issabel-framework >= 2.4.0-1
-Requires: asterisk
+#Requires: asterisk
 Requires: issabelPBX
 Requires: php-mbstring
 
