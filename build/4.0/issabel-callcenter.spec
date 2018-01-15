@@ -3,7 +3,7 @@
 Summary: Issabel Call Center
 Name:    issabel-%{modname}
 Version: 4.0.0
-Release: 2
+Release: 3
 License: GPL
 Group:   Applications/System
 Source0: %{modname}_%{version}-%{release}.tgz
@@ -60,6 +60,9 @@ chown -R asterisk.asterisk /tmp/new_module/%{modname}
 
 php /tmp/new_module/%{modname}/setup/installer.php
 rm -rf /tmp/new_module
+
+# Be sure to set shell for user asterisk
+chsh -s /bin/bash asterisk
 
 # Add dialer to startup scripts, and enable it by default
 chkconfig --add issabeldialer
