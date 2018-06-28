@@ -285,8 +285,10 @@ class Agentes
                     $bMembers = FALSE;
                 elseif ($bMembers) {
                 	$regs = NULL;
-                    if (preg_match('/^\s*(\S+)/', $sLinea, $regs)) {
+                    if (preg_match('/^\s*(\S+\/\S+)/', $sLinea, $regs)) {
                     	if (!in_array($regs[1], $listaAgentes)) $listaAgentes[] = $regs[1];
+                    } else if (preg_match('/^\s*\S+\s+\(\S+\s+from\s+(\S+\/\S+)\)/', $sLinea, $regs)) {
+                        if (!in_array($regs[1], $listaAgentes)) $listaAgentes[] = $regs[1];
                     }
                 }
             }
@@ -324,7 +326,7 @@ class Agentes
             elseif (strpos($sLinea, 'No Callers') !== FALSE || strpos($sLinea, 'Callers:') !== FALSE)
                 $bMembers = FALSE;
             elseif ($bMembers) {
-                if (preg_match('/^\s*(\S+)/', $sLinea, $regs)) {
+	        if (preg_match('/^\s*(\S+\/\S+)/', $sLinea, $regs) || preg_match('/^\s*\S+\s+\(\S+\s+from\s+(\S+\/\S+)\)/', $sLinea, $regs)) {
                     if (!isset($queuesByAgent[$regs[1]]))
                         $queuesByAgent[$regs[1]] = array();
                     $queuesByAgent[$regs[1]][] = $sCurQueue;
