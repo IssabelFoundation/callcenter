@@ -49,5 +49,5 @@ $arrLangModule = array(
     "Agent inactivity timeout" => "Espera máxima de inactividad de agente",
     "Asterisk Connection" => "Conexión de Asterisk",
     "Dialer Parameters" => "Parámetros del Dialer",
-);
+    'Force more calls per agent' => 'Forzar más llamadas por Agente',
 ?>
