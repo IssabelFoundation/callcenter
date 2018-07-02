@@ -24,6 +24,8 @@
 <tr class="letra12"><td>{$asterisk_astpass_2.INPUT}</td></tr>
 <tr class="letra12"><td>{$asterisk_duracion_sesion.LABEL}:</td></tr>
 <tr class="letra12"><td>{$asterisk_duracion_sesion.INPUT}</td></tr>
+<tr class="letra12"><td>{$dialer_forzar_sobrecolocar.LABEL}:</td></tr>
+<tr class="letra12"><td>{$dialer_forzar_sobrecolocar.INPUT}</td></tr>
 </table>
 </td>
 <td valign="top">
