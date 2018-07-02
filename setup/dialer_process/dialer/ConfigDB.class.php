@@ -161,6 +161,16 @@ class ConfigDB
                 'mostrar_valor' =>  TRUE,
                 'cast'          =>  'int',
             ),
+		'forzar_sobrecolocar' => array(
+                'descripcion'   =>  'Forzar Más llamadas por agente',
+                'regex'         =>  '^\d+$',
+                'valor_omision' =>  0,
+                'valor_viejo'   =>  NULL,
+                'valor_actual'  =>  NULL,
+                'mostrar_valor' =>  TRUE,
+                'cast'          =>  'int',
+            ),
+
 		),
 	);
 
