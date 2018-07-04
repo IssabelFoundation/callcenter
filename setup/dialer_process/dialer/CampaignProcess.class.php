@@ -534,6 +534,22 @@ PETICION_CAMPANIAS_ENTRANTES;
         if (is_null($iNumLlamadasColocar) || $iNumLlamadasColocar > $iMaxPredecidos)
             $iNumLlamadasColocar = $iMaxPredecidos;
 
+      //añadido por hgm para pruebas sobre colocar 25-06-2018
+            $this->_log->output('DEBUG: '.__METHOD__." (campania {$infoCampania['id']} ".
+                "cola {$infoCampania['queue']}): resumen de predicción:\n".
+                    "\tagentes libres.........: {$resumenPrediccion['AGENTES_LIBRES']}\n".
+                    "\tagentes por desocuparse: {$resumenPrediccion['AGENTES_POR_DESOCUPAR']}\n".
+                    "\tllamadas simultaneas realizar: {$iNumLlamadasColocar}\n".
+                    "\tllamadas extras a forzar: ".$this->_configDB->dialer_forzar_sobrecolocar."\n".
+                    "\tclientes en espera.....: {$resumenPrediccion['CLIENTES_ESPERA']}");
+//añadido por hgmnetwork.com 26-06-2018 para forzar mas llamadas por agente
+//miramos si como mínimo hay 1 llamada por hacer que fuerce mas, si es 0 llamadas ignora para no hacer llamadas sin agentes libres o apunto
+if ($iNumLlamadasColocar>0){
+$iNumLlamadasColocar= $iNumLlamadasColocar + $this->_configDB->dialer_forzar_sobrecolocar;
+};
+ $this->_log->output('DEBUG: '.__METHOD__." (campania {$infoCampania['id']} ".
+                "cola {$infoCampania['queue']}): resumen de predicción:\n".
+                    "\tLlamadas a realizar finalmente.........: {$iNumLlamadasColocar}\n");
         // TODO: colocar código de detección de conflicto de agentes
 
         if ($iNumLlamadasColocar > 0) {
