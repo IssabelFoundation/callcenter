@@ -80,7 +80,7 @@ issabel-menuremove rep_agent_connection_time
 if [ $1 -eq 1  ] ; then # install
     if [ x`pidof mysqld` == "x"  ] ; then
         # mysql is not running, delay db creation
-        cp /usr/share/issabel/module_installer/%{name}-%{version}-%{release}/setup/firstbootsq_call_center.sql /var/spool/issabel-mysqldbscripts/08-call_center.sql
+        cp /usr/share/issabel/module_installer/%{name}-%{version}-%{release}/setup/firstboot_call_center.sql /var/spool/issabel-mysqldbscripts/08-call_center.sql
     fi
 fi
 
