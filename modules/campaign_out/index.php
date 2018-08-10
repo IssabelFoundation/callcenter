@@ -150,6 +150,18 @@ function listCampaign($pDB, $smarty, $module_name, $local_templates_dir)
 
     if (is_array($arrCampaign)) {
         foreach($arrCampaign as $campaign) {
+/*
+creado por hgmnetwork.com 08-08-2018 para mostrar en el listado de campañas el total total llamadas de cada campaña, las pendientes y las completadas sin tener que revisar una por una
+
+miramos el total de numeros que tiene cada campaña
+*/
+                //echo " mirando campaña $campaign[id]<hr>";
+                $total_numeros = $pDB->fetchTable("select id from calls  WHERE id_campaign ='".$campaign[id]."'"); //obtenemos el total de numeros e        n la campaña
+                $total_numeros_campana=count($total_numeros);
+                /*ahora miramos el total de llamadas pendientes de hacer*/
+                $total_numeros = $pDB->fetchTable("select id from calls  WHERE id_campaign ='".$campaign[id]."' AND `datetime_originate` IS NULL");
+                $total_numeros_pendientes=count($total_numeros);
+
             $arrData[] = array(
                 "<input class=\"button\" type=\"radio\" name=\"id_campaign\" value=\"$campaign[id]\" />",
                 "<a href='?menu=$module_name&amp;action=edit_campaign&amp;id_campaign=".$campaign['id']."'>".
@@ -159,7 +171,8 @@ function listCampaign($pDB, $smarty, $module_name, $local_templates_dir)
                 ($campaign['retries'] != "") ? $campaign['retries'] : "&nbsp;",
                 is_null($campaign['trunk']) ? '(Dialplan)' : $campaign['trunk'],
                 $campaign['queue'],
-                ($campaign['num_completadas'] != "") ? $campaign['num_completadas'] : "N/A",
+//QUITAMOS ESTA ($campaign['num_completadas'] != "") ? $campaign['num_completadas'] : "N/A",
+                ($campaign['num_completadas'] != "") ? "Lla. Total: $total_numeros_campana<br> Pendientes: $total_numeros_pendientes<br> Completadas: ". $campaign['num_completadas'] : "Llam. Total: $total_numeros_campana<br> Pendientes: $total_numeros_pendientes<br> Completadas: 0",              
                 ($campaign['promedio'] != "") ? number_format($campaign['promedio'],0) : "N/A",
                 campaignStatusLabel($campaign['estatus']),
                 "<a href='?menu=$module_name&amp;action=load_contacts&amp;id_campaign=".$campaign['id']."'>["._tr('Load Contacts')."]</a> ".
