@@ -64,12 +64,95 @@ function _moduleContent(&$smarty, $module_name)
     case 'loadPreviousLogEntries':
         $sContenido = manejarMonitoreo_loadPreviousLogEntries($module_name, $smarty, $local_templates_dir);
         break;
+    case 'ver_agendadas':
+	//Genera listado con las llamadas programadas
+	$sContenido = ver_agendadas($module_name,$smarty, $local_templates_dir,$pDB,getParameter('idcampana'));
+	break;		
     default:
         // Página principal con plantilla
         $sContenido = manejarMonitoreo_HTML($module_name, $smarty, $local_templates_dir);
     }
     return $sContenido;
 }
+
+function ver_agendadas($module_name,$smarty, $local_templates_dir,$pDB, $idcampana )
+{
+
+ $oBreaks = new PaloSantoBreaks($pDB);
+ $oAgentes = new Agentes($pDB);
+ $listaAgentes = $oAgentes->getAgentsTodos();
+
+// print_r($listaAgentes);
+$datos=$oBreaks->Ver_Agendadas($idcampana);
+
+$micon='[<a href="index.php?menu=campaign_monitoring#/details/outgoing/'. $_GET['idcampana'].'">Monitoreo de Campaña</a>]<br />';
+
+        $micon.='<b>Llamadas agendadas</b><br><br>
+
+        <table width="100%">
+                <tr style="color: #000000;">
+                <td><b>N.TELEFONO</b></td>
+                <td><b>AGENTE</b></td>
+                <td><b>FECHA PROGRAMADA</b></td>
+                <td><b>HORA PROGRAMADA</b></td>
+                <td><b>ESTADO</b></td>
+                <td><img src="images/telephone_edit.png" width="16" height="16" /></td>
+                </tr>';
+
+$cont = count($datos);
+for ($i=0;$i<=$cont -1;$i++)
+{
+    $nag="";
+    $issel="";
+    $miag="";
+
+//echo "datos $i es:".print_r($datos[$i])."<hr>";
+   foreach (array_keys($listaAgentes) as $k)
+    {
+//echo "k es $k<br>2";
+//echo "<hr> Agentes  es ".print_r($listaAgentes[$k]);
+//$agnum=explode('/',$datos[$i][19]);
+$tipo=$listaAgentes[$k]['type'];
+$numero=$listaAgentes[$k]['number'];
+$seleccion=$tipo."/".$numero;//ponemos esto para ver si seleccionamos el usuario asi queda SIP/xxx o Agents/xxx
+//$datos[$i][19] nos da el texto que tiene cada extension, si el numero que da en agendada es igual al que se tiene en este se selecciona
+if ($seleccion==$datos[$i][19]){
+            $issel="selected";
+        } else{
+            $issel="";
+        };
+        $miag.="<option value='$tipo/$numero' $issel>$tipo/$numero</option>";
+    }
+// hgmnetwork.com 05-08-2018. creamos esto para que permita tambien asignar a cualquier agente
+ $miag.="<option value='cualquiera'";
+if ($datos[$i][19] == null){ $miag.=" selected";};
+$miag.=">Cualquier Agente</option>";
+// hgmnetwork.com 03-08-2018 $datos nos da la info mostramos cual es cada cosa para saberla
+//.$datos[$i][19].
+//$datos[$i][0]=> nos da el id del registro en calls
+//$datos[$i][1]=> nos da el id_campaing del registro en calls
+//$datos[$i][2]=> nos da el numero
+//$datos[$i][3]=> nos da el resultado de la llamada null si no se ha llamado, Success,ShortCall,NoAnswer,Failure,etc
+//$datos[$i][15]=> fecha inicial de llamada el 16 fecha final
+//$datos[$i][17]=> hora inicial de llamada 18 hora final de llamada
+if ($datos[$i][3]==NULL){$resultado_llamada="Sin llamar";} else {$resultado_llamada=$datos[$i][3];};
+        $micon.='<tr  style="height: 40px;color:#000000">
+                <td><strong>'.$datos[$i][2].'</strong></td>
+                <td><select class="cambioagendadas" id="agente-'.$datos[$i][0].'">'.$miag.'</select></td>
+                <td><input type="date" name="date_init" id="date_init-'.$datos[$i][0].'" value="'.$datos[$i][15].'">/<input type="date" name="date_end" id="date_end-'.$datos[$i][0].'" value="'.$datos[$i][16].'"></td>
+                <td><input type="time" name="time_init" id="time_init-'.$datos[$i][0].'" value="'.$datos[$i][17].'">/<input type="time" name="time_end" id="time_end-'.$datos[$i][0].'" value="'.$datos[$i][18].'"></td>
+                <td>'.$resultado_llamada .'</td>
+                <td><img src="images/time_edit.png" name="actualizar" id="'.$datos[$i][0].'" width="16" height="16" alt="Actualizar Fecha y hora" title="Actualizar Fecha y hora"/></td>
+                </tr>';
+}
+
+$micon.= '</table>
+</div>';
+
+
+return $micon;
+}
+
 
 function manejarMonitoreo_HTML($module_name, $smarty, $sDirLocalPlantillas)
 {
