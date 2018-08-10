@@ -535,3 +535,49 @@ function mostrar_mensaje_error(s)
 		}, 5000);
 	});
 }
+
+
+//funcion para actualizar las llamadas agendadas hgmnetwork.com 30-07-2018
+
+$(document).ready(function()
+        {
+
+$("[name=actualizar]").click(function () {
+//alert("Click en actualizar fecha y hora agendada themes/default/js/javascript");
+//alert("Id Llamada " + this.id);
+//alert("Id llamada " + $(".cambioagendadas").attr("id"));
+//alert("Nuevo Agente: "+ $("#agente-"+this.id).val());
+//alert("Fecha nueva inicial "+ $('#date_init-'+this.id).val());
+//alert("Fecha nueva final  " + $('#date_end-'+this.id).val());
+//alert("Hora nueva inicial "+ $('#time_init-'+this.id).val());
+//alert("Hora nueva final  " + $('#time_end-'+this.id).val());
+
+
+$.ajax({
+  url: "/modules/campaign_monitoring/libs/cambiar_llamada_agendada.php",
+  type: "get", //send it through get method
+  data: {
+    id: this.id,
+    agente: $("#agente-"+this.id).val(),
+    date_init: $('#date_init-'+this.id).val(),
+    date_end: $('#date_end-'+this.id).val(),
+    time_init: $('#time_init-'+this.id).val(),
+    time_end: $('#time_end-'+this.id).val(),
+    cambio: 'fecha'
+  },
+  success: function(response) {
+    //Do Something
+alert(response);
+    console.log(response);
+  },
+  error: function(xhr) {
+    //Do Something to handle error
+    console.log('error cambiar_llamada_agendada.php');
+    console.log(xhr);
+ alert("Se ha producido un error al actualizar la llamada agendada.")
+  }
+});
+
+});
+
+});
