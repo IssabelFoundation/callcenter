@@ -23,6 +23,25 @@
 
 </script>
 
+<!--
+    creado por hgmnetwork.com 09-07-2018 
+    funcion para obtener el id de campaña en funcion del hash ejemplo #/details/outgoing/10 nos devuelve 10
+     -->
+<script>
+function obtener_idcampania (){
+//alert("entra");
+var URLactual = window.location.hash;
+//alert(URLactual);
+var idcampania = URLactual.replace("#/details/outgoing/", "");
+//console.log(idcampania);
+console.log("el id de campania es " + idcampania);
+document.location.href="index.php?menu=campaign_monitoring&action=ver_agendadas&idcampana=" + idcampania;
+}
+
+</script>
+
+[ <a href="javascript:obtener_idcampania();">ver llamadas Agendadas</a> ]
+
 
 <script type="text/x-handlebars" data-template-name="campaign/details">
 {* Atributos de la campaña elegida *}
