@@ -42,7 +42,7 @@ class paloContactInsert
         $this->_sth_contact_number = $this->_db->prepare(
             'INSERT INTO calls (id_campaign, phone, status, dnc) VALUES (?, ?, NULL, ?)');
         $this->_sth_attribute = $this->_db->prepare(
-            'INSERT INTO call_attribute (id_call, columna, value, column_number) VALUES (?, ?, ?, ?)');
+            'INSERT INTO call_attribute (id_call, data) VALUES (?, ?)');
     }
 
     function beforeBatchInsert() { return TRUE; }
@@ -89,13 +89,10 @@ class paloContactInsert
         $idCall = $this->_db->lastInsertId();
 
         // Inserción de atributos
-        foreach ($attributes as $iNumColumna => $attr) {
-            if (is_null($attr[1])) $attr[1] = '';
-            $r = $this->_sth_attribute->execute(array($idCall, $attr[0], $attr[1], $iNumColumna));
-            if (!$r) {
-                $this->errMsg = _tr('On attribute insert').': '.print_r($this->_sth_attribute->errorInfo(), TRUE);
-                return NULL;
-            }
+        $r = $this->_sth_attribute->execute(array($idCall, json_encode($attributes)));
+        if (!$r) {
+            $this->errMsg = _tr('On attribute insert').': '.print_r($this->_sth_attribute->errorInfo(), TRUE);
+            return NULL;
         }
         return $idCall;
     }

@@ -84,9 +84,7 @@ UNLOCK TABLES;
 CREATE TABLE IF NOT EXISTS `call_attribute` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `id_call` int(10) unsigned NOT NULL,
-  `columna` varchar(30) default NULL,
-  `value` varchar(128) NOT NULL,
-  `column_number` int(10) unsigned NOT NULL default '0',
+  `data` text NULL,
   PRIMARY KEY  (`id`),
   KEY `id_call` (`id_call`),
   CONSTRAINT `call_attribute_ibfk_1` FOREIGN KEY (`id_call`) REFERENCES `calls` (`id`)

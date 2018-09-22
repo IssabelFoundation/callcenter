@@ -534,13 +534,11 @@ SQL_LLAMADAS;
         $sqlAtributos = <<<SQL_ATRIBUTOS
 SELECT
     call_attribute.id_call          AS id_call,
-    call_attribute.columna          AS etiqueta,
-    call_attribute.value            AS valor,
-    call_attribute.column_number    AS posicion
+    call_attribute.data            AS valor,
 FROM calls, call_attribute
 WHERE calls.id_campaign = ? AND calls.id = ? AND calls.id = call_attribute.id_call AND
     (calls.status='Success' OR calls.status='Failure' OR calls.status='ShortCall' OR calls.status='NoAnswer' OR calls.status='Abandoned')
-ORDER BY calls.id, call_attribute.column_number
+ORDER BY calls.id
 SQL_ATRIBUTOS;
         foreach ($datosCampania['BASE']['ID2POS'] as $id_call => $pos) {
             $datosAtributos = $this->_DB->fetchTable($sqlAtributos, TRUE, array($id_campaign, $id_call));
@@ -549,11 +547,12 @@ SQL_ATRIBUTOS;
                 $datosCampania = NULL;
                 return $datosCampania;
             }
-            foreach ($datosAtributos as $tuplaAtributo) {
-                // Se asume que el valor posicion empieza desde 1
-                $iPos = $iOffsetAttr + $tuplaAtributo['posicion'] - 1;
-                $datosCampania['BASE']['LABEL'][$iPos] = $tuplaAtributo['etiqueta'];
-                $datosCampania['BASE']['DATA'][$pos][$iPos] = $tuplaAtributo['valor'];
+            $json_datosAtributos = json_decode($datosAtributos[0]['valor'], true);
+            $iPos = $iOffsetAttr;
+            foreach ($json_datosAtributos as $keyAtributo => $valueAtributo) {
+                $datosCampania['BASE']['LABEL'][$iPos] = $keyAtributo;
+                $datosCampania['BASE']['DATA'][$pos][$iPos] = $valueAtributo;
+                $iPos++;
             }
         }
 

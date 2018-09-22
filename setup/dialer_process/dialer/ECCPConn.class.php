@@ -926,11 +926,13 @@ LEER_CAMPANIA;
             switch ($sKey) {
             case 'call_attributes':
                 $xml_callAttrlist = $xml_GetCallInfoResponse->addChild($sKey);
-                foreach ($valor as $tuplaAttr) {
+                $order = 0;
+                foreach ($valor as $keyAttr => $valueAttr) {
                     $xml_callAttr = $xml_callAttrlist->addChild('attribute');
-                    $xml_callAttr->addChild('label', str_replace('&', '&amp;', $tuplaAttr['label']));
-                    $xml_callAttr->addChild('value', str_replace('&', '&amp;', $tuplaAttr['value']));
-                    $xml_callAttr->addChild('order', str_replace('&', '&amp;', $tuplaAttr['order']));
+                    $xml_callAttr->addChild('label', str_replace('&', '&amp;', $keyAttr));
+                    $xml_callAttr->addChild('value', str_replace('&', '&amp;', $valueAttr));
+                    $xml_callAttr->addChild('order', str_replace('&', '&amp;', $order));
+                    $oder++;
                 }
                 break;
             case 'matching_contacts':
@@ -2708,21 +2710,17 @@ SQL_LLAMADA_CAMPANIA_AGENDAMIENTO;
 
         // Leer los atributos a heredar de la llamada, para (opcionalmente) modificarlos
         $sqlLlamadaAtributos = <<<SQL_LLAMADA_ATRIBUTOS_AGENDAMIENTO
-SELECT column_number, columna, value FROM call_attribute
+SELECT call_attribute.`data` FROM call_attribute
 WHERE id_call = ?
-ORDER BY column_number
 SQL_LLAMADA_ATRIBUTOS_AGENDAMIENTO;
         $recordset = $this->_db->prepare($sqlLlamadaAtributos);
         $recordset->execute(array($callid));
+        $row = $recordset->fetch();
         $attrLlamada = array();
-        foreach ($recordset as $tupla) {
-        	$attrLlamada[$tupla['column_number']] = array($tupla['columna'], $tupla['value']);
-        }
-        if (!is_null($sNuevoNombre)) {
-            // Columnas de propiedades se numeran desde 1
-            if (!isset($attrLlamada[1])) $attrLlamada[1] = array('Campo1', $sNuevoNombre);
-            $attrLlamada[1][1] = $sNuevoNombre;
-        }
+        $attrLlamada = (isset($row['data']))?json_decode($row['data'], true):[];
+
+        //Colocar al inicio de los atributos el nuevo nombre con el que se agenda la llamada
+        $attrLlamada = array_merge(array("Nombre agendado" => $sNuevoNombre), $attrLlamada);
 
         // Leer los datos de los formularios para la llamada
         $sqlLlamadaForm = <<<SQL_LLAMADA_FORM_STATIC
@@ -2766,15 +2764,8 @@ SQL_INSERTAR_AGENDAMIENTO;
             $idNuevaLlamada = $this->_db->lastInsertId();
 
             // Insertar atributos para la nueva llamada
-            $sth = $this->_db->prepare(
-                'INSERT INTO call_attribute (columna, value, column_number, id_call) '.
-                'VALUES (?, ?, ?, ?)');
-            foreach ($attrLlamada as $iColNum => $tuplaAttr) {
-                // Se asume elemento 0 es 'columna', 1 es 'value' en call_attribute
-                $tuplaAttr[] = $iColNum;        // Debería ser posición 2
-                $tuplaAttr[] = $idNuevaLlamada; // Debería ser posición 3
-                $sth->execute($tuplaAttr);
-            }
+            $sth = $this->_db->prepare('INSERT INTO call_attribute (call_attribute.`data`, id_call) VALUES (?, ?)');
+            $sth->execute(array(json_encode($attrLlamada), $idNuevaLlamada));
 
             // Insertar valores de formularios
             $sth = $this->_db->prepare(

@@ -155,9 +155,8 @@ function leerAtributosContacto($db, $sTipoLlamada, $idContacto)
     switch ($sTipoLlamada) {
     case 'outgoing':
         $sPeticionSQL = <<<INFO_ATRIBUTOS
-SELECT columna AS `label`, value, column_number AS `order`
+SELECT call_attribute.`data`
 FROM call_attribute WHERE id_call = ?
-ORDER BY column_number
 INFO_ATRIBUTOS;
         break;
     case 'incoming':
@@ -168,7 +167,8 @@ INFO_ATRIBUTOS;
     if (!is_null($sPeticionSQL)) {
         $recordset = $db->prepare($sPeticionSQL);
         $recordset->execute(array($idContacto));
-        $r = $recordset->fetchAll(PDO::FETCH_ASSOC);
+        $r = $recordset->fetch();
+        $r = json_decode($r['data']);
         $recordset->closeCursor();
     }
 

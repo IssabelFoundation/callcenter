@@ -118,9 +118,7 @@ DROP TABLE IF EXISTS `call_attribute`;
 CREATE TABLE `call_attribute` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_call` int(10) unsigned NOT NULL,
-  `columna` varchar(30) DEFAULT NULL,
-  `value` varchar(128) NOT NULL,
-  `column_number` int(10) unsigned NOT NULL DEFAULT '0',
+  `data` text NULL,
   PRIMARY KEY (`id`),
   KEY `id_call` (`id_call`),
   CONSTRAINT `call_attribute_ibfk_1` FOREIGN KEY (`id_call`) REFERENCES `calls` (`id`)

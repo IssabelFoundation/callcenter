@@ -143,10 +143,7 @@ class Uploader_CSV
                 $numero = array_shift($tupla);
                 $atributos = array();
                 for ($i = 0; $i < count($tupla); $i++) {
-                    $atributos[$i + 1] = array(
-                        ($i < count($clavesColumnas) && $clavesColumnas[$i] != '') ? $clavesColumnas[$i] : ($i + 1),
-                        $tupla[$i],
-                    );
+                    $atributos[($i < count($clavesColumnas) && $clavesColumnas[$i] != '') ? $clavesColumnas[$i] : ($i + 1)] = $tupla[$i];
                 }
                 $idCall = $inserter->insertOneContact($numero, $atributos);
                 if (is_null($idCall)) {
