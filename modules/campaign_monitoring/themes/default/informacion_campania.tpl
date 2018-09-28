@@ -138,7 +138,7 @@
                 {literal}{{#view tagName="tbody"}}
                 {{#each agentes}}
                 <tr {{bindAttr class="reciente"}}>
-                    <td width="20%" nowrap="nowrap">{{canal}}</td>
+                    <td width="20%" nowrap="nowrap" OnClick="javascript:escuchar(this.innerHTML,'{/literal}{$EXTENSION_USUARIO}{literal}');"><img src="images/record.png" width="22" height="22" id="escucharAgente"/> {{canal}}</td>
                     <td width="14%" nowrap="nowrap">{{estado}}</td>
                     <td width="23%" nowrap="nowrap">{{numero}}</td>
                     <td width="23%" nowrap="nowrap">{{troncal}}</td>
