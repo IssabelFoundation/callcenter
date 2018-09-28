@@ -73,6 +73,16 @@ function _moduleContent(&$smarty, $module_name)
 
 function manejarMonitoreo_HTML($module_name, $smarty, $sDirLocalPlantillas)
 {
+//hgmnetwork.com - 23-08-2018 creado para obtener la extension del usuario y pasarlo para la escucha
+global $arrConf;
+  $pDB = new paloDB($arrConf['issabel_dsn']['acl']);
+    $pACL = new paloACL($pDB);
+$user = $_SESSION['issabel_user'];
+$extension = $pACL->getUserExtension($user);
+$extension=
+//echo "<hr>usuario es $user y sesion es (".$_SESSION['issabel_user'].") y  extension es $extension <hr>";
+
+	
     $smarty->assign("MODULE_NAME", $module_name);
     $smarty->assign(array(
         'title'                         =>  _tr('Campaign Monitoring'),
@@ -105,6 +115,8 @@ function manejarMonitoreo_HTML($module_name, $smarty, $sDirLocalPlantillas)
         'PREVIOUS_N'                    =>  _tr('Previous 100 entries'),
         'ETIQUETA_MAX_DURAC_LLAM'       =>  _tr('Maximum Call Duration'),
         'ETIQUETA_PROMEDIO_DURAC_LLAM'  =>  _tr('Average Call Duration'),
+	'EXTENSION_USUARIO'             =>  _tr($extension)
+
     ));
 
     return $smarty->fetch("file:$sDirLocalPlantillas/informacion_campania.tpl");
