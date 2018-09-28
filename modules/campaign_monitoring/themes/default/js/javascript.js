@@ -535,3 +535,37 @@ function mostrar_mensaje_error(s)
 		}, 5000);
 	});
 }
+
+//hgmnetwork.com funciona para realizar escucha a los agentes 24-08-2018
+function escuchar(agente,extension){
+        //reemplazamos cualquier etiqueta dejando solo el texto del agente por ejemplo SIP/agente o A/agente Agent/agente SIP/5001 A/5001
+        const regex = /(<([^>]+)>)/ig;
+        var agente = agente.replace(regex, '');
+        //ahora quitamos el espacio inicial o cualquiera
+        var agente = agente.replace(' ', '');
+
+//        alert("realizamos llamada de chanspy con el agente: (" + agente+" a la extension "+ extension);
+
+        $.ajax({
+                  url: "/modules/campaign_monitoring/libs/escuchar_agente.php",
+                  type: "get", //send it through get method
+                          data: {
+			    agente: agente,
+                            extension: extension,
+                          },
+
+                          success: function(response) {
+                            //Do Something
+//                        alert(response);
+                            console.log(response);
+                          },
+                          error: function(xhr) {
+                            //Do Something to handle error
+                            console.log('error escuchar_agente.php');
+                            console.log(xhr);
+                         alert("Se ha producido un error al intentar escuchar.")
+                          }
+        });
+
+
+};
