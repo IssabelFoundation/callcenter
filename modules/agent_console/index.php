@@ -844,12 +844,12 @@ function _manejarSesionActiva_HTML_generarInformacion($smarty, $sDirLocalPlantil
     // Asignaciones específicas para llamadas salientes
     if ($infoLlamada['calltype'] == 'outgoing') {
 
-        /* TODO: el siguiente código asume que el atributo 1 es el nombre
+        /* TODO: el siguiente código asume que el atributo 0 es el nombre
          * del cliente. Esta suposición se hereda del callcenter anterior.
          * Se debe de idear un método para dar formato al nombre del cliente
          * a partir de cualquier combinación de columnas */
-        $sNombreCliente = isset($infoLlamada['call_attributes'][1])
-            ? $infoLlamada['call_attributes'][1]['value']
+        $sNombreCliente = isset($infoLlamada['call_attributes'][0])
+            ? $infoLlamada['call_attributes'][0]['value']
             : _tr('(unavailable)');
 
         $smarty->assign(array(

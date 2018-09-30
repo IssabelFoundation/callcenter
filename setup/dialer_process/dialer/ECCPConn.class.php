@@ -932,7 +932,7 @@ LEER_CAMPANIA;
                     $xml_callAttr->addChild('label', str_replace('&', '&amp;', $keyAttr));
                     $xml_callAttr->addChild('value', str_replace('&', '&amp;', $valueAttr));
                     $xml_callAttr->addChild('order', str_replace('&', '&amp;', $order));
-                    $oder++;
+                    $order++;
                 }
                 break;
             case 'matching_contacts':
