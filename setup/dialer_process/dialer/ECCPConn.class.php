@@ -603,8 +603,8 @@ class ECCPConn
             $sqlLlamadasExito = 'SELECT COUNT(*) AS N, duration_wait FROM call_entry WHERE id_campaign = ? AND (status = "activa" OR status = "terminada") GROUP BY duration_wait';
             $sqlLlamadasAbandonadas = 'SELECT COUNT(*) AS N FROM call_entry WHERE id_campaign = ? AND status = "abandonada"';
         } elseif ($sTipoCampania == 'outgoing') {
-            $sqlLlamadasExito = 'SELECT COUNT(*) AS N, duration_wait FROM calls WHERE id_campaign = ? AND status = "Success" GROUP BY duration_wait';
-            $sqlLlamadasAbandonadas = 'SELECT COUNT(*) AS N FROM calls WHERE id_campaign = ? AND status = "Abandoned"';
+            $sqlLlamadasExito = 'SELECT COUNT(*) AS N, duration_wait FROM calls LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id WHERE campaign_lists.id_campaign = ? AND calls.status = "Success" GROUP BY duration_wait';
+            $sqlLlamadasAbandonadas = 'SELECT COUNT(*) AS N FROM calls LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id WHERE campaign_lists.id_campaign = ? AND calls.status = "Abandoned"';
         } else {
             return $this->_generarRespuestaFallo(400, 'Bad request');
         }
@@ -2305,9 +2305,10 @@ LEER_RESUMEN_CAMPANIA;
 
         // Leer la clasificación por estado de las llamadas de la campaña
         $sPeticionSQL = <<<CLASIFICAR_LLAMADAS
-SELECT COUNT(*) AS n, status FROM calls
-WHERE id_campaign = ? AND ((? IS NULL) OR (datetime_originate >= ?))
-GROUP BY status
+SELECT COUNT(*) AS n, calls.status FROM calls
+  LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id
+WHERE campaign_lists.id_campaign = ? AND ((? IS NULL) OR (datetime_originate >= ?))
+GROUP BY calls.status
 CLASIFICAR_LLAMADAS;
         $recordset = $this->_db->prepare($sPeticionSQL);
         $recordset->execute(array($idCampania, $sFechaInicio, $sFechaInicio));
@@ -2334,7 +2335,8 @@ CLASIFICAR_LLAMADAS;
         // Leer estadísticas de la campaña
         $sPeticionSQL = <<<LEER_STATS_CAMPANIA
 SELECT SUM(duration) AS total_sec, MAX(duration) AS max_duration FROM calls
-WHERE id_campaign = ? AND status = 'Success' AND ((? IS NULL) OR (start_time >= ?)) AND end_time IS NOT NULL
+  LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id
+WHERE campaign_lists.id_campaign = ? AND calls.status = 'Success' AND ((? IS NULL) OR (start_time >= ?)) AND end_time IS NOT NULL
 LEER_STATS_CAMPANIA;
         $recordset = $this->_db->prepare($sPeticionSQL);
         $recordset->execute(array($idCampania, $sFechaInicio, $sFechaInicio));
@@ -2674,9 +2676,11 @@ LEER_STATS_CAMPANIA;
         // Leer toda la información de la campaña y la cola
         $sqlLlamadaCampania = <<<SQL_LLAMADA_CAMPANIA_AGENDAMIENTO
 SELECT campaign.datetime_init, campaign.datetime_end, campaign.daytime_init,
-    campaign.daytime_end, calls.id_campaign, calls.phone
-FROM campaign, calls
-WHERE campaign.id = calls.id_campaign AND calls.id = ?
+    campaign.daytime_end, campaign.id AS id_campaign, calls.phone
+FROM calls
+  LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id
+  INNER JOIN campaign ON campaign.id = campaign_lists.id_campaign
+WHERE calls.id = ?
 SQL_LLAMADA_CAMPANIA_AGENDAMIENTO;
         $recordset = $this->_db->prepare($sqlLlamadaCampania);
         $recordset->execute(array($callid));
@@ -2737,7 +2741,8 @@ SQL_LLAMADA_FORM_STATIC;
         // Validar que no exista una llamada por agendar al mismo número
         $sqlExistenciaLlamadaPrevia = <<<SQL_LLAMADA_PREVIA
 SELECT COUNT(*) FROM calls
-WHERE id_campaign = ? AND phone = ? AND date_init = ? AND date_end = ?
+  LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id
+WHERE campaign_lists.id_campaign = ? AND phone = ? AND date_init = ? AND date_end = ?
     AND time_init = ? AND time_end = ?
 SQL_LLAMADA_PREVIA;
         $recordset = $this->_db->prepare($sqlExistenciaLlamadaPrevia);
@@ -2756,10 +2761,11 @@ SQL_LLAMADA_PREVIA;
             // Agregar agente a agendar, si es necesario, e insertar
             $paramNuevaLlamadaSQL[] = $bMismoAgente ? $sAgente : NULL;
             $sqlInsertarLlamadaAgendada = <<<SQL_INSERTAR_AGENDAMIENTO
-INSERT INTO calls (scheduled, id_campaign, phone, date_init, date_end, time_init, time_end, agent)
-VALUES (1, ?, ?, ?, ?, ?, ?, ?)
+INSERT INTO calls (scheduled, id_list, phone, date_init, date_end, time_init, time_end, agent)
+VALUES (1, (SELECT id_list FROM calls WHERE calls.id = ?), ?, ?, ?, ?, ?, ?)
 SQL_INSERTAR_AGENDAMIENTO;
-            $sth = $this->_db->prepare($sqlInsertarLlamadaAgendada);
+			$paramNuevaLlamadaSQL[0] = $callid;
+			$sth = $this->_db->prepare($sqlInsertarLlamadaAgendada);
             $sth->execute($paramNuevaLlamadaSQL);
             $idNuevaLlamada = $this->_db->lastInsertId();
 
@@ -3198,9 +3204,10 @@ GROUP BY call_entry.id_agent, queue_call_entry.queue)
 UNION
 (SELECT calls.id_agent, 'outgoing' AS campaign_type, campaign.queue,
     SUM(calls.duration) AS sec_calls, COUNT(*) AS num_calls
-FROM calls, campaign
-WHERE calls.id_campaign = campaign.id
-    AND calls.start_time BETWEEN ? AND ?
+FROM calls
+  LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id
+  INNER JOIN campaign ON campaign.id = campaign_lists.id_campaign
+WHERE calls.start_time BETWEEN ? AND ?
 GROUP BY calls.id_agent, campaign.queue)
 LEER_HISTORIAL_ATENCION;
         $recordset_sumallamadasAgente = $this->_db->prepare($sPeticionSQL_sumallamadasAgente);
@@ -3448,8 +3455,10 @@ SELECT call_progress_log.id, call_progress_log.datetime_entry,
     call_progress_log.uniqueid, call_progress_log.trunk,
     call_progress_log.duration,
     CONCAT(agent.type, "/", agent.number) AS agentchannel
-FROM (call_progress_log, calls, campaign)
-LEFT JOIN (agent) ON (call_progress_log.id_agent = agent.id)
+FROM call_progress_log
+  LEFT JOIN calls ON call_progress_log.id_call_outgoing = calls.id
+  INNER JOIN campaign ON call_progress_log.id_campaign_outgoing = campaign.id
+  LEFT JOIN agent ON call_progress_log.id_agent = agent.id
 WHERE id_campaign_outgoing = ?
     AND call_progress_log.id_call_outgoing = calls.id
     AND calls.id_campaign = campaign.id

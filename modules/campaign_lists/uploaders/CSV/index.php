@@ -58,7 +58,9 @@ class Uploader_CSV
                 set_time_limit(0);
                 list($bExito, $errMsg) = self::addCampaignNumbersFromFile(
                     $pDB,
-                    $_REQUEST['id_campaign'],
+                    $_POST['list_name'],
+                    $_POST['id_campaign'],
+                    $_FILES['phonefile']['name'],
                     $_FILES['phonefile']['tmp_name'],
                     $_POST['encoding']);
 
@@ -91,7 +93,7 @@ class Uploader_CSV
      *
      * @return bool     VERDADERO si éxito, FALSO si ocurre un error
      */
-    private static function addCampaignNumbersFromFile($pDB, $idCampaign, $sFilePath, $sEncoding)
+    private static function addCampaignNumbersFromFile($pDB, $listName, $idCampaign, $sFileName, $sFilePath, $sEncoding)
     {
         // Detectar codificación para procesar siempre como UTF-8 (bug #325)
         if (is_null($sEncoding))
@@ -102,7 +104,7 @@ class Uploader_CSV
             return array(FALSE, _tr('Invalid CSV File'));
         }
 
-        $inserter = new paloContactInsert($pDB, $idCampaign);
+        $inserter = new paloContactInsert($pDB, $idCampaign, $listName, $sFileName);
 
         if (!$inserter->beforeBatchInsert()) {
             fclose($hArchivo);

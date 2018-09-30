@@ -71,9 +71,6 @@ function _moduleContent(&$smarty, $module_name)
     case 'csv_data':
         $contenidoModulo = displayCampaignCSV($pDB, $smarty, $module_name, $local_templates_dir);
         break;
-    case 'load_contacts':
-        $contenidoModulo = loadCampaignContacts($pDB, $smarty, $module_name, $local_templates_dir);
-        break;
     case 'list_campaign':
     default:
         $contenidoModulo = listCampaign($pDB, $smarty, $module_name, $local_templates_dir);
@@ -162,7 +159,7 @@ function listCampaign($pDB, $smarty, $module_name, $local_templates_dir)
                 ($campaign['num_completadas'] != "") ? $campaign['num_completadas'] : "N/A",
                 ($campaign['promedio'] != "") ? number_format($campaign['promedio'],0) : "N/A",
                 campaignStatusLabel($campaign['estatus']),
-                "<a href='?menu=$module_name&amp;action=load_contacts&amp;id_campaign=".$campaign['id']."'>["._tr('Load Contacts')."]</a> ".
+                "<a href='?menu=campaign_lists&amp;action=new_list&amp;id_campaign=".$campaign['id']."'>["._tr('Load Contacts')."]</a> ".
                     "<a href='?menu=$module_name&amp;action=csv_data&amp;id_campaign=".$campaign['id']."&amp;rawmode=yes'>["._tr('CSV Data')."]</a>",
             );
         }
@@ -507,90 +504,6 @@ function formEditCampaign($pDB, $smarty, $module_name, $local_templates_dir, $id
         is_null($id_campaign) ? _tr("New Campaign") : _tr("Edit Campaign").' "'.$_POST['nombre'].'"',
         $_POST);
     return $contenidoModulo;
-}
-
-function loadCampaignContacts($pDB, $smarty, $module_name, $local_templates_dir)
-{
-    require_once "modules/$module_name/libs/paloContactInsert.class.php";
-
-    $id_campaign = (isset($_REQUEST['id_campaign']) && ctype_digit($_REQUEST['id_campaign']))
-        ? (int)$_REQUEST['id_campaign'] : NULL;
-    if (is_null($id_campaign)) {
-        Header("Location: ?menu=$module_name");
-        return '';
-    }
-
-    // Si se ha indicado cancelar, volver a listado sin hacer nada más
-    if (isset($_POST['cancel'])) {
-        Header("Location: ?menu=$module_name");
-        return '';
-    }
-
-    // Leer los datos de la campaña, si es necesario
-    $oCamp = new paloSantoCampaignCC($pDB);
-    $arrCampaign = $oCamp->getCampaigns(null, null, $id_campaign);
-    if (!is_array($arrCampaign) || count($arrCampaign) == 0) {
-        $smarty->assign("mb_title", 'Unable to read campaign');
-        $smarty->assign("mb_message", 'Cannot read campaign - '.$oCamp->errMsg);
-        return '';
-    }
-    $smarty->assign(array(
-        'id_campaign'                   =>  $id_campaign,
-        'FRAMEWORK_TIENE_TITULO_MODULO' =>  existeSoporteTituloFramework(),
-        'REQUIRED_FIELD'                =>  _tr("Required field"),
-        'CANCEL'                        =>  _tr("Cancel"),
-        'SAVE'                          =>  _tr("Save"),
-        'LBL_OPTIONS_UPLOADER'          =>  _tr('Options for').': ',
-        'LBL_UPLOADERS'                 =>  _tr('Available uploaders'),
-        'icon'                          =>  'images/kfaxview.png',
-    ));
-
-    // Construir lista de todos los cargadores conocidos
-    $listuploaders = array();
-    $uploadersdir = "modules/$module_name/uploaders";
-    foreach (scandir("$uploadersdir/") as $uploader) {
-        if ($uploader != '.' && $uploader != '..' && is_dir("$uploadersdir/$uploader")) {
-            $listuploaders[$uploader] = $uploader;
-        }
-    }
-
-    // Carga de todas las funciones auxiliares de los diálogos
-    foreach ($listuploaders as $uploader) {
-        if (file_exists("modules/$module_name/uploaders/$uploader/index.php")) {
-            if (file_exists("modules/$module_name/uploaders/$uploader/lang/en.lang"))
-                load_language_module("$module_name/uploaders/$uploader");
-            require_once "modules/$module_name/uploaders/$uploader/index.php";
-        }
-    }
-
-    $oForm = new paloForm($smarty, array(
-        'uploader'          =>  array(
-            'LABEL'                     =>  _tr('Available uploaders'),
-            'REQUIRED'                  =>  'yes',
-            'INPUT_TYPE'                =>  'SELECT',
-            'INPUT_EXTRA_PARAM'         =>  $listuploaders,
-            'VALIDATION_TYPE'           =>  'text',
-            'VALIDATION_EXTRA_PARAM'    =>  '',
-            'ONCHANGE'                  =>  'submit();',
-        ),
-    ));
-
-    $selected_uploader = isset($_REQUEST['uploader']) ? $_REQUEST['uploader'] : 'CSV';
-    if (!in_array($selected_uploader, $listuploaders)) $selected_uploader = 'CSV';
-
-    $classname = 'Uploader_'.$selected_uploader;
-    $method = (isset($_REQUEST['uploader_action']) && method_exists($classname, 'handleJSON_'.$_REQUEST['uploader_action']))
-        ? 'handleJSON_'.$_REQUEST['uploader_action'] : 'main';
-    $h = array($classname, $method);
-    $r = call_user_func($h, $module_name, $smarty, realpath($local_templates_dir.'/../../uploaders/'.$selected_uploader.'/tpl'), $pDB);
-    if ($method != 'main') return $r;
-
-    $smarty->assign('CONTENT_UPLOADER', $r);
-    $smarty->assign('LBL_OPTIONS_UPLOADER', _tr('Options for').': '.htmlentities($selected_uploader, ENT_COMPAT, 'UTF-8'));
-    return $oForm->fetchForm(
-        "$local_templates_dir/load_contacts.tpl",
-        _tr("Load Contacts for Campaign").': '.$arrCampaign[0]['name'],
-        $_POST);
 }
 
 function getFormCampaign($arrDataTrunks, $arrDataQueues, $arrSelectForm,

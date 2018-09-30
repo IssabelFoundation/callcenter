@@ -42,6 +42,7 @@ if (file_exists($path_script_db))
 
     $pDB = new paloDB ('mysql://root:'.MYSQL_ROOT_PASSWORD.'@localhost/call_center');
     modificarDatosCallAttribute($pDB);
+    modificarCampoCalls($pDB);
 
     quitarColumnaSiExiste($pDB, 'call_center', 'agent', 'queue');
 
@@ -240,6 +241,80 @@ QUERY_SQL;
         if (!$r) fputs(STDERR, "ERR: ".$pDB->errMsg."\n");
     } else {
         fputs(STDERR, "INFO: Sin modificación a la tabla call_attribute.\n");
+    }
+}
+
+function modificarCampoCalls($pDB)
+{
+    $sPeticionSQL = <<<EXISTE_COLUMNA
+    SELECT COUNT(*)
+    FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_SCHEMA = 'call_center' AND TABLE_NAME = 'calls' AND COLUMN_NAME = 'id_campaign'
+EXISTE_COLUMNA;
+    $r = $pDB->getFirstRowQuery($sPeticionSQL, FALSE);
+    if (!is_array($r)) {
+        fputs(STDERR, "ERR: al verificar tabla calla.id_campaign - ".$pDB->errMsg."\n");
+        return;
+    }
+    if ($r[0] > 0) {
+        fputs(STDERR, "INFO: Se encuentra calls.id_campaign en base de datos call_center, se ejecuta:\n");
+        $sql = "ALTER TABLE `calls` DROP FOREIGN KEY `calls_ibfk_1`;";
+        fputs(STDERR, "\t$sql\n");
+        $r = $pDB->genQuery($sql);
+        if (!$r) fputs(STDERR, "ERR: ".$pDB->errMsg."\n");
+        
+        $sql = "ALTER TABLE `calls` ALTER `id_campaign` DROP DEFAULT;";
+        fputs(STDERR, "\t$sql\n");
+        $r = $pDB->genQuery($sql);
+        if (!$r) fputs(STDERR, "ERR: ".$pDB->errMsg."\n");
+
+        $sql = "ALTER TABLE `calls` CHANGE COLUMN `id_campaign` `id_list` INT(10) UNSIGNED NOT NULL AFTER `id`;";
+        fputs(STDERR, "\t$sql\n");
+        $r = $pDB->genQuery($sql);
+        if (!$r) fputs(STDERR, "ERR: ".$pDB->errMsg."\n");
+
+        fputs(STDERR, "INFO: Por cada campaña, generar una lista inicial:\n");
+        $sql = <<<QUERY_SQL
+        SELECT DISTINCT id_list FROM calls ORDER BY calls.id_list ASC;
+QUERY_SQL;
+        fputs(STDERR, "\t$sql\n");
+        $r = $pDB->fetchTable($sql, TRUE);
+        if (!$r) fputs(STDERR, "ERR: ".$pDB->errMsg."\n");
+        foreach ($r as $keyRow => $valueRow) {
+            $sql = <<<QUERY_SQL
+        INSERT INTO campaign_lists (id_campaign, `type`, name, upload, date_entered, `status`, total_calls, pending_calls, sent_calls, answered_calls, no_answer_calls, failed_calls, paused_calls, abandoned_calls, short_calls, is_recycled, id_parent_list, is_deleted)
+        VALUES (? , 0, ?, '', NOW(), 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+QUERY_SQL;
+        $r = $pDB->genQuery($sql, array($valueRow['id_list'],"Campaign List ".$valueRow['id_list']));
+        if (!$r) fputs(STDERR, "ERR: ".$pDB->errMsg."\n");
+        $id_list = $pDB->getLastInsertId();
+        $sql = <<<QUERY_SQL
+        UPDATE campaign_lists
+        SET
+            total_calls=(SELECT COUNT(id) FROM calls WHERE id_list=?)
+        WHERE id=?
+QUERY_SQL;
+        $r = $pDB->genQuery($sql, array($valueRow['id_list'], $id_list));
+        if (!$r) fputs(STDERR, "ERR: ".$pDB->errMsg."\n");
+        $sql = <<<QUERY_SQL
+        UPDATE calls
+        SET
+            id_list=?
+        WHERE id_list=?
+QUERY_SQL;
+        $r = $pDB->genQuery($sql, array($id_list, $valueRow['id_list']));
+        if (!$r) fputs(STDERR, "ERR: ".$pDB->errMsg."\n");
+        $sql = <<<QUERY_SQL
+        UPDATE calls
+        SET
+            status="Paused"
+        WHERE id_list=? AND ISNULL(calls.`status`) 
+QUERY_SQL;
+        $r = $pDB->genQuery($sql, array($id_list));
+        if (!$r) fputs(STDERR, "ERR: ".$pDB->errMsg."\n");
+        }
+    } else {
+        fputs(STDERR, "INFO: Sin modificación a la tabla calls.\n");
     }
 }
 

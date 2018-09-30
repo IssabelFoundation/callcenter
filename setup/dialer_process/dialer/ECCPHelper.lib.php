@@ -51,14 +51,15 @@ function _leerInfoLlamadaOutgoing($db, $idCampania, $idLlamada)
 {
     // Leer información de la llamada principal
     $sPeticionSQL = <<<INFO_LLAMADA
-SELECT 'outgoing' AS calltype, calls.id AS call_id, id_campaign AS campaign_id, phone, status, uniqueid,
+SELECT 'outgoing' AS calltype, calls.id AS call_id, id_campaign AS campaign_id, phone, calls.status, uniqueid,
     duration, datetime_originate, fecha_llamada AS datetime_originateresponse,
     datetime_entry_queue AS datetime_join, start_time AS datetime_linkstart,
     end_time AS datetime_linkend, retries, failure_cause, failure_cause_txt,
     CONCAT(agent.type, '/', agent.number) AS agent_number, trunk
-FROM (calls)
-LEFT JOIN agent ON agent.id = calls.id_agent
-WHERE id_campaign = ? AND calls.id = ?
+FROM calls
+  LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id
+  LEFT JOIN agent ON agent.id = calls.id_agent
+WHERE campaign_lists.id_campaign = ? AND calls.id = ?
 INFO_LLAMADA;
     $recordset = $db->prepare($sPeticionSQL);
     $recordset->execute(array($idCampania, $idLlamada));

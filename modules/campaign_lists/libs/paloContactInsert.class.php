@@ -23,29 +23,47 @@
 
 class paloContactInsert
 {
+    private $_file_name;
+    private $_list_name;
     private $_id_campaign;
+    private $_id_list;
+    private $_contact_count;
     private $_db;
+    private $_sth_list;
     private $_sth_dnc;
     private $_sth_contact_number;
     private $_sth_attribute;
     var $errMsg = NULL;
 
-    function __construct($db, $idCampaign)
+    function __construct($db, $idCampaign, $listName, $fileName)
     {
         if (get_class($db) == 'paloDB') $db = $db->conn;
         if (get_class($db) != 'PDO') die ('Expected PDO, got '.get_class($db));
         $this->_db = $db;
         $this->_id_campaign = $idCampaign;
+        $this->_list_name = $listName;
+        $this->_file_name = $fileName;
+        $this->_contact_count = 0;
 
+        $this->_sth_list = $this->_db->prepare(
+            'INSERT INTO campaign_lists (id_campaign, `type`, name, upload, date_entered, `status`) VALUES (?, 0, ?, ?, NOW(),2)');
         $this->_sth_dnc = $this->_db->prepare(
             'SELECT COUNT(*) AS N FROM dont_call WHERE caller_id = ? AND status = ?');
         $this->_sth_contact_number = $this->_db->prepare(
-            'INSERT INTO calls (id_campaign, phone, status, dnc) VALUES (?, ?, NULL, ?)');
+            'INSERT INTO calls (id_list, phone, status, dnc) VALUES (?, ?, ?, ?)');
         $this->_sth_attribute = $this->_db->prepare(
             'INSERT INTO call_attribute (id_call, data) VALUES (?, ?)');
     }
 
-    function beforeBatchInsert() { return TRUE; }
+    function beforeBatchInsert() {
+        $r = $this->_sth_list->execute(array($this->_id_campaign, utf8_decode($this->_list_name), utf8_decode($this->_file_name)));
+        if (!$r) {
+            $this->errMsg = _tr('On create list').': '.print_r($this->_sth_attribute->errorInfo(), TRUE);
+            return FALSE;
+        }
+        $this->_id_list = $this->_db->lastInsertId();
+        return TRUE;
+    }
 
     /**
      * Procedimiento para insertar un contacto a la campaña. El formato de los
@@ -79,7 +97,7 @@ class paloContactInsert
         $iDNC = ($tupla['N'] != 0) ? 1 : 0;
 
         // Inserción del número en sí
-        $r = $this->_sth_contact_number->execute(array($this->_id_campaign, $number, $iDNC));
+        $r = $this->_sth_contact_number->execute(array($this->_id_list, $number, ($iDNC==1)?"DONT_CALL":"Paused", 1 ));
         if (!$r) {
             $this->errMsg = _tr('On number insert').': '.print_r($this->_sth_contact_number->errorInfo(), TRUE);
             return NULL;
@@ -94,6 +112,7 @@ class paloContactInsert
             $this->errMsg = _tr('On attribute insert').': '.print_r($this->_sth_attribute->errorInfo(), TRUE);
             return NULL;
         }
+        $this->_contact_count++;
         return $idCall;
     }
 
@@ -103,6 +122,12 @@ class paloContactInsert
         $r = $sth->execute(array('A', $this->_id_campaign, 'T'));
         if (!$r) {
             $this->errMsg = _tr('On campaign reactivation').': '.print_r($this->_sth_attribute->errorInfo(), TRUE);
+            return FALSE;
+        }
+        $sth = $this->_db->prepare('UPDATE campaign_lists SET total_calls = ? WHERE id = ?');
+        $r = $sth->execute(array($this->_contact_count, $this->_id_list));
+        if (!$r) {
+            $this->errMsg = _tr('On list total_calls update').': '.print_r($this->_sth_attribute->errorInfo(), TRUE);
             return FALSE;
         }
         return TRUE;

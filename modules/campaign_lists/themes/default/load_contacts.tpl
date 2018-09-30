@@ -22,11 +22,23 @@
   <td>
     {$uploader.LABEL}: {$uploader.INPUT}<br/>
     <fieldset>
+        <legend>{$LBL_CAMPAIGN}</legend>
+        <table width="900" valign="top" border="0" cellspacing="0" cellpadding="0" class="tabForm">
+        <tr>
+          <td align='right'>{$list_name.LABEL}: {if $mode eq 'input'}<span  class="required">*</span>{/if}</td>
+          <td  colspan='4'>{$list_name.INPUT}</td>
+        </tr>
+        <tr>
+          <td align='right'>{$id_campaign.LABEL}: {if $mode eq 'input'}<span  class="required">*</span>{/if}</td>
+          <td  colspan='4'>{$id_campaign.INPUT}</td>
+        </tr>
+      </table>
+    </fieldset>
+    <fieldset>
         <legend>{$LBL_OPTIONS_UPLOADER}</legend>
         {$CONTENT_UPLOADER}
     </fieldset>
   </td>
 </tr>
 </table>
-<input type="hidden" name="id_campaign" id='id_campaign' value="{$id_campaign}" />
 </form>

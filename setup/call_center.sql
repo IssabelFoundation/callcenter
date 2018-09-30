@@ -144,6 +144,32 @@ CREATE TABLE IF NOT EXISTS `calls` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
+-- Table structure for table `campaign_lists`
+--
+CREATE TABLE IF NOT EXISTS `campaign_lists` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `id_campaign` int(11) unsigned NOT NULL,
+  `type` tinyint(1) NOT NULL default '0' COMMENT '0 - out, 1 - in',
+  `name` varchar(255) NOT NULL,
+  `upload` varchar(255) NOT NULL,
+  `date_entered` datetime NOT NULL,
+  `status` tinyint(1) NOT NULL default '2' COMMENT '1 - Activa, 2 - Detenida, 3 - Terminada',
+  `total_calls` int(11) NOT NULL default '0',
+  `pending_calls` int(11) NOT NULL default '0',
+  `sent_calls` int(11) NOT NULL default '0',
+  `answered_calls` int(11) NOT NULL default '0',
+  `no_answer_calls` int(11) NOT NULL default '0',
+  `failed_calls` int(11) NOT NULL default '0',
+  `paused_calls` int(11) NOT NULL default '0',
+  `abandoned_calls` int(11) NOT NULL default '0',
+  `short_calls` int(11) NOT NULL default '0',
+  `is_recycled` tinyint(1) NOT NULL default '0' COMMENT '0 - False, 1 - True',
+  `id_parent_list` INT(11) UNSIGNED NULL DEFAULT NULL,
+  `is_deleted` tinyint(1) NOT NULL default '0' COMMENT '0 - Activo, 1 - Eliminado',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
 -- Table structure for table `campaign`
 --
 CREATE TABLE IF NOT EXISTS `campaign` (

@@ -264,7 +264,7 @@ DROP TABLE IF EXISTS `calls`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `calls` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `id_campaign` int(10) unsigned NOT NULL,
+  `id_list` int(10) unsigned NOT NULL,
   `phone` varchar(32) NOT NULL,
   `status` varchar(32) DEFAULT NULL,
   `uniqueid` varchar(32) DEFAULT NULL,
@@ -294,7 +294,7 @@ CREATE TABLE `calls` (
   KEY `campaign_date_schedule` (`id_campaign`,`date_init`,`date_end`,`time_init`,`time_end`),
   KEY `datetime_init` (`start_time`),
   KEY `datetime_entry_queue` (`datetime_entry_queue`),
-  CONSTRAINT `calls_ibfk_1` FOREIGN KEY (`id_campaign`) REFERENCES `campaign` (`id`),
+  CONSTRAINT `calls_ibfk_1` FOREIGN KEY (`id_list`) REFERENCES `campaign_lists` (`id`),
   CONSTRAINT `calls_ibfk_2` FOREIGN KEY (`id_agent`) REFERENCES `agent` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -306,6 +306,46 @@ CREATE TABLE `calls` (
 LOCK TABLES `calls` WRITE;
 /*!40000 ALTER TABLE `calls` DISABLE KEYS */;
 /*!40000 ALTER TABLE `calls` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `campaign_lists`
+--
+
+DROP TABLE IF EXISTS `campaign_lists`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE IF NOT EXISTS `campaign_lists` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `id_campaign` int(11) unsigned NOT NULL,
+  `type` tinyint(1) NOT NULL default '0' COMMENT '0 - out, 1 - in',
+  `name` varchar(255) NOT NULL,
+  `upload` varchar(255) NOT NULL,
+  `date_entered` datetime NOT NULL,
+  `status` tinyint(1) NOT NULL default '2' COMMENT '1 - Activa, 2 - Detenida, 3 - Terminada',
+  `total_calls` int(11) NOT NULL default '0',
+  `pending_calls` int(11) NOT NULL default '0',
+  `sent_calls` int(11) NOT NULL default '0',
+  `answered_calls` int(11) NOT NULL default '0',
+  `no_answer_calls` int(11) NOT NULL default '0',
+  `failed_calls` int(11) NOT NULL default '0',
+  `paused_calls` int(11) NOT NULL default '0',
+  `abandoned_calls` int(11) NOT NULL default '0',
+  `short_calls` int(11) NOT NULL default '0',
+  `is_recycled` tinyint(1) NOT NULL default '0' COMMENT '0 - False, 1 - True',
+  `id_parent_list` INT(11) UNSIGNED NULL DEFAULT NULL,
+  `is_deleted` tinyint(1) NOT NULL default '0' COMMENT '0 - Activo, 1 - Eliminado',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `campaign_lists`
+--
+
+LOCK TABLES `campaign_lists` WRITE;
+/*!40000 ALTER TABLE `campaign_lists` DISABLE KEYS */;
+/*!40000 ALTER TABLE `campaign_lists` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

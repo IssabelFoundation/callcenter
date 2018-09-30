@@ -1687,8 +1687,8 @@ function construirRespuesta_agentlinked($smarty, $sDirLocalPlantillas,
          * del cliente. Esta suposición se hereda del callcenter anterior.
          * Se debe de idear un método para dar formato al nombre del cliente
          * a partir de cualquier combinación de columnas */
-        $sNombreCliente = isset($infoLlamada['call_attributes'][1])
-            ? $infoLlamada['call_attributes'][1]['value']
+        $sNombreCliente = isset($infoLlamada['call_attributes'][0])
+            ? $infoLlamada['call_attributes'][0]['value']
             : _tr('(unavailable)');
 
         $registroCambio['txt_contacto_nombres'] = $sNombreCliente;
