@@ -119,5 +119,8 @@ $arrLangModule = array(
     "Load Contacts for Campaign" => "Load Contacts for Campaign",
     "Available uploaders" => "Available uploaders",
     "Options for" => "Options for",
+    "callerid"=> "CallerID",
+    "Caller ID must be numeric"=> "Caller ID must be numeric"
+
 );
 ?>
