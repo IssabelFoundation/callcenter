@@ -748,7 +748,7 @@ PETICION_LLAMADAS;
 
         // Peticiones preparadas
         $sPeticionLlamadaColocada = <<<SQL_LLAMADA_COLOCADA
-UPDATE calls SET status = 'Placing', datetime_originate = ?, fecha_llamada = NULL,
+UPDATE calls SET status = 'Placing',callerid="$callerid", datetime_originate = ?, fecha_llamada = NULL,
     datetime_entry_queue = NULL, start_time = NULL, end_time = NULL,
     duration_wait = NULL, duration = NULL, failure_cause = NULL,
     failure_cause_txt = NULL, uniqueid = NULL, id_agent = NULL,
