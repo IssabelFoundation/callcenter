@@ -342,7 +342,7 @@ PETICION_DESACTIVAR_CADUCAS;
             $sPeticionCampanias = <<<PETICION_CAMPANIAS_SALIENTES
 SELECT id, name, trunk, context, queue, max_canales, num_completadas,
     promedio, desviacion, retries, datetime_init, datetime_end, daytime_init,
-    daytime_end
+    daytime_end, callerid
 FROM campaign
 WHERE datetime_init <= ? AND datetime_end >= ? AND estatus = "A"
     AND (
@@ -787,6 +787,8 @@ SQL_LLAMADA_COLOCADA;
                     "\tTrunk....... ".(is_null($infoCampania['trunk']) ? '(por plan de marcado)' : $infoCampania['trunk'])."\n" .
                     "\tPlantilla... ".$datosTrunk['TRUNK']."\n" .
                     "\tCaller ID... ".(isset($datosTrunk['CID']) ? $datosTrunk['CID'] : "(no definido)")."\n".
+                    "\tCaller ID Trunk. ".$datosTrunk['CID']."\n".
+                    "\tCaller ID campaña.".($infoCampania['callerid'])."\n".
                     "\tCadena de marcado... {$tupla['dialstring']}\n".
                     "\tTimeout marcado..... ".(is_null($iTimeoutOriginate) ? '(por omisión)' : $iTimeoutOriginate.' ms.'));
             }
@@ -833,7 +835,7 @@ SQL_LLAMADA_COLOCADA;
             $this->_tuberia->AMIEventProcess_ejecutarOriginate(
                 $tupla['actionid'], $iTimeoutOriginate, $iTimestampInicioOriginate,
                 (is_null($tupla['agent']) ? $infoCampania['context'] : 'llamada_agendada'),
-                (isset($datosTrunk['CID']) ? $datosTrunk['CID'] : $tupla['phone']),
+                (isset($infoCampania['callerid']) ? $infoCampania['callerid'] : $datosTrunk['CID']), //primero el callerid que tengamos puesto en la campaña si no el del troncal y quitamos $tupla['phone'] el del telefono hgmnetwork.com 05-10-2018
                 $sCadenaVar, (is_null($tupla['retries']) ? 0 : $tupla['retries']) + 1,
                 $infoCampania['trunk']);
         }
