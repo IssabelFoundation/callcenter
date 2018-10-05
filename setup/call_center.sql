@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `campaign` (
     `script`            text NOT NULL,
     `estatus`           varchar(1) NOT NULL default 'A',
     `id_url`            int unsigned,
-
+    `callerid`        int(10) unsigned default NULL,
   PRIMARY KEY  (`id`),
   FOREIGN KEY (id_url)  REFERENCES campaign_external_url(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
