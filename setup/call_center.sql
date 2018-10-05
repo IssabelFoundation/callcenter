@@ -136,6 +136,8 @@ CREATE TABLE IF NOT EXISTS `calls` (
 
   /* 2015-12-12: Tell apart calls loaded from CSV and scheduled calls */
   `scheduled` BOOLEAN NOT NULL DEFAULT 0,
+/*hgmnetwork.com 05-10-2018 añadida la opcion de almacenamiento del callerid en cada llamada para saber desde que numero fue llamado*/	
+  `callerid`		int(10) unsigned default NULL,
 
   PRIMARY KEY  (`id`),
   KEY `id_campaign` (`id_campaign`),
