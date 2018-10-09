@@ -418,7 +418,7 @@ QUERY_SQL;
             'DELETE FROM call_recording WHERE id_call_outgoing IN (SELECT id from calls WHERE id_list = ?)',
             'DELETE FROM call_attribute WHERE id_call IN (SELECT id from calls WHERE id_list = ?)',
             'DELETE FROM form_data_recolected WHERE id_calls IN (SELECT id from calls WHERE id_list = ?)',
-            'DELETE call_progress_log FROM call_progress_log, calls WHERE call_progress_log.id_call_outgoing = calls.id AND calls.list = ?',
+            'DELETE FROM call_progress_log WHERE id_call_outgoing IN (SELECT id from calls WHERE id_list = ?)',
             'DELETE FROM calls WHERE id_list = ?'
         );
         $this->_DB->beginTransaction();
