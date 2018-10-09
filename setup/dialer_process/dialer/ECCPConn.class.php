@@ -2676,7 +2676,7 @@ LEER_STATS_CAMPANIA;
         // Leer toda la información de la campaña y la cola
         $sqlLlamadaCampania = <<<SQL_LLAMADA_CAMPANIA_AGENDAMIENTO
 SELECT campaign.datetime_init, campaign.datetime_end, campaign.daytime_init,
-    campaign.daytime_end, campaign.id AS id_campaign, calls.phone
+    campaign.daytime_end, campaign.id AS id_campaign, calls.phone, calls.id_list
 FROM calls
   LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id
   INNER JOIN campaign ON campaign.id = campaign_lists.id_campaign
@@ -2762,9 +2762,9 @@ SQL_LLAMADA_PREVIA;
             $paramNuevaLlamadaSQL[] = $bMismoAgente ? $sAgente : NULL;
             $sqlInsertarLlamadaAgendada = <<<SQL_INSERTAR_AGENDAMIENTO
 INSERT INTO calls (scheduled, id_list, phone, date_init, date_end, time_init, time_end, agent)
-VALUES (1, (SELECT id_list FROM calls WHERE calls.id = ?), ?, ?, ?, ?, ?, ?)
+VALUES (1, ?, ?, ?, ?, ?, ?, ?)
 SQL_INSERTAR_AGENDAMIENTO;
-			$paramNuevaLlamadaSQL[0] = $callid;
+			$paramNuevaLlamadaSQL[0] = $tuplaCampania['id_list'];
 			$sth = $this->_db->prepare($sqlInsertarLlamadaAgendada);
             $sth->execute($paramNuevaLlamadaSQL);
             $idNuevaLlamada = $this->_db->lastInsertId();
