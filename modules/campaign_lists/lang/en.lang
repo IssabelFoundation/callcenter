@@ -84,5 +84,7 @@ $arrLangModule=array(
 "label_load_contacts" => "Load contacts",
 "label_search" => "Search",
 
+"label_delete_message" => "Are you sure you wish to delete list?",
+"label_delete_list" => "Delete"
 );
 ?>

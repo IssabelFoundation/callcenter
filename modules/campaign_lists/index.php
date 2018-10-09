@@ -170,6 +170,7 @@ function reportLists($smarty, $module_name, $local_templates_dir, &$pDB, $arrCon
     $oGrid->setData($arrData);
 
     $oGrid->addNew("?menu=$module_name&action=new_list", _tr('label_new_list'), TRUE);
+    $oGrid->deleteList(_tr('label_delete_message'), 'delete', _tr('label_delete_list'));
     $oGrid->addComboAction('status_list_sel', _tr("label_change_status_cb"), array(
         'activate'      =>  _tr('label_cb_activate'),
         'deactivate'    =>  _tr('label_cb_deactivate'),

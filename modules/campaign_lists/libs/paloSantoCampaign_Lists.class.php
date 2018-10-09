@@ -305,4 +305,27 @@ SQL_QUERY;
 
         return $campaignsOutgoing;
     }
+
+    function delete_list($idList)
+    {
+        $listaSQL = array(
+            'DELETE FROM call_recording WHERE id_call_outgoing IN (SELECT id from calls WHERE id_list = ?)',
+            'DELETE FROM call_attribute WHERE id_call IN (SELECT id from calls WHERE id_list = ?)',
+            'DELETE FROM form_data_recolected WHERE id_calls IN (SELECT id from calls WHERE id_list = ?)',
+            'DELETE FROM call_progress_log WHERE id_call_outgoing IN (SELECT id from calls WHERE id_list = ?)',
+            'DELETE FROM calls WHERE id_list = ?',
+            'DELETE FROM campaign_lists WHERE id = ?'
+        );
+        $this->_DB->beginTransaction();
+        foreach ($listaSQL as $sql) {
+        $r = $this->_DB->genQuery($sql, array($idList));
+          if (!$r) {
+            $this->errMsg = $this->_DB->errMsg;
+              $this->_DB->rollBack();
+              return FALSE;
+          }
+      }
+        $this->_DB->commit();
+        return TRUE;
+    }
 }
