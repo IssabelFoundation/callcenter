@@ -303,9 +303,7 @@ SQL_INSERT_CAMPAIGN;
             $this->errMsg = _tr('Invalid Campaign ID'); //;'ID de campaña no es numérico';
             return NULL;
         }
-        $tupla = $this->_DB->getFirstRowQuery(
-            'SELECT COUNT(*) FROM calls WHERE id_campaign = ?',
-            FALSE, array($idCampaign));
+        $tupla = $this->_DB->getFirstRowQuery("SELECT SUM(campaign_lists.total_calls) FROM campaign_lists WHERE campaign_lists.id_campaign = ?",FALSE, array($idCampaign));
         if (!is_array($tupla)) {
             $this->errMsg = $this->_DB->errMsg;
             return NULL;
@@ -408,22 +406,40 @@ SQL_UPDATE_CAMPAIGN;
 
     function delete_campaign($idCampaign)
     {
+      $sql = <<<QUERY_SQL
+        SELECT id FROM campaign_lists WHERE campaign_lists.id_campaign = ?;
+QUERY_SQL;
+        $r = $this->_DB->fetchTable($sql, TRUE, array($idCampaign));
+        if (!$r) {
+          $this->errMsg = $this->_DB->errMsg;
+          return FALSE;
+        }
+        $listaSQL = array(
+            'DELETE FROM call_recording WHERE id_call_outgoing IN (SELECT id from calls WHERE id_list = ?)',
+            'DELETE FROM call_attribute WHERE id_call IN (SELECT id from calls WHERE id_list = ?)',
+            'DELETE FROM form_data_recolected WHERE id_calls IN (SELECT id from calls WHERE id_list = ?)',
+            'DELETE FROM call_progress_log WHERE id_call_outgoing IN (SELECT id from calls WHERE id_list = ?)',
+            'DELETE FROM calls WHERE id_list = ?'
+        );
+        $this->_DB->beginTransaction();
+        foreach ($r as $keyRow => $valueRow) {
+          foreach ($listaSQL as $sql) {
+            $r = $this->_DB->genQuery($sql, array($valueRow['id']));
+              if (!$r) {
+                $this->errMsg = $this->_DB->errMsg;
+                  $this->_DB->rollBack();
+                  return FALSE;
+              }
+          }
+        }
         $listaSQL = array(
             'DELETE FROM campaign_form WHERE id_campaign = ?',
-            'DELETE FROM call_recording WHERE id_call_outgoing IN (SELECT id from calls WHERE id_campaign = ?)',
-            'DELETE FROM call_attribute WHERE id_call IN (SELECT id from calls WHERE id_campaign = ?)',
-            'DELETE FROM form_data_recolected WHERE id_calls IN (SELECT id from calls WHERE id_campaign = ?)',
-            'DELETE call_progress_log FROM call_progress_log, calls '.
-                'WHERE call_progress_log.id_call_outgoing = calls.id AND calls.id_campaign = ?',
-            'DELETE FROM calls WHERE id_campaign = ?',
             'DELETE FROM campaign WHERE id = ?',
         );
-
-    	$this->_DB->beginTransaction();
         foreach ($listaSQL as $sql) {
-        	$r = $this->_DB->genQuery($sql, array($idCampaign));
+          $r = $this->_DB->genQuery($sql, array($idCampaign));
             if (!$r) {
-            	$this->errMsg = $this->_DB->errMsg;
+              $this->errMsg = $this->_DB->errMsg;
                 $this->_DB->rollBack();
                 return FALSE;
             }
@@ -488,11 +504,11 @@ SELECT
     c.uniqueid          AS uniqueid,
     c.failure_cause     AS failure_cause,
     c.failure_cause_txt AS failure_cause_txt
-FROM calls c
-LEFT JOIN agent a
-    ON c.id_agent = a.id
+FROM campaign_lists cl
+RIGHT JOIN calls c ON cl.id = c.id_list
+LEFT JOIN agent a ON c.id_agent = a.id
 WHERE
-    c.id_campaign = ? AND
+    c.id_list = 1 AND
     (c.status='Success' OR c.status='Failure' OR c.status='ShortCall' OR c.status='NoAnswer' OR c.status='Abandoned')
 ORDER BY
     telefono ASC
@@ -534,26 +550,26 @@ SQL_LLAMADAS;
         $sqlAtributos = <<<SQL_ATRIBUTOS
 SELECT
     call_attribute.id_call          AS id_call,
-    call_attribute.columna          AS etiqueta,
-    call_attribute.value            AS valor,
-    call_attribute.column_number    AS posicion
-FROM calls, call_attribute
-WHERE calls.id_campaign = ? AND calls.id = ? AND calls.id = call_attribute.id_call AND
-    (calls.status='Success' OR calls.status='Failure' OR calls.status='ShortCall' OR calls.status='NoAnswer' OR calls.status='Abandoned')
-ORDER BY calls.id, call_attribute.column_number
+    call_attribute.data            AS valor
+FROM calls
+LEFT JOIN call_attribute ON call_attribute.id_call = calls.id
+WHERE calls.id = ? 
+AND (calls.status='Success' OR calls.status='Failure' OR calls.status='ShortCall' OR calls.status='NoAnswer' OR calls.status='Abandoned')
+ORDER BY calls.id
 SQL_ATRIBUTOS;
         foreach ($datosCampania['BASE']['ID2POS'] as $id_call => $pos) {
-            $datosAtributos = $this->_DB->fetchTable($sqlAtributos, TRUE, array($id_campaign, $id_call));
+            $datosAtributos = $this->_DB->fetchTable($sqlAtributos, TRUE, array($id_call));
             if (!is_array($datosAtributos)) {
                 $this->errMsg = 'Unable to read attribute data - '.$this->_DB->errMsg;
                 $datosCampania = NULL;
                 return $datosCampania;
             }
-            foreach ($datosAtributos as $tuplaAtributo) {
-                // Se asume que el valor posicion empieza desde 1
-                $iPos = $iOffsetAttr + $tuplaAtributo['posicion'] - 1;
-                $datosCampania['BASE']['LABEL'][$iPos] = $tuplaAtributo['etiqueta'];
-                $datosCampania['BASE']['DATA'][$pos][$iPos] = $tuplaAtributo['valor'];
+            $json_datosAtributos = json_decode($datosAtributos[0]['valor'], true);
+            $iPos = $iOffsetAttr;
+            foreach ($json_datosAtributos as $keyAtributo => $valueAtributo) {
+                $datosCampania['BASE']['LABEL'][$iPos] = $keyAtributo;
+                $datosCampania['BASE']['DATA'][$pos][$iPos] = $valueAtributo;
+                $iPos++;
             }
         }
 
@@ -565,17 +581,24 @@ SQL_ATRIBUTOS;
     ff.etiqueta AS campo_nombre,
     f.nombre    AS formulario_nombre,
     ff.orden    AS orden
-FROM campaign_form cf, form f, form_field ff
+FROM campaign_form cf
+INNER JOIN form f ON cf.id_form = f.id
+INNER JOIN form_field ff ON ff.id_form = f.id
 WHERE cf.id_form = f.id AND f.id = ff.id_form AND ff.tipo <> 'LABEL' AND cf.id_campaign = ?)
 UNION DISTINCT
 (SELECT DISTINCT
-    f.id        AS id_form,
-    ff.id       AS id_form_field,
-    ff.etiqueta AS campo_nombre,
-    f.nombre    AS formulario_nombre,
-    ff.orden    AS orden
-FROM form f, form_field ff, form_data_recolected fdr, calls c
-WHERE f.id = ff.id_form AND ff.tipo <> 'LABEL' AND fdr.id_form_field = ff.id AND fdr.id_calls = c.id AND c.id_campaign = ?)
+  f.id        AS id_form,
+  ff.id       AS id_form_field,
+  ff.etiqueta AS campo_nombre,
+  f.nombre    AS formulario_nombre,
+  ff.orden    AS orden
+FROM
+  form f
+  INNER JOIN form_field ff ON ff.id_form = f.id
+  INNER JOIN form_data_recolected fdr ON fdr.id_form_field = ff.id
+  INNER JOIN calls c ON fdr.id_calls = c.id
+  INNER JOIN campaign_lists cl ON c.id_list = cl.id
+  WHERE ff.tipo <> 'LABEL' AND cl.id_campaign = ?)
 ORDER BY id_form, orden ASC
 SQL_FORMULARIOS;
         $datosFormularios = $this->_DB->fetchTable($sqlFormularios, FALSE, array($id_campaign, $id_campaign));
@@ -607,8 +630,11 @@ SELECT
     ff.id_form AS id_form,
     ff.id AS id_form_field,
     fdr.value AS campo_valor
-FROM calls c, form_data_recolected fdr, form_field ff
-WHERE fdr.id_calls = c.id AND fdr.id_form_field = ff.id AND c.id_campaign = ?
+FROM calls c
+  LEFT JOIN campaign_lists cl ON c.id_list = cl.id
+  INNER JOIN form_data_recolected fdr ON fdr.id_calls = c.id
+  INNER JOIN form_field ff ON fdr.id_form_field = ff.id
+  WHERE cl.id_campaign = ?
     AND ff.tipo <> 'LABEL'
     AND (c.status='Success' OR c.status='Failure' OR c.status='ShortCall' OR c.status='NoAnswer' OR c.status='Abandoned')
 ORDER BY id_call, id_form, id_form_field

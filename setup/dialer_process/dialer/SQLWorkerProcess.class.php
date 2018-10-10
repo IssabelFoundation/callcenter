@@ -55,7 +55,7 @@ class SQLWorkerProcess extends TuberiaProcess
 
     public function inicioPostDemonio($infoConfig, &$oMainLog)
     {
-    	$this->_log = $oMainLog;
+        $this->_log = $oMainLog;
         $this->_multiplex = new MultiplexServer(NULL, $this->_log);
         $this->_tuberia->registrarMultiplexHijo($this->_multiplex);
         $this->_tuberia->setLog($this->_log);
@@ -631,7 +631,7 @@ class SQLWorkerProcess extends TuberiaProcess
         unset($paramActualizar['tipo_llamada']);
         switch ($tipo_llamada) {
         case 'outgoing':
-            $sqlTabla = 'UPDATE calls SET ';
+            $sqlTabla = 'UPDATE calls LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id SET ';
             break;
         case 'incoming':
             $sqlTabla = 'UPDATE call_entry SET ';
@@ -647,13 +647,13 @@ class SQLWorkerProcess extends TuberiaProcess
         $paramWhere = array();
         if (isset($paramActualizar['id_campaign'])) {
             if (!is_null($paramActualizar['id_campaign'])) {
-                $sqlWhere[] = 'id_campaign = ?';
+                $sqlWhere[] = 'campaign_lists.id_campaign = ?';
                 $paramWhere[] = $paramActualizar['id_campaign'];
             }
             unset($paramActualizar['id_campaign']);
         }
         if (isset($paramActualizar['id'])) {
-            $sqlWhere[] = 'id = ?';
+            $sqlWhere[] = ($tipo_llamada=='outgoing')?'calls.id = ?':'id = ?';
             $paramWhere[] = $paramActualizar['id'];
             $id_llamada = $paramActualizar['id'];
             unset($paramActualizar['id']);
@@ -673,7 +673,7 @@ class SQLWorkerProcess extends TuberiaProcess
             unset($paramActualizar['inc_retries']);
         }
         foreach ($paramActualizar as $k => $v) {
-            $sqlCampos[] = "$k = ?";
+            $sqlCampos[] = ($tipo_llamada=='outgoing')?"calls.$k = ?":"$k = ?";
             $paramCampos[] = $v;
         }
         $sql_list[] = array(
@@ -1142,8 +1142,10 @@ SQL_EXISTE_AUDIT;
             $sql = array(
                 'outgoing'  =>
                     'SELECT calls.phone, campaign.queue '.
-                    'FROM calls, campaign '.
-                    'WHERE calls.id_campaign = campaign.id AND calls.id = ?',
+                    'FROM calls '.
+                    'LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id '.
+                    'INNER JOIN campaign ON campaign.id = campaign_lists.id_campaign '.
+                    'WHERE calls.id = ?',
                 'incoming'  =>
                     'SELECT call_entry.callerid AS phone, queue_call_entry.queue '.
                     'FROM call_entry, queue_call_entry '.
@@ -1188,7 +1190,7 @@ AGENTES_AUDIT_INCOMPLETO;
             $agentesReparar = $recordset->fetchAll(PDO::FETCH_ASSOC);
             $recordset->closeCursor();
             foreach ($agentesReparar as $row) {
-            	$this->_log->output('INFO: se ha detectado auditoría incompleta '.
+                $this->_log->output('INFO: se ha detectado auditoría incompleta '.
                     "para {$row['type']}/{$row['number']} - {$row['name']} ".
                     "(id_agent={$row['id']} ".(($row['estatus'] == 'A') ? 'ACTIVO' : 'INACTIVO').")");
                 $this->_repararAuditoriaAgente($row['id']);

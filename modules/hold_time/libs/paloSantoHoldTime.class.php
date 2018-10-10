@@ -120,9 +120,10 @@ SQL_INCOMING;
         } else {
             $sPeticionSQL = <<<SQL_OUTGOING
 SELECT campaign.queue, calls.duration_wait, COUNT(*) AS N
-FROM calls, campaign
+FROM calls
+  LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id
+  INNER JOIN campaign ON campaign_lists.id_campaign = campaign.id
 WHERE $sWhereCond AND calls.end_time <= ?
-    AND calls.id_campaign = campaign.id
     AND calls.status IS NOT NULL
     AND calls.duration_wait IS NOT NULL
 GROUP BY queue, duration_wait
