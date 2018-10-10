@@ -171,6 +171,8 @@ class AMIClientConn extends MultiplexConn
             array('Channel' => TRUE, 'MixMonitorID' => FALSE, 'ActionID' => FALSE),
         'StopMonitor' =>
             array('Channel' => TRUE),
+        'UserEvent' =>
+            array('UserEvent' => TRUE, 'ActionID' => FALSE, 'Privilege' => FALSE, 'Bridgestate' => FALSE, 'Bridgetype' => FALSE, 'Channel1' => FALSE, 'Channel2' => FALSE, 'Uniqueid1' => FALSE, 'Uniqueid2' => FALSE, 'local_timestamp_received' => FALSE, ),
         'ZapDialOffhook' =>
             array('ZapChannel' => TRUE, 'Number' => TRUE),
         'ZapDNDoff' =>
