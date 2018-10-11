@@ -123,5 +123,6 @@ $arrLangModule=array(
 'Previous 100 entries' => 'Предыдущие 100 записей',
 'Average Call Duration' => 'Средняя длительность вызова',
 'Maximum Call Duration' => 'Максимальная длительность вызова',
+'Hide Offline Agents'=>'Скрыть автономные агенты',
 );
 ?>

@@ -105,6 +105,7 @@ function manejarMonitoreo_HTML($module_name, $smarty, $sDirLocalPlantillas)
         'PREVIOUS_N'                    =>  _tr('Previous 100 entries'),
         'ETIQUETA_MAX_DURAC_LLAM'       =>  _tr('Maximum Call Duration'),
         'ETIQUETA_PROMEDIO_DURAC_LLAM'  =>  _tr('Average Call Duration'),
+        'ETIQUETA_OCULTAR_AGENTES'      =>  _tr('Hide Offline Agents'),
     ));
 
     return $smarty->fetch("file:$sDirLocalPlantillas/informacion_campania.tpl");
