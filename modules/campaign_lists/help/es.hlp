@@ -1,0 +1,45 @@
+<html>
+    <header>
+        <link rel="stylesheet" href="/themes/{$THEMENAME}/styles.css">
+        <link rel="stylesheet" href="/themes/{$THEMENAME}/help.css">
+    </header>
+    <body>
+        <div style="padding: 20px;">
+            <h1>{$node_name}</h1>
+            <p align="Justify">Esta opción permite crear listas de números a ser marcados por campaña.
+            Esto facilita mucho las cosas si por ejemplo deseamos tener distintas listas por campaña y poder activar una por la mañana y otra por la tarde o si se desea detener la lista actual por la baja contestación y activar otra.</p>
+            <p>
+                La figura 1 muestra las listas existentes donde se puede ver cuales están activas y cuáles no, también muestra a que campaña pertenece la lista.
+            </p>
+            <div><img src="../modules/{$node_id}/images/index.png" border="0">Figura 1</div>
+            <p>Como se puede observar en la figura 1 usted puede crear una nueva lista, ver una existente o activar/desactivar listas.</p>
+            
+            <h2>Crear una nueva lista</h2>
+            <p>Para crear una nueva lista haga clic en el botón "Crear nueva lista" ubicado en la parte superior izquierda como se muestra en la Figura 1. Hay 2 secciones que se deben de completar al crear una lista. En la primer parte se especifica el nombre y la campaña a la que pertenecerá la lista. En la segunda parte se especifica la codificación del archivo a subir y seleccionaremos el archivo a subir. A continuación, una breve descripción de cada parámetro:</p>
+            <table class="inline">
+                <tr>
+                    <th>Campo</th>
+                    <th>Descripción</th>
+                </tr>
+                <tr>
+                    <td>Nombre de la lista</td>
+                    <td>Se especifica el nombre con el que identificaremos la lista que estamos creando.</td>
+                </tr>
+                <tr>
+                    <td>Campaña</td>
+                    <td>Se especificara del listado de campañas a que campaña pertenecerá la nueva lista</td>
+                </tr>
+            </table>
+            <div><img src="../modules/{$node_id}/images/new_list.png" border="0">Figura 2</div>
+
+            <h2>Ver lista</h2>
+            <p>
+                Puede revisar los detalles de una lista existente haciendo clic sobre el nombre de la lista desde el listado, como se aprecia en la Figura 1. El sistema lo enviara a la pantalla donde podrá observar 3 graficas con información obtenida de los números pertenecientes a la lista.
+            </p>
+            <div><img src="../modules/{$node_id}/images/view_list.png" border="0">Figura 3</div>
+            <p>Como se observa en la figura 3 del lado derecho superior se encuentra una gráfica tipo donut que nos muestra cuantos números de la lista han sido marcados y cuantos están pendientes para ser marcados.</p>
+            <p>En la parte central tenemos una gráfica lineal que nos muestra cuantos números de la lista han sido llamadas exitosas dentro de la semana actual</p>
+            <p>En la parte inferior contamos con una gráfica de barras que nos muestra la cantidad de números de la lista que se encuentran en cada uno de los estatus que toman los registros.</p>
+        </div>
+    </body>
+</html>

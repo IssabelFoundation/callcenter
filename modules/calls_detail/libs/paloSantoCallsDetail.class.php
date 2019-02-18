@@ -208,10 +208,10 @@ SELECT agent.number, agent.name, calls.start_time AS start_date,
     calls.duration_wait, campaign.queue, 'Outbound' AS type,
     calls.phone AS telefono,
     calls.transfer, calls.status, calls.id AS idx
-FROM (calls, campaign)
-LEFT JOIN agent
-    ON agent.id = calls.id_agent
-WHERE campaign.id = calls.id_campaign
+FROM calls
+  LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id
+  INNER JOIN campaign ON campaign.id = campaign_lists.id_campaign
+  LEFT JOIN agent ON calls.id_agent = agent.id
 SQL_OUTGOING;
         list($sWhere_outgoing, $param_outgoing) = $this->_construirWhere_outgoing($param);
         $sPeticion_outgoing .= $sWhere_outgoing;
@@ -305,10 +305,10 @@ SQL_INCOMING;
 
         $sPeticion_outgoing = <<<SQL_OUTGOING
 SELECT COUNT(*)
-FROM (calls, campaign)
-LEFT JOIN agent
-    ON agent.id = calls.id_agent
-WHERE campaign.id = calls.id_campaign
+FROM calls
+  LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id
+  INNER JOIN campaign ON campaign.id = campaign_lists.id_campaign
+  LEFT JOIN agent ON calls.id_agent = agent.id
 SQL_OUTGOING;
         list($sWhere_outgoing, $param_outgoing) = $this->_construirWhere_outgoing($param);
         $sPeticion_outgoing .= $sWhere_outgoing;

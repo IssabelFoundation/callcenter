@@ -69,7 +69,7 @@ class CampaignProcess extends TuberiaProcess
 
     public function inicioPostDemonio($infoConfig, &$oMainLog)
     {
-    	$this->_log = $oMainLog;
+        $this->_log = $oMainLog;
         $this->_multiplex = new MultiplexServer(NULL, $this->_log);
         $this->_tuberia->registrarMultiplexHijo($this->_multiplex);
         $this->_tuberia->setLog($this->_log);
@@ -93,7 +93,7 @@ class CampaignProcess extends TuberiaProcess
             $this->_db->query("UPDATE call_entry SET status = 'fin-monitoreo' WHERE datetime_end IS NULL AND status <> 'fin-monitoreo'");
         } catch (PDOException $e) {
             $this->_log->output("FATAL: error al limpiar tablas current_calls - ".$e->getMessage());
-        	return FALSE;
+            return FALSE;
         }
 
         // Detectar capacidades de FreePBX y de call_center
@@ -134,16 +134,16 @@ class CampaignProcess extends TuberiaProcess
 
     private function _iniciarConexionDB()
     {
-    	try {
-    		$this->_db = new PDO($this->_dsn[0], $this->_dsn[1], $this->_dsn[2]);
+        try {
+            $this->_db = new PDO($this->_dsn[0], $this->_dsn[1], $this->_dsn[2]);
             $this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->_db->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
             return TRUE;
-    	} catch (PDOException $e) {
+        } catch (PDOException $e) {
             $this->_db = NULL;
             $this->_log->output("FATAL: no se puede conectar a DB - ".$e->getMessage());
-    		return FALSE;
-    	}
+            return FALSE;
+        }
     }
 
     /**
@@ -159,20 +159,20 @@ class CampaignProcess extends TuberiaProcess
         if (is_null($dbConn)) return;
 
         try {
-        	$recordset = $dbConn->prepare("SHOW TABLES LIKE 'trunks'");
+            $recordset = $dbConn->prepare("SHOW TABLES LIKE 'trunks'");
             $recordset->execute();
             $item = $recordset->fetch(PDO::FETCH_COLUMN, 0);
             $recordset->closeCursor();
             if ($item != 'trunks') {
                 // Probablemente error de que asterisk.trunks no existe
-            	$this->_log->output("INFO: tabla asterisk.trunks no existe, se asume FreePBX viejo.");
+                $this->_log->output("INFO: tabla asterisk.trunks no existe, se asume FreePBX viejo.");
             } else {
                 // asterisk.trunks existe
                 $this->_log->output("INFO: tabla asterisk.trunks sí existe, se asume FreePBX reciente.");
                 $this->_existeTrunksFPBX = TRUE;
             }
         } catch (PDOException $e) {
-        	$this->_log->output("ERR: al consultar tabla de troncales: ".implode(' - ', $e->errorInfo));
+            $this->_log->output("ERR: al consultar tabla de troncales: ".implode(' - ', $e->errorInfo));
         }
         $dbConn = NULL;
     }
@@ -244,7 +244,7 @@ class CampaignProcess extends TuberiaProcess
             }
         }
 
-    	return TRUE;
+        return TRUE;
     }
 
     public function limpiezaDemonio($signum)
@@ -254,10 +254,10 @@ class CampaignProcess extends TuberiaProcess
 
         // Desconectarse de la base de datos
         $this->_configDB = NULL;
-    	if (!is_null($this->_db)) {
+        if (!is_null($this->_db)) {
             $this->_log->output('INFO: desconectando de la base de datos...');
-    		$this->_db = NULL;
-    	}
+            $this->_db = NULL;
+        }
     }
 
     private function _iniciarConexionAMI()
@@ -355,7 +355,7 @@ PETICION_CAMPANIAS_SALIENTES;
             $recordset->execute(array($sFecha, $sFecha, $sHora, $sHora, $sHora, $sHora));
             $recordset->setFetchMode(PDO::FETCH_ASSOC);
             foreach ($recordset as $tupla) {
-            	$listaCampanias['outgoing'][] = $tupla;
+                $listaCampanias['outgoing'][] = $tupla;
             }
 
             // Desactivar todas las campañas que sigan activas y que hayan superado
@@ -397,9 +397,9 @@ PETICION_CAMPANIAS_ENTRANTES;
                 $listaIdx = array();
                 foreach ($l as $tupla) {
                     $listaIdx[] = $tupla['id'];
-                	if (!in_array($tupla['id'], $this->_campaniasAvisadas[$t])) {
-                		$listaCampaniasAvisar[$t][$tupla['id']] = $tupla;
-                	}
+                    if (!in_array($tupla['id'], $this->_campaniasAvisadas[$t])) {
+                        $listaCampaniasAvisar[$t][$tupla['id']] = $tupla;
+                    }
                 }
                 $this->_campaniasAvisadas[$t] = $listaIdx;
             }
@@ -472,6 +472,9 @@ PETICION_CAMPANIAS_ENTRANTES;
 
     private function _actualizarLlamadasCampania($infoCampania, $oPredictor)
     {
+        //Actualizar todas las listas que ya no tengan numeros disponibles
+        $this->_db->query('UPDATE campaign_lists SET `status` = 3 WHERE campaign_lists.sent_calls = campaign_lists.total_calls AND campaign_lists.`status` IN (1,2)');
+
         $iTimeoutOriginate = $this->_configDB->dialer_timeout_originate;
         if (is_null($iTimeoutOriginate) || $iTimeoutOriginate <= 0)
             $iTimeoutOriginate = NULL;
@@ -586,8 +589,9 @@ $iNumLlamadasColocar= $iNumLlamadasColocar + $this->_configDB->dialer_forzar_sob
             $iVentanaHistoria = 60 * 30; // TODO: se puede autocalcular?
             $sPeticionASR =
                 'SELECT COUNT(*) AS total, SUM(IF(status = "Failure" OR status = "NoAnswer", 0, 1)) AS exito ' .
-                'FROM calls ' .
-                'WHERE id_campaign = ? AND status IS NOT NULL ' .
+                'FROM calls '.
+                'LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id ' .
+                'WHERE campaign_lists.id_campaign = ? AND status IS NOT NULL ' .
                     'AND status <> "Placing" ' .
                     'AND fecha_llamada IS NOT NULL ' .
                     'AND fecha_llamada >= ?';
@@ -621,25 +625,27 @@ $iNumLlamadasColocar= $iNumLlamadasColocar + $this->_configDB->dialer_forzar_sob
             $sFechaSys = date('Y-m-d');
             $sHoraSys = date('H:i:s');
             $sPeticionLlamadas = <<<PETICION_LLAMADAS
-(SELECT 1 AS dummy_priority, id_campaign, id, phone, date_init AS dummy_date_init,
+(SELECT 1 AS dummy_priority, campaign_lists.id_campaign, calls.id, phone, date_init AS dummy_date_init,
     time_init AS dummy_time_init, date_end AS dummy_date_end,
     time_end AS dummy_time_end, retries
 FROM calls
-WHERE id_campaign = ?
-    AND (status IS NULL
-        OR status NOT IN ("Success", "Placing", "Ringing", "OnQueue", "OnHold"))
+  LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id
+WHERE campaign_lists.id_campaign = ?
+    AND (calls.status IS NULL
+        OR calls.status NOT IN ("Success", "Placing", "Ringing", "OnQueue", "OnHold"))
     AND retries < ?
     AND dnc = 0
     AND (? BETWEEN date_init AND date_end AND ? BETWEEN time_init AND time_end)
     AND agent IS NULL)
 UNION
-(SELECT 2 AS dummy_priority, id_campaign, id, phone, date_init AS dummy_date_init,
+(SELECT 2 AS dummy_priority, campaign_lists.id_campaign, calls.id, phone, date_init AS dummy_date_init,
     time_init AS dummy_time_init, date_end AS dummy_date_end,
     time_end AS dummy_time_end, retries
 FROM calls
+  LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id
 WHERE id_campaign = ?
-    AND (status IS NULL
-        OR status NOT IN ("Success", "Placing", "Ringing", "OnQueue", "OnHold"))
+    AND (calls.status IS NULL
+        OR calls.status NOT IN ("Success", "Placing", "Ringing", "OnQueue", "OnHold"))
     AND retries < ?
     AND dnc = 0
     AND date_init IS NULL AND date_end IS NULL AND time_init IS NULL AND time_end IS NULL
@@ -673,9 +679,9 @@ PETICION_LLAMADAS;
                     $tupla['actionid'] = $sKey;
                     $tupla['dialstring'] = $sCanalTrunk;
                     $tupla['agent'] = NULL; // Marcar la llamada como no agendada
-                	$listaLlamadas[$tupla['phone']] = $tupla;
+                    $listaLlamadas[$tupla['phone']] = $tupla;
                 } else {
-                	// Se ha encontrado en la lectura un número de teléfono repetido
+                    // Se ha encontrado en la lectura un número de teléfono repetido
                     $this->_log->output("INFO: se ignora llamada $sKey con DialString ".
                         "$sCanalTrunk - mismo DialString usado por llamada a punto de originar.");
                 }
@@ -692,8 +698,9 @@ PETICION_LLAMADAS;
              */
             $sPeticionTotal =
                 'SELECT COUNT(*) AS N FROM calls '.
-                'WHERE id_campaign = ? '.
-                    'AND (status IS NULL OR status NOT IN ("Success", "Placing", "Ringing", "OnQueue", "OnHold")) '.
+                'LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id '.
+                'WHERE campaign_lists.id_campaign = ? '.
+                    'AND (calls.status IS NULL OR calls.status NOT IN ("Success", "Placing", "Ringing", "OnQueue", "OnHold")) '.
                     'AND retries < ? '.
                     'AND dnc = 0';
             $recordset = $this->_db->prepare($sPeticionTotal);
@@ -717,17 +724,17 @@ PETICION_LLAMADAS;
         $recordset = $this->_db->prepare(
             'SELECT COUNT(*) FROM dont_call WHERE caller_id = ? AND status = "A"');
         $sth = $this->_db->prepare(
-            'UPDATE calls SET dnc = 1 WHERE id_campaign = ? AND id = ?');
+            'UPDATE calls SET dnc = 1 WHERE id = ?');
         foreach (array_keys($listaLlamadas) as $k) {
             $recordset->execute(array($k));
             $iNumDNC = $recordset->fetch(PDO::FETCH_COLUMN, 0);
             $recordset->closeCursor();
             if ($iNumDNC > 0) {
-            	if ($this->DEBUG) {
-            		$this->_log->output('DEBUG: '.__METHOD__." (campania {$infoCampania['id']} ".
+                if ($this->DEBUG) {
+                    $this->_log->output('DEBUG: '.__METHOD__." (campania {$infoCampania['id']} ".
                         "número $k encontrado en lista DNC, no se marcará.");
-            	}
-                $sth->execute(array($infoCampania['id'], $tupla['id']));
+                }
+                $sth->execute(array($tupla['id']));
                 unset($listaLlamadas[$k]);
             }
         }
@@ -738,7 +745,7 @@ PETICION_LLAMADAS;
         if (count($listaLlamadas) > 0) {
             $listaKeyRepetidos = $this->_tuberia->AMIEventProcess_nuevasLlamadasMarcar($listaLlamadas);
             foreach ($listaKeyRepetidos as $k) {
-            	$sKey = $listaLlamadas[$k]['actionid'];
+                $sKey = $listaLlamadas[$k]['actionid'];
                 $sCanalTrunk = $listaLlamadas[$k]['dialstring'];
                 $this->_log->output("INFO: se ignora llamada $sKey con DialString ".
                     "$sCanalTrunk - mismo DialString usado por llamada monitoreada.");
@@ -753,7 +760,7 @@ UPDATE calls SET status = 'Placing', datetime_originate = ?, fecha_llamada = NUL
     duration_wait = NULL, duration = NULL, failure_cause = NULL,
     failure_cause_txt = NULL, uniqueid = NULL, id_agent = NULL,
     retries = retries + 1
-WHERE id_campaign = ? AND id = ?
+WHERE id = ?
 SQL_LLAMADA_COLOCADA;
         $sth_placing = $this->_db->prepare($sPeticionLlamadaColocada);
 
@@ -809,7 +816,6 @@ SQL_LLAMADA_COLOCADA;
                 $iTimestampInicioOriginate = time();
                 $sth_placing->execute(array(
                     date('Y-m-d H:i:s', $iTimestampInicioOriginate),
-                    $infoCampania['id'],
                     $tupla['id']
                 ));
 
@@ -842,7 +848,7 @@ SQL_LLAMADA_COLOCADA;
          * campaña activa, se terminaron las llamadas. Por lo tanto la campaña
          * ya ha terminado */
         if ($iNumLlamadasColocar > 0 && $iNumTotalLlamadas <= 0) {
-        	$this->_log->output('INFO: marcando campaña como finalizada: '.$infoCampania['id']);
+            $this->_log->output('INFO: marcando campaña como finalizada: '.$infoCampania['id']);
             $sth = $this->_db->prepare('UPDATE campaign SET estatus = "T" WHERE id = ?');
             $sth->execute(array($infoCampania['id']));
         }
@@ -852,15 +858,15 @@ SQL_LLAMADA_COLOCADA;
      * está indicada en queues_additional.conf */
     private function _formatoGrabacionCola($sCola)
     {
-    	$sColaActual = NULL;
+        $sColaActual = NULL;
         foreach (file('/etc/asterisk/queues_additional.conf') as $s) {
-    		$regs = NULL;
+            $regs = NULL;
             if (preg_match('/^\[(\d+)\]/', $s, $regs)) {
-    			$sColaActual = $regs[1];
-    		} elseif ($sColaActual == $sCola && preg_match('/^monitor-format=(\w+)/', $s, $regs)) {
-    			return $regs[1];
-    		}
-    	}
+                $sColaActual = $regs[1];
+            } elseif ($sColaActual == $sCola && preg_match('/^monitor-format=(\w+)/', $s, $regs)) {
+                return $regs[1];
+            }
+        }
         return NULL;
     }
 
@@ -939,13 +945,14 @@ SQL_LLAMADA_COLOCADA;
 
         // Listar todos los agentes que tienen alguna llamada agendada dentro del horario
         $sPeticionAgentesAgendados = <<<PETICION_AGENTES_AGENDADOS
-SELECT DISTINCT agent FROM calls, campaign
-WHERE calls.id_campaign = ?
+SELECT DISTINCT agent FROM calls
+  LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id
+  INNER JOIN campaign ON campaign.id = campaign_lists.id_campaign
+WHERE campaign_lists.id_campaign = ?
     AND (calls.status IS NULL OR calls.status NOT IN ("Success", "Placing", "Ringing", "OnQueue", "OnHold"))
     AND calls.dnc = 0
     AND calls.date_init <= ? AND calls.date_end >= ? AND calls.time_init <= ? AND calls.time_end >= ?
     AND calls.retries < campaign.retries
-    AND calls.id_campaign = campaign.id
     AND calls.agent IS NOT NULL
 PETICION_AGENTES_AGENDADOS;
         $recordset = $this->_db->prepare($sPeticionAgentesAgendados);
@@ -976,14 +983,15 @@ PETICION_AGENTES_AGENDADOS;
 
     $sPeticionLlamadasAgente = <<<PETICION_LLAMADAS_AGENTE
 SELECT COUNT(*) AS TOTAL, SUM(IF(calls.time_init > ?, 1, 0)) AS RESERVA
-FROM calls, campaign
-WHERE calls.id_campaign = ?
+FROM calls
+  LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id
+  INNER JOIN campaign ON campaign.id = campaign_lists.id_campaign
+WHERE campaign_lists.id_campaign = ?
     AND calls.agent = ?
     AND (calls.status IS NULL OR calls.status NOT IN ("Success", "Placing", "Ringing", "OnQueue", "OnHold"))
     AND calls.dnc = 0
     AND calls.date_init <= ? AND calls.date_end >= ? AND calls.time_init <= ? AND calls.time_end >= ?
     AND calls.retries < campaign.retries
-    AND calls.id_campaign = campaign.id
 PETICION_LLAMADAS_AGENTE;
         $recordset = $this->_db->prepare($sPeticionLlamadasAgente);
         $recordset->execute(array(
@@ -1011,15 +1019,16 @@ PETICION_LLAMADAS_AGENTE;
         $sHoraSys = date('H:i:s');
 
         $sPeticionLlamadasAgente = <<<PETICION_LLAMADAS_AGENTE
-SELECT calls.id_campaign, calls.id, calls.phone, calls.agent, calls.retries
-FROM calls, campaign
-WHERE calls.id_campaign = ?
+SELECT campaign.id AS id_campaign, calls.id, calls.phone, calls.agent, calls.retries
+FROM calls
+  LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id
+  INNER JOIN campaign ON campaign.id = campaign_lists.id_campaign
+WHERE campaign_lists.id_campaign = ?
     AND calls.agent = ?
     AND (calls.status IS NULL OR calls.status NOT IN ("Success", "Placing", "Ringing", "OnQueue", "OnHold"))
     AND calls.dnc = 0
     AND calls.date_init <= ? AND calls.date_end >= ? AND calls.time_init <= ? AND calls.time_end >= ?
     AND calls.retries < campaign.retries
-    AND calls.id_campaign = campaign.id
 ORDER BY calls.retries, calls.date_end, calls.time_end, calls.date_init, calls.time_init
 LIMIT 0,1
 PETICION_LLAMADAS_AGENTE;
@@ -1214,7 +1223,7 @@ PETICION_LLAMADAS_AGENTE;
                 }
             }
         } catch (PDOException $e) {
-        	$this->_log->output(
+            $this->_log->output(
                 "ERR: al consultar información de trunk '$sTrunkConsulta' en FreePBX - ".
                 implode(' - ', $e->errorInfo));
         }
@@ -1282,7 +1291,7 @@ PETICION_LLAMADAS_AGENTE;
 
     private function _leerTiempoContestar($idCampaign)
     {
-    	return $this->_tuberia->AMIEventProcess_leerTiempoContestar($idCampaign);
+        return $this->_tuberia->AMIEventProcess_leerTiempoContestar($idCampaign);
     }
 
     /* Contar el número de llamadas que se colocaron en la cola $queue y que han

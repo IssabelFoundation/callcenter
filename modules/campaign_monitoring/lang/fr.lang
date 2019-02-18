@@ -121,6 +121,7 @@ $arrLangModule=array(
 'incomingqueue' =>  'File entrante',
 'N/A' => 'N/A', /* Not Available */
 'Previous 100 entries' => '100 entrées précédentes',
+'Hide Offline Agents'=>'Masquer Agents hors-ligne',
 );
 ?>
 

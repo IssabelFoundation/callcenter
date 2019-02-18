@@ -123,10 +123,11 @@ SELECT agent.number AS agent_number, agent.name AS agent_name,
     'Outbound' AS type, campaign.queue AS queue, COUNT(*) AS num_answered,
     SUM(calls.duration) AS sum_duration, AVG(calls.duration) AS avg_duration,
     MAX(calls.duration) AS max_duration
-FROM (calls, campaign)
-LEFT JOIN agent
-    ON agent.id = calls.id_agent
-WHERE calls.duration IS NOT NULL AND campaign.id = calls.id_campaign AND calls.status = 'Success'
+FROM calls
+  LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id
+  INNER JOIN campaign ON campaign.id = campaign_lists.id_campaign
+  LEFT JOIN agent ON calls.id_agent = agent.id
+WHERE calls.duration IS NOT NULL AND calls.status = 'Success'
 SQL_OUTGOING;
         list($sWhere_outgoing, $param_outgoing) = $this->_construirWhere(
             'outgoing', $date_start, $date_end, $fieldPat);

@@ -145,6 +145,7 @@ class QueueShadow
             return;
         }
 
+        $params['Location'] = isset($params['Location'])?$params['Location']:$params['Interface'];
         $this->_queues[$params['Queue']]['members'][$params['Location']] = array(
             'removed'   => FALSE,
             'Status'    => $params['Status'],
@@ -160,6 +161,7 @@ class QueueShadow
             return;
         }
 
+        $params['Location'] = isset($params['Location'])?$params['Location']:$params['Interface'];
         unset($this->_queues[$params['Queue']]['members'][$params['Location']]);
     }
 
@@ -170,6 +172,7 @@ class QueueShadow
             return;
         }
 
+        $params['Location'] = isset($params['Location'])?$params['Location']:$params['Interface'];
         if (isset($this->_queues[$params['Queue']]['members'][$params['Location']])) {
             $this->_queues[$params['Queue']]['members'][$params['Location']]['Paused'] = ($params['Paused'] != 0);
         } else {
@@ -188,6 +191,7 @@ class QueueShadow
         // Cola validada que tiene eventmemberstatus activo
         $this->_queues[$params['Queue']]['eventmemberstatus'] = TRUE;
 
+        $params['Location'] = isset($params['Location'])?$params['Location']:$params['Interface'];
         if (isset($this->_queues[$params['Queue']]['members'][$params['Location']])) {
             $this->_queues[$params['Queue']]['members'][$params['Location']]['Status'] = $params['Status'];
             $this->_queues[$params['Queue']]['members'][$params['Location']]['Paused'] = ($params['Paused'] != 0);
@@ -252,6 +256,7 @@ class QueueShadow
         // Cola validada que tiene eventwhencalled activo
         $this->_queues[$params['Queue']]['eventwhencalled'] = TRUE;
 
+        $params['Member'] = isset($params['Member'])?$params['Member']:$params['Interface'];
         if (isset($this->_queues[$params['Queue']]['members'][$params['Member']])) {
             $this->_queues[$params['Queue']]['members'][$params['Member']]['LinkStart'] = NULL;
 
@@ -272,6 +277,7 @@ class QueueShadow
         // Cola validada que tiene eventwhencalled activo
         $this->_queues[$params['Queue']]['eventwhencalled'] = TRUE;
 
+        $params['Member'] = isset($params['Member'])?$params['Member']:$params['Interface'];
         if (isset($this->_queues[$params['Queue']]['members'][$params['Member']])) {
             $this->_queues[$params['Queue']]['members'][$params['Member']]['LinkStart'] = $params['local_timestamp_received'];
 

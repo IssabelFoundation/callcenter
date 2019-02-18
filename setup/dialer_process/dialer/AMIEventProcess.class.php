@@ -69,6 +69,7 @@ class AMIEventProcess extends TuberiaProcess
     private $_alarmas = array();
 
     private $_queueshadow = NULL;
+    private $_bridgeManager = NULL;
 
     public function inicioPostDemonio($infoConfig, &$oMainLog)
     {
@@ -111,6 +112,7 @@ class AMIEventProcess extends TuberiaProcess
         $this->_tuberia->registrarManejador('HubProcess', 'finalizando', array($this, "msg_finalizando"));
 
         $this->_queueshadow = new QueueShadow($this->_log);
+        $this->_bridgeManager = new BridgeManager($this->_log);
 
         return TRUE;
     }
@@ -293,7 +295,7 @@ class AMIEventProcess extends TuberiaProcess
                 'QueueStatusComplete', 'Leave', 'Reload', 'Agents', 'AgentsComplete',
                 'AgentCalled', 'AgentDump', 'AgentConnect', 'AgentComplete',
                 'QueueMemberPaused', 'ParkedCall', /*'ParkedCallTimeOut',*/
-                'ParkedCallGiveUp', 'QueueCallerAbandon',
+                'ParkedCallGiveUp', 'QueueCallerAbandon', 'BridgeCreate', 'BridgeEnter', 'BridgeLeave', 'UserEvent'
             ) as $k)
                 $astman->add_event_handler($k, array($this, "msg_$k"));
             $astman->add_event_handler('Bridge', array($this, "msg_Link")); // Visto en Asterisk 1.6.2.x
@@ -858,6 +860,7 @@ class AMIEventProcess extends TuberiaProcess
             $this->_config['dialer']['debug'] = $v;
             $this->DEBUG = $this->_config['dialer']['debug'];
             $this->_queueshadow->DEBUG = $this->DEBUG;
+            $this->_bridgeManager->DEBUG = $this->DEBUG;
             break;
         case 'dialer_allevents':
             $this->_config['dialer']['allevents'] = $v;
@@ -1074,6 +1077,7 @@ class AMIEventProcess extends TuberiaProcess
 
         $this->DEBUG = $this->_config['dialer']['debug'];
         $this->_queueshadow->DEBUG = $this->DEBUG;
+        $this->_bridgeManager->DEBUG = $this->DEBUG;
 
         // Informar a la fuente que se ha terminado de procesar
         $this->_tuberia->enviarRespuesta($sFuente, $bExito);
@@ -1849,7 +1853,7 @@ Uniqueid: 1429642067.241008
 
         $this->_queueshadow->msg_QueueMemberAdded($params);
 
-        $sAgente = $params['Location'];
+        $sAgente = isset($params['Location'])?$params['Location']:$params['Interface'];
 
         /* tomado de msg_agentLogin */
         $a = $this->_listaAgentes->buscar('agentchannel', $sAgente);
@@ -1901,7 +1905,7 @@ Uniqueid: 1429642067.241008
                 "\n$sEvent: => ".print_r($params, TRUE)
                 );
         }
-
+        $params['Location'] = isset($params['Location'])?$params['Location']:$params['Interface'];
         $this->_queueshadow->msg_QueueMemberRemoved($params);
 
         $a = $this->_listaAgentes->buscar('agentchannel', $params['Location']);
@@ -2002,6 +2006,14 @@ Uniqueid: 1429642067.241008
             if (!empty($r['Value'])) {
                 $llamada->agregarArchivoGrabacion($llamada->uniqueid, $channel, $r['Value']);
             }
+        }
+    }
+
+    public function msg_UserEvent($sEvent, $params, $sServer, $iPort)
+    {
+        if (isset($params['UserEvent']) && $params['UserEvent'] == 'FakeLink')
+        {
+            $this->msg_Link($sEvent, $params, $sServer, $iPort);
         }
     }
 
@@ -2423,6 +2435,7 @@ Uniqueid: 1429642067.241008
 
         $this->_queueshadow->msg_QueueMember($params);
 
+        $params['Location'] = isset($params['Location'])?$params['Location']:$params['Interface'];
         /* Se debe usar Location porque Name puede ser el nombre amistoso */
         $this->_tmp_estadoAgenteCola[$params['Location']][$params['Queue']] = array(
             'Status'    =>  $params['Status'],
@@ -2597,6 +2610,7 @@ Uniqueid: 1429642067.241008
             );
         }
 
+        $params['Location'] = isset($params['Location'])?$params['Location']:$params['Interface'];
         $this->_queueshadow->msg_QueueMemberStatus($params);
 
         $a = $this->_listaAgentes->buscar('agentchannel', $params['Location']);
@@ -3010,6 +3024,70 @@ Uniqueid: 1429642067.241008
             }
         }
         foreach ($lanzadas as $k) unset($this->_alarmas[$k]);
+    }
+
+    public function msg_BridgeCreate($sEvent, $params, $sServer, $iPort)
+    {
+        if ($this->DEBUG) {
+            $this->_log->output('DEBUG: '.__METHOD__.
+                "\nretraso => ".(microtime(TRUE) - $params['local_timestamp_received']).
+                "\n$sEvent: => ".print_r($params, TRUE)
+                );
+        }
+
+        $this->_bridgeManager->msg_BridgeCreate($params);
+    }
+
+    public function msg_BridgeEnter($sEvent, $params, $sServer, $iPort)
+    {
+        if ($this->DEBUG) {
+            $this->_log->output('DEBUG: '.__METHOD__.
+                "\nretraso => ".(microtime(TRUE) - $params['local_timestamp_received']).
+                "\n$sEvent: => ".print_r($params, TRUE)
+                );
+        }
+
+        $this->_bridgeManager->msg_BridgeEnter($params);
+        //Crear params para la funcion link
+        if($params['BridgeNumChannels'] == 2)
+        {
+            /*[Event] => Bridge
+            [Privilege] => call,all
+            [Bridgestate] => Link
+            [Bridgetype] => core
+            [Channel1] => SIP/Proveedor-00000002
+            [Channel2] => SIP/0000017222-00000003
+            [Uniqueid1] => 1538507708.2
+            [Uniqueid2] => 1538507716.3
+            [CallerID1] => 5211234567890
+            [CallerID2] => 0000017222
+            [local_timestamp_received] => 1538507719.6349*/
+
+            $channel1 = $this->_bridgeManager->_bridges[$params['BridgeUniqueid']]['channels']['Channel1']['Channel'];
+            $channel2 = $this->_bridgeManager->_bridges[$params['BridgeUniqueid']]['channels']['Channel2']['Channel'];
+            $uniqueid1 = $this->_bridgeManager->_bridges[$params['BridgeUniqueid']]['channels']['Channel1']['Uniqueid'];
+            $uniqueid2 = $this->_bridgeManager->_bridges[$params['BridgeUniqueid']]['channels']['Channel2']['Uniqueid'];
+
+            if ($this->DEBUG) {
+            $this->_log->output('DEBUG: '.__METHOD__.
+                "\nretraso => ".(microtime(TRUE) - $params['local_timestamp_received']).
+                "\n$sEvent: => ".print_r($this->_bridgeManager->_bridges[$params['BridgeUniqueid']], TRUE)
+                );
+        }
+            $this->_ami->UserEvent('FakeLink', '1', 'call,all', 'Link', 'core', $channel1, $channel2, $uniqueid1, $uniqueid2, $params['local_timestamp_received']);
+        }
+    }
+
+    public function msg_BridgeLeave($sEvent, $params, $sServer, $iPort)
+    {
+        if ($this->DEBUG) {
+            $this->_log->output('DEBUG: '.__METHOD__.
+                "\nretraso => ".(microtime(TRUE) - $params['local_timestamp_received']).
+                "\n$sEvent: => ".print_r($params, TRUE)
+                );
+        }
+
+        $this->_bridgeManager->msg_BridgeLeave($params);
     }
 }
 ?>
