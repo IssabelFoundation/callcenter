@@ -94,19 +94,21 @@ class paloSantoCallsHour
                 $sEstadoSQL = ' ';
                 break;
             case 'E':   // Terminadas
-                $sEstadoSQL = " AND status = 'Success' ";
+                $sEstadoSQL = " AND c.status = 'Success' ";
                 break;
             case 'N':   // No contestadas
-                $sEstadoSQL = " AND (status = 'NoAnswer' OR status = 'ShortCall') ";
+                $sEstadoSQL = " AND (c.status = 'NoAnswer' OR c.status = 'ShortCall') ";
                 break;
             case 'A':   // Abandonadas
-                $sEstadoSQL = " AND status = 'Abandoned' ";
+                $sEstadoSQL = " AND c.status = 'Abandoned' ";
                 break;
             }
             $sqlLlamadas = 
                 'SELECT camp.queue AS queue, HOUR(c.start_time) AS hora, COUNT(*) AS N '.
-                'FROM calls c, campaign camp '.
-                'WHERE start_time >= ? AND end_time <= ? AND c.id_campaign = camp.id AND c.status IS NOT NULL'.
+                'FROM calls c '.
+                'LEFT JOIN campaign_lists cl ON c.id_list = cl.id '.
+                'INNER JOIN campaign camp ON cl.id_campaign = camp.id '.
+                'WHERE start_time >= ? AND end_time <= ? AND c.status IS NOT NULL '.
                 $sEstadoSQL.
                 'GROUP BY queue, hora ORDER BY queue, hora';
             break;

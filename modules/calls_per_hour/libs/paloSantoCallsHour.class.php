@@ -105,8 +105,10 @@ class paloSantoCallsHour
             }
             $sqlLlamadas = 
                 'SELECT camp.queue AS queue, HOUR(c.start_time) AS hora, COUNT(*) AS N '.
-                'FROM calls c, campaign camp '.
-                'WHERE start_time >= ? AND end_time <= ? AND c.id_campaign = camp.id AND c.status IS NOT NULL'.
+                'FROM calls c '.
+                'LEFT JOIN campaign_lists cl ON c.id_list = cl.id '.
+                'INNER JOIN campaign camp ON cl.id_campaign = camp.id '.
+                'WHERE start_time >= ? AND end_time <= ? AND c.status IS NOT NULL '.
                 $sEstadoSQL.
                 'GROUP BY queue, hora ORDER BY queue, hora';
             break;

@@ -84,9 +84,7 @@ UNLOCK TABLES;
 CREATE TABLE IF NOT EXISTS `call_attribute` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `id_call` int(10) unsigned NOT NULL,
-  `columna` varchar(30) default NULL,
-  `value` varchar(128) NOT NULL,
-  `column_number` int(10) unsigned NOT NULL default '0',
+  `data` text NULL,
   PRIMARY KEY  (`id`),
   KEY `id_call` (`id_call`),
   CONSTRAINT `call_attribute_ibfk_1` FOREIGN KEY (`id_call`) REFERENCES `calls` (`id`)
@@ -143,6 +141,32 @@ CREATE TABLE IF NOT EXISTS `calls` (
   KEY `campaign_date_schedule` (`id_campaign`, `date_init`, `date_end`, `time_init`, `time_end`),
   CONSTRAINT `calls_ibfk_1` FOREIGN KEY (`id_campaign`) REFERENCES `campaign` (`id`),
   CONSTRAINT `calls_ibfk_2` FOREIGN KEY (`id_agent`) REFERENCES `agent` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table `campaign_lists`
+--
+CREATE TABLE IF NOT EXISTS `campaign_lists` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `id_campaign` int(11) unsigned NOT NULL,
+  `type` tinyint(1) NOT NULL default '0' COMMENT '0 - out, 1 - in',
+  `name` varchar(255) NOT NULL,
+  `upload` varchar(255) NOT NULL,
+  `date_entered` datetime NOT NULL,
+  `status` tinyint(1) NOT NULL default '2' COMMENT '1 - Activa, 2 - Detenida, 3 - Terminada',
+  `total_calls` int(11) NOT NULL default '0',
+  `pending_calls` int(11) NOT NULL default '0',
+  `sent_calls` int(11) NOT NULL default '0',
+  `answered_calls` int(11) NOT NULL default '0',
+  `no_answer_calls` int(11) NOT NULL default '0',
+  `failed_calls` int(11) NOT NULL default '0',
+  `paused_calls` int(11) NOT NULL default '0',
+  `abandoned_calls` int(11) NOT NULL default '0',
+  `short_calls` int(11) NOT NULL default '0',
+  `is_recycled` tinyint(1) NOT NULL default '0' COMMENT '0 - False, 1 - True',
+  `id_parent_list` INT(11) UNSIGNED NULL DEFAULT NULL,
+  `is_deleted` tinyint(1) NOT NULL default '0' COMMENT '0 - Activo, 1 - Eliminado',
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
