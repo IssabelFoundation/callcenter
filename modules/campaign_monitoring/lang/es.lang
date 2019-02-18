@@ -123,5 +123,6 @@ $arrLangModule=array(
 'Average Call Duration'  =>  'Promedio Duración de Llamada',
 'Maximum Call Duration'  =>  'Duración Máxima de Llamada',
 'Hold'=>'Hold',
+'Hide Offline Agents'=>'Ocultar Agentes Desconectados',
 );
 ?>

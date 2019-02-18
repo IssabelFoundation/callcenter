@@ -137,7 +137,7 @@
             <table>
                 {literal}{{#view tagName="tbody"}}
                 {{#each agentes}}
-                <tr {{bindAttr class="reciente"}}>
+                <tr {{bindAttr class="reciente desde"}}>
                     <td width="20%" nowrap="nowrap">{{canal}}</td>
                     <td width="14%" nowrap="nowrap">{{estado}}</td>
                     <td width="23%" nowrap="nowrap">{{numero}}</td>
@@ -150,6 +150,10 @@
         </div>
     </td>
 </tr></table>
+
+<input onClick="toggleOffline();" type="checkbox" value="hideShow" id="hideShow">
+<label for="hideShow">{{$ETIQUETA_OCULTAR_AGENTES}}</label>
+<br/>
 
 {* Registro de actividad de la campaña *}
 {literal}{{view Ember.Checkbox checkedBinding="registroVisible"}}{/literal}
@@ -169,3 +173,15 @@
 {{/if}}{/literal}
 </script>
 </div>
+<script>
+function toggleOffline(){
+    var elems = document.getElementsByClassName('-');
+    for (i = 0; i < elems.length; i++) {
+        var elem = elems[i];
+        if(elem.style.display == 'none')
+            elem.style.display = '';
+        else
+            elem.style.display = 'none';
+    }
+}
+</script>

@@ -120,5 +120,6 @@ $arrLangModule=array(
 'N/A' => 'N/A', /* Not Available */
 'Previous 100 entries' => 'Previous 100 entries',
 'Hold'=>'Hold',
+'Hide Offline Agents'=>'Hide Offline Agents',
 );
 ?>
