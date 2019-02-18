@@ -175,13 +175,10 @@
 </div>
 <script>
 function toggleOffline(){
-    var elems = document.getElementsByClassName('-');
-    for (i = 0; i < elems.length; i++) {
-        var elem = elems[i];
-        if(elem.style.display == 'none')
-            elem.style.display = '';
-        else
-            elem.style.display = 'none';
-    }
+    Array.from(document.getElementsByClassName('-'))
+        .forEach((item, key) => {
+            const mappedDisplaySwitch = {'': 'none', 'none': '' }; 
+            item.style.display = mappedDisplaySwitch[item.style.display]
+        });
 }
 </script>
