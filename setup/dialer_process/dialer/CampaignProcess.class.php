@@ -753,7 +753,8 @@ PETICION_LLAMADAS;
             }
         }
 
-        // Peticiones preparadas
+$callerid=$infoCampania['callerid'];
+      // Peticiones preparadas
         $sPeticionLlamadaColocada = <<<SQL_LLAMADA_COLOCADA
     UPDATE calls SET status = 'Placing',callerid="$callerid", datetime_originate = ?, fecha_llamada = NULL,
     datetime_entry_queue = NULL, start_time = NULL, end_time = NULL,
