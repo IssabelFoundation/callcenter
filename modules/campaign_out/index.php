@@ -150,7 +150,7 @@ function listCampaign($pDB, $smarty, $module_name, $local_templates_dir)
             $arrData[] = array(
                 "<input class=\"button\" type=\"radio\" name=\"id_campaign\" value=\"$campaign[id]\" />",
                 "<a href='?menu=$module_name&amp;action=edit_campaign&amp;id_campaign=".$campaign['id']."'>".
-                    htmlentities($campaign['name'], ENT_COMPAT, 'UTF-8').'</a>',
+                    htmlentities($campaign['name'], ENT_COMPAT, 'UTF-8').'</a>',$campaign['callerid'],
                 $campaign['datetime_init'].' - '.$campaign['datetime_end'],
                 $campaign['daytime_init'].' - '.$campaign['daytime_end'],
                 ($campaign['retries'] != "") ? $campaign['retries'] : "&nbsp;",
@@ -170,7 +170,7 @@ function listCampaign($pDB, $smarty, $module_name, $local_templates_dir)
     $oGrid->setWidth("99%");
     $oGrid->setIcon("images/list.png");
     $oGrid->setURL($url);
-    $oGrid->setColumns(array('', _tr('Name Campaign'), _tr('Range Date'),
+    $oGrid->setColumns(array('', _tr('Name Campaign'),_tr('CallerId'), _tr('Range Date'),
         _tr('Schedule per Day'), _tr('Retries'), _tr('Trunk'), _tr('Queue'),
         _tr('Completed Calls'), _tr('Average Time'), _tr('Status'), _tr('Options')));
     $_POST['cbo_estado']=$sEstado;
@@ -327,6 +327,7 @@ function formEditCampaign($pDB, $smarty, $module_name, $local_templates_dir, $id
         $values_form = NULL;        // Selección hecha en el formulario
         if (is_null($id_campaign)) {
             if (!isset($_POST['nombre'])) $_POST['nombre']='';
+            if (!isset($_POST['callerid'])) $_POST['callerid']='';  
             if (!isset($_POST["context"]) || $_POST["context"]=="") {
                 $_POST["context"] = "from-internal";
             }
@@ -341,6 +342,7 @@ function formEditCampaign($pDB, $smarty, $module_name, $local_templates_dir, $id
 
         } else {
             if (!isset($_POST['nombre']))       $_POST['nombre']       = $arrCampaign[0]['name'];
+            if (!isset($_POST['callerid']))       $_POST['callerid']       = $arrCampaign[0]['callerid'];  
             if (!isset($_POST['fecha_ini']))    $_POST['fecha_ini']    = date('d M Y',strtotime($arrCampaign[0]['datetime_init']));
             if (!isset($_POST['fecha_fin']))    $_POST['fecha_fin']    = date('d M Y',strtotime($arrCampaign[0]['datetime_end']));
             $arrDateTimeInit = explode(":",$arrCampaign[0]['daytime_init']);
@@ -448,7 +450,7 @@ function formEditCampaign($pDB, $smarty, $module_name, $local_templates_dir, $id
                             $time_ini,
                             $time_fin,
                             $_POST['rte_script'],
-                            ($_POST['external_url'] == '') ? NULL : (int)$_POST['external_url']);
+                            ($_POST['external_url'] == '') ? NULL : (int)$_POST['external_url'], $_POST['callerid']);
                         if (is_null($id_campaign)) $bExito = FALSE;
                     } elseif ($bDoUpdate) {
                         $bExito = $oCamp->updateCampaign(
@@ -464,7 +466,7 @@ function formEditCampaign($pDB, $smarty, $module_name, $local_templates_dir, $id
                             $time_ini,
                             $time_fin,
                             $_POST['rte_script'],
-                            ($_POST['external_url'] == '') ? NULL : (int)$_POST['external_url']);
+                            ($_POST['external_url'] == '') ? NULL : (int)$_POST['external_url'], $_POST['callerid']);
                     }
 
                     // Introducir o actualizar formularios
@@ -678,6 +680,14 @@ function getFormCampaign($arrDataTrunks, $arrDataQueues, $arrSelectForm,
             "VALIDATION_TYPE"        => "text",
             "VALIDATION_EXTRA_PARAM" => "",
         ),
+       'callerid'    =>    array(
+	          "LABEL"                => _tr("callerid"),
+	          "REQUIRED"               => "yes",
+	          "INPUT_TYPE"             => "TEXT",
+	          "INPUT_EXTRA_PARAM"      => "",
+	          "VALIDATION_TYPE"        => "numeric",
+	          "VALIDATION_EXTRA_PARAM" => "",
+	      ),
     );
 
     return $formCampos;
