@@ -288,6 +288,7 @@ CREATE TABLE `calls` (
   `datetime_originate` datetime DEFAULT NULL,
   `trunk` varchar(20) DEFAULT NULL,
   `scheduled` tinyint(1) NOT NULL DEFAULT '0',
+  `callerid` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_campaign` (`id_campaign`),
   KEY `calls_ibfk_2` (`id_agent`),
@@ -373,6 +374,7 @@ CREATE TABLE `campaign` (
   `script` text NOT NULL,
   `estatus` varchar(1) NOT NULL DEFAULT 'A',
   `id_url` int(10) unsigned DEFAULT NULL,
+  `callerid` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_url` (`id_url`),
   CONSTRAINT `campaign_ibfk_1` FOREIGN KEY (`id_url`) REFERENCES `campaign_external_url` (`id`)
