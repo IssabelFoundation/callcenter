@@ -342,7 +342,7 @@ PETICION_DESACTIVAR_CADUCAS;
             $sPeticionCampanias = <<<PETICION_CAMPANIAS_SALIENTES
 SELECT id, name, trunk, context, queue, max_canales, num_completadas,
     promedio, desviacion, retries, datetime_init, datetime_end, daytime_init,
-    daytime_end
+    daytime_end, callerid
 FROM campaign
 WHERE datetime_init <= ? AND datetime_end >= ? AND estatus = "A"
     AND (
@@ -753,9 +753,10 @@ PETICION_LLAMADAS;
             }
         }
 
-        // Peticiones preparadas
+$callerid=$infoCampania['callerid'];
+      // Peticiones preparadas
         $sPeticionLlamadaColocada = <<<SQL_LLAMADA_COLOCADA
-UPDATE calls SET status = 'Placing', datetime_originate = ?, fecha_llamada = NULL,
+    UPDATE calls SET status = 'Placing',callerid="$callerid", datetime_originate = ?, fecha_llamada = NULL,
     datetime_entry_queue = NULL, start_time = NULL, end_time = NULL,
     duration_wait = NULL, duration = NULL, failure_cause = NULL,
     failure_cause_txt = NULL, uniqueid = NULL, id_agent = NULL,
@@ -794,6 +795,8 @@ SQL_LLAMADA_COLOCADA;
                     "\tTrunk....... ".(is_null($infoCampania['trunk']) ? '(por plan de marcado)' : $infoCampania['trunk'])."\n" .
                     "\tPlantilla... ".$datosTrunk['TRUNK']."\n" .
                     "\tCaller ID... ".(isset($datosTrunk['CID']) ? $datosTrunk['CID'] : "(no definido)")."\n".
+                    "\tCaller ID Trunk. ".$datosTrunk['CID']."\n".
+                    "\tCaller ID campaña.".($infoCampania['callerid'])."\n".               
                     "\tCadena de marcado... {$tupla['dialstring']}\n".
                     "\tTimeout marcado..... ".(is_null($iTimeoutOriginate) ? '(por omisión)' : $iTimeoutOriginate.' ms.'));
             }
@@ -839,7 +842,7 @@ SQL_LLAMADA_COLOCADA;
             $this->_tuberia->AMIEventProcess_ejecutarOriginate(
                 $tupla['actionid'], $iTimeoutOriginate, $iTimestampInicioOriginate,
                 (is_null($tupla['agent']) ? $infoCampania['context'] : 'llamada_agendada'),
-                (isset($datosTrunk['CID']) ? $datosTrunk['CID'] : $tupla['phone']),
+                (isset($infoCampania['callerid']) ? $infoCampania['callerid'] : $datosTrunk['CID']), 
                 $sCadenaVar, (is_null($tupla['retries']) ? 0 : $tupla['retries']) + 1,
                 $infoCampania['trunk']);
         }

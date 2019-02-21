@@ -75,7 +75,7 @@ class paloSantoCampaignCC
         $sPeticionSQL = <<<SQL_SELECT_CAMPAIGNS
 SELECT id, name, trunk, context, queue, datetime_init, datetime_end, daytime_init,
     daytime_end, script, retries, promedio, num_completadas, estatus, max_canales,
-    id_url
+    id_url, callerid
 FROM campaign
 SQL_SELECT_CAMPAIGNS;
         $paramWhere = array();
@@ -119,11 +119,12 @@ SQL_SELECT_CAMPAIGNS;
      * @param   $sHoraFinal         Hora del día (HH:MM militar) en que se debe dejar de hacer llamadas
      * @param   $script             Texto del script a recitar por el agente
      * @param   $id_url             NULL, o ID del URL externo a cargar
+     * @param   $callerid           callerid (numero) que aparecerá al realizar la llamada en cada campaña
      *
      * @return  int    El ID de la campaña recién creada, o NULL en caso de error
      */
     function createEmptyCampaign($sNombre, $iMaxCanales, $iRetries, $sTrunk, $sContext, $sQueue,
-        $sFechaInicial, $sFechaFinal, $sHoraInicio, $sHoraFinal, $script, $id_url)
+        $sFechaInicial, $sFechaFinal, $sHoraInicio, $sHoraFinal, $script, $id_url, $callerid)
     {
         $id_campaign = NULL;
         $bExito = FALSE;
@@ -149,7 +150,8 @@ SQL_SELECT_CAMPAIGNS;
         $sHoraInicio = trim($sHoraInicio);
         $sHoraFinal = trim($sHoraFinal);
         $script = trim($script);
-
+	$callerid = trim($callerid);
+	    
         if ($sTrunk == '') $sTrunk = NULL;
 
         if ($sNombre == '') {
@@ -178,7 +180,9 @@ SQL_SELECT_CAMPAIGNS;
             $this->errMsg = _tr('(internal) Invalid URL ID');
         } elseif (in_array($sQueue, $colasEntrantes)) {
              $this->errMsg =  _tr('Queue is being used, choose other one');//La cola ya está siendo usada, escoja otra
-        } else {
+       } elseif (!ctype_digit($callerid)) {
+		$this->errMsg =  _tr('Caller ID must be numeric');//caller id debe ser numerico 
+	} else {
             // Verificar que el nombre de la campaña es único
             $tupla = $this->_DB->getFirstRowQuery(
                 'SELECT COUNT(*) AS N FROM campaign WHERE name = ?', TRUE, array($sNombre));
@@ -191,12 +195,12 @@ SQL_SELECT_CAMPAIGNS;
             // Construir y ejecutar la orden de inserción SQL
             $sPeticionSQL = <<<SQL_INSERT_CAMPAIGN
 INSERT INTO campaign (name, max_canales, retries, trunk, context, queue,
-    datetime_init, datetime_end, daytime_init, daytime_end, script, id_url)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    datetime_init, datetime_end, daytime_init, daytime_end, script, id_url, callerid)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL_INSERT_CAMPAIGN;
             $paramSQL = array($sNombre, $iMaxCanales, $iRetries, $sTrunk,
                 $sContext, $sQueue, $sFechaInicial, $sFechaFinal, $sHoraInicio,
-                $sHoraFinal, $script, $id_url);
+                $sHoraFinal, $script, $id_url, $callerid);
             if ($this->_DB->genQuery($sPeticionSQL, $paramSQL)) {
             	// Leer el ID insertado por la operación
                 $id_campaign = $this->_DB->getLastInsertId();
@@ -327,12 +331,13 @@ SQL_INSERT_CAMPAIGN;
      * @param   $sHoraFinal         Hora del día (HH:MM militar) en que se debe dejar de hacer llamadas
      * @param   $script             Texto del script a recitar por el agente
      * @param   $id_url             NULL, o ID del URL externo a cargar
+     * @param   $callerid           callerid (numero) que aparecerá al realizar la llamada en cada campaña
      *
      * @return  bool                VERDADERO si se actualiza correctamente, FALSO en error
      */
     function updateCampaign($idCampaign, $sNombre, $iMaxCanales, $iRetries, $sTrunk,
         $sContext, $sQueue, $sFechaInicial, $sFechaFinal, $sHoraInicio, $sHoraFinal,
-        $script, $id_url)
+        $script, $id_url, $callerid)
     {
 
         $bExito = FALSE;
@@ -348,7 +353,8 @@ SQL_INSERT_CAMPAIGN;
         $sHoraInicio = trim($sHoraInicio);
         $sHoraFinal = trim($sHoraFinal);
         $script = trim($script);
-
+	$callerid = trim($callerid);
+	    
         if ($sTrunk == '') $sTrunk = NULL;
 
         if ($sNombre == '') {
@@ -373,19 +379,21 @@ SQL_INSERT_CAMPAIGN;
             $this->errMsg = _tr('Start Time must be greater than End Time');//'Hora de inicio debe ser anterior a la hora final';
         } elseif (!is_null($id_url) && !ctype_digit("$id_url")) {
             $this->errMsg = _tr('(internal) Invalid URL ID');
-        } else {
+        } elseif (!ctype_digit($callerid)) {
+		$this->errMsg =  _tr('Caller ID must be numeric');//caller id debe ser numerico
+	} else {
 
             // Construir y ejecutar la orden de update SQL
             $sPeticionSQL = <<<SQL_UPDATE_CAMPAIGN
 UPDATE campaign SET
     name = ?, max_canales = ?, retries = ?, trunk = ?,
     context = ?, queue = ?, datetime_init = ?, datetime_end = ?,
-    daytime_init = ?, daytime_end = ?, script = ?, id_url = ?
+    daytime_init = ?, daytime_end = ?, script = ?, id_url = ?, callerid = ?
 WHERE id = ?
 SQL_UPDATE_CAMPAIGN;
             $paramSQL = array($sNombre, $iMaxCanales, $iRetries, $sTrunk,
                 $sContext, $sQueue, $sFechaInicial, $sFechaFinal,
-                $sHoraInicio, $sHoraFinal, $script, $id_url,
+                $sHoraInicio, $sHoraFinal, $script, $id_url, $callerid,
                 $idCampaign);
             if ($this->_DB->genQuery($sPeticionSQL, $paramSQL)) return TRUE;
             $this->errMsg = $this->_DB->errMsg;

@@ -73,6 +73,9 @@ if (file_exists($path_script_db))
     crearColumnaSiNoExiste($pDB, 'call_center', 'campaign',
         'id_url',
         "ADD COLUMN id_url int unsigned, ADD FOREIGN KEY (id_url) REFERENCES campaign_external_url (id)");
+    crearColumnaSiNoExiste($pDB, 'call_center', 'campaign',
+        'callerid',
+        "ADD COLUMN callerid varchar(15) default NULL");
     crearColumnaSiNoExiste($pDB, 'call_center', 'campaign_entry',
         'id_url',
         "ADD COLUMN id_url int unsigned, ADD FOREIGN KEY (id_url) REFERENCES campaign_external_url (id)");
@@ -85,6 +88,9 @@ if (file_exists($path_script_db))
     crearColumnaSiNoExiste($pDB, 'call_center', 'calls',
         'scheduled',
         "ADD COLUMN scheduled BOOLEAN NOT NULL DEFAULT 0");
+    crearColumnaSiNoExiste($pDB, 'call_center', 'calls',
+        'callerid',
+        "ADD COLUMN callerid varchar(15) default NULL");
 
     crearIndiceSiNoExiste($pDB, 'call_center', 'audit',
         'agent_break_datetime',
