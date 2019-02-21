@@ -50,7 +50,7 @@ var rte_script = new richTextEditor('rte_script');
     <table width="900" valign="top" border="0" cellspacing="0" cellpadding="0" class="tabForm">
       <tr height='50'>
           <td width="20%" align='right'>{$nombre.LABEL}: <span  class="required">*</span></td>
-          <td colspan='2'>{$nombre.INPUT}</td>
+          <td colspan='2'>{$nombre.INPUT} &nbsp; {$callerid.LABEL}: <span  class="required">*</span> {$callerid.INPUT}</td>
       </tr>
       <tr>
           <td align='right'>{$fecha_str.LABEL}: <span  class="required">*</span></td>

@@ -134,7 +134,8 @@ CREATE TABLE IF NOT EXISTS `calls` (
 
   /* 2015-12-12: Tell apart calls loaded from CSV and scheduled calls */
   `scheduled` BOOLEAN NOT NULL DEFAULT 0,
-
+ `callerid`		varchar(15) default NULL,
+	
   PRIMARY KEY  (`id`),
   KEY `id_campaign` (`id_campaign`),
   KEY `calls_ibfk_2` (`id_agent`),
@@ -190,7 +191,8 @@ CREATE TABLE IF NOT EXISTS `campaign` (
     `script`            text NOT NULL,
     `estatus`           varchar(1) NOT NULL default 'A',
     `id_url`            int unsigned,
-
+   `callerid`        varchar(15) default NULL,
+	
   PRIMARY KEY  (`id`),
   FOREIGN KEY (id_url)  REFERENCES campaign_external_url(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
