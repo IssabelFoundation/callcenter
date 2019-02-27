@@ -73,6 +73,13 @@ function _moduleContent(&$smarty, $module_name)
 
 function manejarMonitoreo_HTML($module_name, $smarty, $sDirLocalPlantillas)
 {
+//obtenemos la extension actual del usuario activo
+global $arrConf;
+  $pDB = new paloDB($arrConf['issabel_dsn']['acl']);
+    $pACL = new paloACL($pDB);
+$user = $_SESSION['issabel_user'];
+$extension = $pACL->getUserExtension($user);
+
     $smarty->assign("MODULE_NAME", $module_name);
     $smarty->assign(array(
         'title'                         =>  _tr('Campaign Monitoring'),
@@ -106,6 +113,7 @@ function manejarMonitoreo_HTML($module_name, $smarty, $sDirLocalPlantillas)
         'ETIQUETA_MAX_DURAC_LLAM'       =>  _tr('Maximum Call Duration'),
         'ETIQUETA_PROMEDIO_DURAC_LLAM'  =>  _tr('Average Call Duration'),
         'ETIQUETA_OCULTAR_AGENTES'      =>  _tr('Hide Offline Agents'),
+        'EXTENSION_USUARIO'             =>  _tr($extension)	    
     ));
 
     return $smarty->fetch("file:$sDirLocalPlantillas/informacion_campania.tpl");
