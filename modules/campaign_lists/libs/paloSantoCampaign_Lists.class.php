@@ -81,7 +81,7 @@ class paloSantoCampaign_Lists{
           WHEN 0 THEN "OUT"
           WHEN 1 THEN "IN"
         END AS sType,
-        {$this->table}.name, {$this->table}.upload, {$this->table}.status, {$this->table}.date_entered,
+        {$this->table}.name, {$this->table}.upload, {$this->table}.status, {$this->table}.total_calls, {$this->table}.pending_calls, {$this->table}.date_entered,
         CASE {$this->table}.status
           WHEN 1 THEN "Activa"
           WHEN 2 THEN "Detenida"
@@ -99,8 +99,35 @@ SQL_QUERY;
         }
         return $result;
     }
+	
+	function getCampaign_Lists_Stats()
+    {
+        $query   = <<<SQL_QUERY
+        SELECT {$this->table}.id, {$this->table}.id_campaign, {$this->table}.type,
+        CASE {$this->table}.type
+          WHEN 0 THEN "OUT"
+          WHEN 1 THEN "IN"
+        END AS sType,
+        {$this->table}.name, {$this->table}.upload, {$this->table}.status, {$this->table}.total_calls, {$this->table}.pending_calls, {$this->table}.date_entered,
+        CASE {$this->table}.status
+          WHEN 1 THEN "Activa"
+          WHEN 2 THEN "Detenida"
+          WHEN 3 THEN "Terminada"
+        END AS sStatus
+        FROM {$this->table}
+        WHERE {$this->table}.status = 1
+SQL_QUERY;
 
-    function getCampaign_ListsById($id)
+        $result=$this->_DB->fetchTable($query, true, $arrParam);
+
+        if($result==FALSE){
+            $this->errMsg = $this->_DB->errMsg;
+            return array();
+        }
+        return $result;
+    }
+	
+	function getCampaign_ListsById($id)
     {
         $query = <<<SQL_QUERY
         SELECT *, CASE {$this->table}.status
