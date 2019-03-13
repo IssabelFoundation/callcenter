@@ -33,7 +33,8 @@ $from = $extension;//quien escucha
  $wrets=fgets($oSocket,128);
  fputs($oSocket, "Action: Originate\r\n" );
 fputs($oSocket, "CallerId: Whisper Agente: $agente\r\n");
- fputs($oSocket, "Channel: SIP/".$from."\r\n" );
+ //fputs($oSocket, "Channel: SIP/".$from."\r\n" );
+ fputs($oSocket, "Channel: local/".$from."\r\n" );
  fputs($oSocket, "Application: ChanSpy\r\n" );
  fputs($oSocket, "Data: SIP/".$to."\r\n\r\n" );
  $wrets=fgets($oSocket,128);
