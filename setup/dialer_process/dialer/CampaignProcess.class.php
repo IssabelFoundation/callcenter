@@ -588,11 +588,11 @@ $iNumLlamadasColocar= $iNumLlamadasColocar + $this->_configDB->dialer_forzar_sob
             // de llamadas a sobre-colocar se determina a partir de la historia pasada de la campaña.
             $iVentanaHistoria = 60 * 30; // TODO: se puede autocalcular?
             $sPeticionASR =
-                'SELECT COUNT(*) AS total, SUM(IF(status = "Failure" OR status = "NoAnswer", 0, 1)) AS exito ' .
-                'FROM calls '.
-                'LEFT JOIN campaign_lists ON calls.id_list = campaign_lists.id ' .
-                'WHERE campaign_lists.id_campaign = ? AND status IS NOT NULL ' .
-                    'AND status <> "Placing" ' .
+                'SELECT COUNT(*) AS total, SUM(IF(c.status = "Failure" OR c.status = "NoAnswer", 0, 1)) AS exito ' .
+                'FROM calls c '.
+                'LEFT JOIN campaign_lists cl ON c.id_list = cl.id ' .
+                'WHERE cl.id_campaign = ? AND c.status IS NOT NULL ' .
+                    'AND c.status <> "Placing" ' .
                     'AND fecha_llamada IS NOT NULL ' .
                     'AND fecha_llamada >= ?';
             $recordset = $this->_db->prepare($sPeticionASR);
