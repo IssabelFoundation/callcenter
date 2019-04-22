@@ -1,11 +1,26 @@
 <?php
-//hgmnetwork.com 24-08-2018 fichero para realizar una llamada al chanspy con el agente pasado
-//$_GET['agente'] nos da el canal a escuchar sip/5001 o sip/loquesea si es callback y a/5001 o lo que sea si es agente.
-//echo "escuchar al agente: ".$_GET['agente']." en la extension ".$_GET['extension'];
-//obtenemos la primera extension del usuario, en nuestro codigo podemos tener varias extensiones por usuario 7001;7002;7003 o solo una 7001 por derfecto al escucha es en la primera o la unica extension.
-$array_extensiones=explode(";",$_GET['extension']);//pasamos los valores a un array ya que creamos extra para poder tener un usuario varias extensiones separadas por ;
+include("/var/www/html/libs/misc.lib.php");
+include("/var/www/html/configs/default.conf.php");
+include("/var/www/html/libs/paloSantoACL.class.php");
+include_once("/var/www/html/libs/paloSantoDB.class.php");
+session_name("issabelSession");
+session_start();
+$pDB  = new paloDB($arrConf["issabel_dsn"]["acl"]);
+$pACL = new paloACL($pDB);
 
-$extension=trim($array_extensiones[0]);
+if(isset($_SESSION["issabel_user"])){
+    $issabel_user = $_SESSION["issabel_user"];
+} else {
+    $issabel_user = "";
+echo " no eres usuario autorizado";
+    exit;
+}
+
+$extension_verificada = $pACL->getUserExtension($issabel_user);
+//usamos solo la primera extensión como la valida para escuchar aunque el usuario tenga varias extensiones segun ampliacion codigo hgmnetwork.com 20-01-2019
+$array_extensiones=explode(";",$extension_verificada);
+$extension=$array_extensiones[0];//la primera por defecto
+//echo " la extension verificada es $extension_escucha y el id de usuario de sesion es $issabel_user<br>";
 //a la extension le quitamos el SIP/ o AGENT/ y dejamos solo el numero
 $extension=preg_replace("/(SIP\/|AGENT\/i)/","",$extension);//dejamos solo el numero
 //echo "<hr> la extension del usuario es $array_extensiones[0] y  la del usuario actual es ".$_GET['agente']." <hr>";
