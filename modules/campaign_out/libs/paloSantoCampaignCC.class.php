@@ -418,10 +418,6 @@ SQL_UPDATE_CAMPAIGN;
         SELECT id FROM campaign_lists WHERE campaign_lists.id_campaign = ?;
 QUERY_SQL;
         $r = $this->_DB->fetchTable($sql, TRUE, array($idCampaign));
-        if (!$r) {
-          $this->errMsg = $this->_DB->errMsg;
-          return FALSE;
-        }
         $listaSQL = array(
             'DELETE FROM call_recording WHERE id_call_outgoing IN (SELECT id from calls WHERE id_list = ?)',
             'DELETE FROM call_attribute WHERE id_call IN (SELECT id from calls WHERE id_list = ?)',
