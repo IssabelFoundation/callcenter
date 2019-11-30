@@ -2,9 +2,10 @@
 /* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
   Codificación: UTF-8
   +----------------------------------------------------------------------+
-  | Issabel version 0.5                                                  |
+  | Issabel version 4.0                                                  |
   | http://www.issabel.org                                               |
   +----------------------------------------------------------------------+
+  | Copyright (c) 2019 Issabel Foundation                                |
   | Copyright (c) 2006 Palosanto Solutions S. A.                         |
   +----------------------------------------------------------------------+
   | The contents of this file are subject to the General Public License  |
@@ -18,27 +19,32 @@
   | limitations under the License.                                       |
   +----------------------------------------------------------------------+
   | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  | Translate by: Haamed Kouhfallah                                      |
+  | Email: k.haamed@gmail.com                                            |
   +----------------------------------------------------------------------+
-  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+  $Id: fa.lang,v 1.1 2019-11-30 04:08:50 Haamed Kouhfallah k.haamed@gmail.com Exp $
+*/
 global $arrLangModule;
-$arrLangModule = array(
-    "Error when connecting to database" => "خطا در هنگام اتصال به ديتابيس",
-    "Error" => "خطا",
-    "Debe ingresar una fecha valida" => "يک تاريخ معتبر وارد کنيد",
-    "Debe ingresar una fecha inicio/fin" => "بايد يک تاريخ شروع/پايان وارد کنيد",
-    "Login Logout" => "زمان ورود-خروج",
-    "Agente" => "اپراتور",
-    "Nombre" => "نام",
-    "Login" => "ورود",
-    "Logout" => "خروج",
-    "Total Login" => "مجموع دفعات ورود",
-    "Tiempo en Llamadas" => "زمان تماس ها",
-    "Service(%)" => "سرويس(%)",
-    "Date Init" => "تاريخ شروع",
-    "Date End" => "تاريخ پايان",
-    "Tipo" => "نوع",
-    "Find" => "پيدا کردن",
-    "Estado" => "وضعيت",
-    "Total" => "کل",
+$arrLangModule=array(
+"Error when connecting to database" => "خطا در هنگام اتصال به ديتابيس",
+"Error"                             => "خطا",
+"Debe ingresar una fecha valida"    => "يک تاريخ معتبر وارد کنيد",
+"Debe ingresar una fecha inicio/fin"=> "بايد يک تاريخ شروع/پايان وارد کنيد",
+"Login Logout"                      => "زمان ورود-خروج",
+"Agente"                            => "اپراتور",
+"Nombre"                            => "نام",
+"Login"                             => "ورود",
+"Logout"                            => "خروج",
+"Total Login"                       => "مجموع دفعات ورود",
+"Tiempo en Llamadas"                => "زمان تماس ها",
+"Service(%)"                        => "سرويس(%)",
+"Date Init"                         => "تاريخ شروع",
+"Date End"                          => "تاريخ پايان",
+"Tipo"                              => "نوع",
+"Find"                              => "پيدا کردن",
+"Estado"                            => "وضعيت",
+"Total"                             => "همه",
+"Detallado" 						=> "با جزئیات",
+"General"							=> "عمومی",
 );
 ?>

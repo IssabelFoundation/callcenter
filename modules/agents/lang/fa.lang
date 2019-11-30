@@ -2,9 +2,10 @@
 /* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
   Codificación: UTF-8
   +----------------------------------------------------------------------+
-  | Issabel version 0.5                                                  |
+  | Issabel version 4.0                                                  |
   | http://www.issabel.org                                               |
   +----------------------------------------------------------------------+
+  | Copyright (c) 2019 Issabel Foundation                                |
   | Copyright (c) 2006 Palosanto Solutions S. A.                         |
   +----------------------------------------------------------------------+
   | The contents of this file are subject to the General Public License  |
@@ -18,45 +19,54 @@
   | limitations under the License.                                       |
   +----------------------------------------------------------------------+
   | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  | Translate by: Haamed Kouhfallah                                      |
+  | Email: k.haamed@gmail.com                                            |
   +----------------------------------------------------------------------+
-  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+  $Id: fa.lang,v 1.1 2019-11-30 04:08:50 Haamed Kouhfallah k.haamed@gmail.com Exp $
+*/
 global $arrLangModule;
-$arrLangModule = array(
-    "Agents" => "اپراتورها",
-    "New agent" => "اپراتور جديد",
-    "Agent List" => "ليست اپراتور",
-    "Edit agent" => "ويرايش اپراتور",
-    "Agent Number" => "شماره اپراتور",
-    "View agent" => "نمايش اپراتور",
-    "Queue" => "صف",
-    "Error Delete Agent" => "خطا به هنگام حذف يک اپراتور",
-    "Error Update Agent" => "خطا به هنگام به روز رساني يک اپراتور.",
-    "Error Insert Agent" => "خطا به هنگام درج کردن يک اپراتور",
-    "Error Agent Number" => "شماره اپراتور فرمت مناسبي ندارد",
-    "Error saving agent in file" => "خطا",
-    "Error updating agent in file" => "خطا به هنگام به روزرساني اپراتور در فايل",
-    "Error when deleting agent in file" => "خطا به هنگام حذف اپراتور در فايل",
-    "Agent number already exists" => "شماره اپراتور از پيش وجود دارد",
-    "Agent doesn't exist in configuration file" => "اپراتور در فايل تنظيمات وجود ندارد",
-    "Agent doesn't exist in database" => "اپراتور در ديتابيس وجود ندارد",
-    "To rapair is necesary delete agent from configuration file. Do you want to continue?" => "جهت تعمير ضروري است که اپراتور را از فايل تنظيمات حذف کنيد.ادامه مي دهيد؟",
-    "To rapair is necesary add an agent in configuration file. Do you want to continue?" => "جهت تعمير ضروري است که اپراتور را به فايل تنظيمات اضافه کنيد.ادامه مي دهيد؟",
-    "Number" => "شماره",
-    "Disconect" => "قطع",
-    "Configure" => "تنظيم",
-    "Offline" => "آفلاين",
-    "Online" => "آنلاين",
-    "Not Status" => "بدون وضعيت مشخص",
-    "Repair" => "از طريق تعمير",
-    "All" => "همه",
-    "No call" => "تماسي وجود ندارد",
-    "Name" => "نام",
-    "Retype password" => "پسورد را دوباره تايپ کنيد",
-    "View" => "نمايش",
-    "Status" => "وضعيت",
-    "With selection" => "انتخاب کنيد ",
-    "Disconnect" => "قطع",
-    "The passwords aren't numeric values" => "پسوردها مقدار عددي ندارند",
-    "The passwords are empty or don't match" => "پسوردها مطابقت ندارند",
+$arrLangModule=array(
+"Agents" => "اپراتورها",
+"New agent"=>"اپراتور جديد",
+"Agent List"=>"ليست اپراتور",
+"Edit agent"=>"ويرايش اپراتور",
+"Agent Number"=>"شماره اپراتور",
+"View agent"=>"نمايش اپراتور",
+"Queue" => "صف",
+"Error Delete Agent"=>"خطا به هنگام حذف يک اپراتور",
+"Error Update Agent"=>"خطا به هنگام به روز رساني يک اپراتور.",
+"Error Insert Agent"=>"خطا به هنگام درج کردن يک اپراتور",
+"Error Agent Number"=>"شماره اپراتور فرمت مناسبي ندارد",
+"Error saving agent in file"=>"خطا",
+"Error updating agent in file"=>"خطا به هنگام به روزرساني اپراتور در فايل",
+"Error when deleting agent in file"=>"خطا به هنگام حذف اپراتور در فايل",
+"Agent number already exists"=>"شماره اپراتور از پيش وجود دارد",
+"Agent doesn't exist in configuration file"=>"اپراتور در فايل تنظيمات وجود ندارد",
+"Agent doesn't exist in database"=>"اپراتور در ديتابيس وجود ندارد",
+"To rapair is necesary delete agent from configuration file. Do you want to continue?"=>"جهت تعمير ضروري است که اپراتور را از فايل تنظيمات حذف کنيد.ادامه مي دهيد؟",
+"To rapair is necesary add an agent in configuration file. Do you want to continue?"=>"جهت تعمير ضروري است که اپراتور را به فايل تنظيمات اضافه کنيد.ادامه مي دهيد؟",
+// desconectar agentes
+"Number"=>"شماره",
+"Disconect"=>"قطع",
+"Configure"=>"تنظيم",
+"Offline"=>"آفلاين",
+"Online"=>"آنلاين",
+"Not Status"=>"بدون وضعيت مشخص",
+"Repair"=>"از طريق تعمير",
+"All"=>"همه",
+"No call"=>"تماسي وجود ندارد",
+"Name" => "نام",
+"Retype password" => "پسورد را دوباره تايپ کنيد",
+'View' => 'نمايش',
+'Status' => 'وضعيت',
+'With selection' => 'انتخاب کنيد ',
+'Disconnect' => 'قطع',
+"The passwords aren't numeric values" => "پسوردها مقدار عددي ندارند",
+"The passwords are empty or don't match" => "پسوردها مطابقت ندارند",
+
+"The passwords are empty or don't match" => "The passwords are empty or don't match",
+"ECCP Password" => "ECCP Password",
+"Retype ECCP password" => "Retype ECCP password",
+"ECCP passwords don't match" => "ECCP passwords don't match",
 );
 ?>

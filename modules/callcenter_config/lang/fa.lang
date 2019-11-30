@@ -2,9 +2,10 @@
 /* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
   Codificación: UTF-8
   +----------------------------------------------------------------------+
-  | Issabel version 0.5                                                  |
+  | Issabel version 4.0                                                  |
   | http://www.issabel.org                                               |
   +----------------------------------------------------------------------+
+  | Copyright (c) 2019 Issabel Foundation                                |
   | Copyright (c) 2006 Palosanto Solutions S. A.                         |
   +----------------------------------------------------------------------+
   | The contents of this file are subject to the General Public License  |
@@ -18,31 +19,34 @@
   | limitations under the License.                                       |
   +----------------------------------------------------------------------+
   | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  | Translate by: Haamed Kouhfallah                                      |
+  | Email: k.haamed@gmail.com                                            |                                                                
   +----------------------------------------------------------------------+
-  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
+  $Id: fa.lang,v 1.1 2013-08-12 04:08:50 Haamed Kouhfallah k.haamed@gmail.com Exp $
+*/
 global $arrLangModule;
-$arrLangModule = array(
-    "Configuration" => "تنظيمات",
-    "Password and confirmation do not match." => "پسورد و تائيد آن يکي نيستند",
-    "Could not save changes!" => "خطا در ذخيره تغييرات!",
-    "Could not commit changes!" => "خطا در اجراي تغييرات!",
-    "Asterisk Server" => "سرور استريسک",
-    "Asterisk Login" => "شناسه ورود به استريسک",
-    "Asterisk Password" => "پسورد استريسک",
-    "Asterisk Password (confirm)" => "پسورد استريسک ( تائيد)",
-    "Short Call Threshold" => "آستانه تماس هاي کوتاه",
-    "Answering delay" => "تاخير پاسخگويي",
-    "Enable dialer debug" => "فعال کردن عيب ياب شماره گير",
-    "Dump all received Asterisk events" => "پاک کردن همه رخدادهاي دريافتي استريسک",
-    "Running" => "در حال اجرا",
-    "Stopped" => "متوقف شده",
-    "Start" => "شروع",
-    "Stop" => "توقف",
-    "Internal DB error" => "خطاي ديتابيس داخلي",
-    "Dialer Status" => "وضعيت شماره گير",
-    "Current Status" => "وضعيت فعلي",
-    "Enable overcommit of outgoing calls" => "فعال نمودن انجام بيش از اندازه تماس هاي خروجي",
-    "AMI Session Duration" => "مدت دوره AMI(0 براي دوره نامحدود)",
-    "Service percent" => "درصد سرويس",
+$arrLangModule=array(
+"Configuration" => "تنظيمات",
+'Password and confirmation do not match.' => 'پسورد و تائيد آن يکي نيستند',
+'Could not save changes!' => 'خطا در ذخيره تغييرات!',
+'Could not commit changes!' => 'خطا در اجراي تغييرات!',
+'Asterisk Server' => 'سرور استريسک',
+'Asterisk Login' => 'شناسه ورود به استريسک',
+'Asterisk Password' => 'رمز استریسک',
+'Asterisk Password (confirm)' => 'رمز استریسک - تائید',
+'Short Call Threshold' => 'آستانه تماس هاي کوتاه',
+'Answering delay' => 'تاخير پاسخگويي',
+'Enable dialer debug' => 'فعال کردن عيب ياب شماره گير',
+'Dump all received Asterisk events' => 'پاک کردن همه رخدادهاي دريافتي استريسک',
+'Running' => 'در حال اجرا',
+'Stopped' => 'متوقف',
+'Start' => 'شروع',
+'Stop' => 'توقف',
+'Internal DB error' => 'خطاي ديتابيس داخلي',
+'Dialer Status' => 'وضعيت شماره گير',
+'Current Status' => 'وضعيت فعلي',
+'Enable overcommit of outgoing calls' => 'فعال نمودن انجام بيش از اندازه تماس هاي خروجي',
+'AMI Session Duration' => 'AMI مدت جلسه',
+'Service percent' => 'درصد سرويس',
 );
 ?>
