@@ -51,5 +51,6 @@ $arrLangModule=array(
 'Per-call dial timeout' => 'Per-call dial timeout',
 'Agent inactivity timeout' => 'Agent inactivity timeout',
 'Force more calls per agent' => 'Force more calls per agent',
+'Time between calls' => 'Time between calls',
 );
 ?>
