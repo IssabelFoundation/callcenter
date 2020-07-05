@@ -85,7 +85,8 @@ function form_Configuration(&$oDB, $smarty, $module_name, $local_templates_dir)
         'dialer.predictivo' => 'dialer_predictivo',
         'dialer.timeout_originate' => 'dialer_timeout_originate',
         'dialer.timeout_inactivity' => 'dialer_timeout_inactivity',
-       'dialer.forzar_sobrecolocar' => 'dialer_forzar_sobrecolocar',
+        'dialer.forzar_sobrecolocar' => 'dialer_forzar_sobrecolocar',
+        'dialer.entretiempo' => 'dialer_entretiempo',        
     );
     $valoresForm = array(
         'asterisk_asthost' => '127.0.0.1',
@@ -103,6 +104,7 @@ function form_Configuration(&$oDB, $smarty, $module_name, $local_templates_dir)
         'dialer_timeout_originate' => '0',
         'dialer_timeout_inactivity' => '15',
         'dialer_forzar_sobrecolocar' => '0',
+        'dialer_entretiempo' => '0',
     );
     foreach ($camposConocidos as $dbfield => $formfield) {
         if (isset($listaConf[$dbfield])) {
@@ -340,8 +342,16 @@ function createFieldForm()
             'INPUT_EXTRA_PARAM'         =>  '',
             'VALIDATION_EXTRA_PARAM'    =>  '^[[:digit:]]+$',
         ),
-      'dialer_forzar_sobrecolocar'=> array(
+        'dialer_forzar_sobrecolocar'=> array(
             'LABEL'                     =>  _tr('Force more calls per agent'),
+            'REQUIRED'                  =>  'yes',
+            'INPUT_TYPE'                =>  'TEXT',
+            'VALIDATION_TYPE'           =>  'ereg',
+            'INPUT_EXTRA_PARAM'         =>  '',
+            'VALIDATION_EXTRA_PARAM'    =>  '^[[:digit:]]+$',
+        ),
+      	'dialer_entretiempo'  =>  array(
+            'LABEL'                     =>  _tr('Time between calls'),
             'REQUIRED'                  =>  'yes',
             'INPUT_TYPE'                =>  'TEXT',
             'VALIDATION_TYPE'           =>  'ereg',
