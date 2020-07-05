@@ -170,7 +170,15 @@ class ConfigDB
                 'mostrar_valor' =>  TRUE,
                 'cast'          =>  'int',
             ),
-
+	    'entretiempo' => array(
+                'descripcion'   =>  'Tiempo de espera entre llamadas',
+                'regex'         =>  '^\d+$',
+                'valor_omision' =>  5,
+                'valor_viejo'   =>  NULL,
+                'valor_actual'  =>  NULL,
+                'mostrar_valor' =>  TRUE,
+                'cast'          =>  'int',
+            ),
 		),
 	);
 
