@@ -26,6 +26,8 @@
 <tr class="letra12"><td>{$asterisk_duracion_sesion.INPUT}</td></tr>
 <tr class="letra12"><td>{$dialer_forzar_sobrecolocar.LABEL}:</td></tr>
 <tr class="letra12"><td>{$dialer_forzar_sobrecolocar.INPUT}</td></tr>
+<tr class="letra12"><td>{$dialer_entretiempo.LABEL}:</td></tr>
+<tr class="letra12"><td>{$dialer_entretiempo.INPUT}</td></tr>
 </table>
 </td>
 <td valign="top">
