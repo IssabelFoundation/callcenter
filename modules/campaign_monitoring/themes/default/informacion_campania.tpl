@@ -175,7 +175,7 @@
 </div>
 <script>
 function toggleOffline(){
-    var elems = document.getElementsByClassName('-');
+    var elems = $('.-');
     for (i = 0; i < elems.length; i++) {
         var elem = elems[i];
         if(elem.style.display == 'none')
@@ -184,4 +184,12 @@ function toggleOffline(){
             elem.style.display = 'none';
     }
 }
+
+setTimeout(function(){
+  $('.ember-select').change(function() {
+    if( $('#hideShow').prop('checked') ) {
+        setTimeout('toggleOffline()', 500)
+    }
+  })
+}, 3000);
 </script>
