@@ -1,4 +1,11 @@
 #!/bin/bash
+
+# Clone callcenter repository from this account. If you fork
+# the repository and make your own changes, change it to yours
+# so you can install or update with this script.
+
+GITHUB_ACCOUNT='IssabelFoundation'
+
 yum -y install git >/dev/null
 
 RED='\033[0;31m'
@@ -12,7 +19,7 @@ fi
 
 cd /usr/src
 rm -rf callcenter
-git clone https://github.com/IssabelFoundation/callcenter.git callcenter 2>&1 >/dev/null
+git clone https://github.com/${GITHUB_ACCOUNT}/callcenter.git callcenter 2>&1 >/dev/null
 cd /usr/src/callcenter
 chown asterisk.asterisk modules/* -R
 cp -pr modules/* /var/www/html/modules
