@@ -1,0 +1,47 @@
+.label {
+  font-weight: bold;
+  font-size: 100%;
+}
+.label-default {
+  background-color: #999;
+  color: white;
+}
+.label-default[href]:hover,
+.label-default[href]:focus {
+  background-color: #808080;
+}
+.label-primary {
+  background-color: #3498db;
+}
+.label-primary[href]:hover,
+.label-primary[href]:focus {
+  background-color: #2980b9;
+}
+.label-success {
+  background-color: #2ecc71;
+}
+.label-success[href]:hover,
+.label-success[href]:focus {
+  background-color: #27ae60;
+}
+.label-info {
+  background-color: rgba(82,43,118,0.8);
+}
+.label-info[href]:hover,
+.label-info[href]:focus {
+  background-color: rgba(82,43,118,0.4);
+}
+.label-warning {
+  background-color: #e67e22;
+}
+.label-warning[href]:hover,
+.label-warning[href]:focus {
+  background-color: #d35400;
+}
+.label-danger {
+  background-color: #e74c3c;
+}
+.label-danger[href]:hover,
+.label-danger[href]:focus {
+  background-color: #c0392b;
+}

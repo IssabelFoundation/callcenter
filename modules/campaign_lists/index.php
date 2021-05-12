@@ -26,6 +26,7 @@ include_once "libs/paloSantoGrid.class.php";
 include_once "libs/paloSantoForm.class.php";
 
 require_once "modules/agent_console/libs/issabel2.lib.php";
+require_once "modules/agent_console/libs/JSON.php";
 
 function _moduleContent(&$smarty, $module_name)
 {
@@ -68,7 +69,10 @@ function _moduleContent(&$smarty, $module_name)
         case 'view':
             $content = viewList($smarty, $module_name, $local_templates_dir, $pDB, $arrConf);
         break;
-        default:
+		case 'getLists':
+            $content = manejarMonitoreo_getList($smarty, $module_name, $local_templates_dir, $pDB, $arrConf);
+        break;
+		default:
             $content = reportLists($smarty, $module_name, $local_templates_dir, $pDB, $arrConf);
             break;
     }
@@ -132,7 +136,7 @@ function reportLists($smarty, $module_name, $local_templates_dir, &$pDB, $arrCon
         "filter_value" =>  $filter_value);
     $oGrid->setURL($url);
 
-    $arrColumns = array("", _tr("grid_column_id"), _tr("grid_column_name"), _tr("grid_column_type"), _tr("grid_column_campaign"), _tr("grid_column_file"), _tr("grid_column_status"), _tr("grid_column_date"), "");
+    $arrColumns = array("", _tr("grid_column_id"), _tr("grid_column_name"), _tr("grid_column_type"), _tr("grid_column_campaign"), _tr("grid_column_file"), _tr("grid_column_total_calls"), _tr("grid_column_pending_calls"), _tr("grid_column_status"), _tr("grid_column_date"), "");
     $oGrid->setColumns($arrColumns);
 
     $total   = $pCampaign_Lists->getNumCampaign_Lists($filter_field, $filter_value);
@@ -151,7 +155,8 @@ function reportLists($smarty, $module_name, $local_templates_dir, &$pDB, $arrCon
     $arrResult =$pCampaign_Lists->getCampaign_Lists($limit, $offset, $filter_field, $filter_value);
 
     if(is_array($arrResult) && $total>0){
-        foreach($arrResult as $key => $value){
+		$label_status = '';
+		foreach($arrResult as $key => $value){
             $campaignName = $pCampaign_Lists->getCampaign_Name($value['id_campaign'], $value['type']);
             $arrTmp[0] = ($value['status'] != 3)?"<input class=\"input\" type=\"radio\" name=\"id_list\" value=\"{$value['id']}\"/>": '&nbsp;';
             $arrTmp[1] = $value['id'];
@@ -159,9 +164,25 @@ function reportLists($smarty, $module_name, $local_templates_dir, &$pDB, $arrCon
             $arrTmp[3] = $value['sType'];
             $arrTmp[4] = "<a href='?menu=campaign_out&amp;action=edit_campaign&amp;id_campaign=".$value['id_campaign']."'>".htmlentities($campaignName, ENT_COMPAT, 'UTF-8').'</a>';
             $arrTmp[5] = htmlentities(utf8_encode($value['upload']), ENT_COMPAT, "UTF-8").'&nbsp;';
-            $arrTmp[6] = htmlentities($value['sStatus'], ENT_COMPAT, "UTF-8").'&nbsp;';
-            $arrTmp[7] = htmlentities($value['date_entered'], ENT_COMPAT, "UTF-8").'&nbsp;';
-            $arrTmp[8] = ($value['status'] == 3)
+            $arrTmp[6] = '<span id="total_calls_'.$value['id'].'">'.htmlentities($value['total_calls'], ENT_COMPAT, "UTF-8").'</span>';;
+            $arrTmp[7] = '<span id="pending_calls_'.$value['id'].'">'.htmlentities($value['pending_calls'], ENT_COMPAT, "UTF-8").'</span>';
+            switch ($value['status']) {
+                case 1:
+                    $label_status = '<span class="label label-success">'.htmlentities($value['sStatus'], ENT_COMPAT, "UTF-8").'</span>';
+                    break;
+                case 2:
+                    $label_status = '<span class="label label-info">'.htmlentities($value['sStatus'], ENT_COMPAT, "UTF-8").'</span>';
+                    break;
+                case 3:
+                    $label_status = '<span class="label label-default">'.htmlentities($value['sStatus'], ENT_COMPAT, "UTF-8").'</span>';
+                    break;
+                default:
+                    $label_status = htmlentities($value['sStatus'], ENT_COMPAT, "UTF-8").'&nbsp;';
+                    break;
+            }
+            $arrTmp[8] = $label_status;
+            $arrTmp[9] = htmlentities($value['date_entered'], ENT_COMPAT, "UTF-8").'&nbsp;';
+            $arrTmp[10] = ($value['status'] == 3)
                 ? "<a href=\"?menu={$module_name}&amp;action=recycle&amp;id_list={$value['id']}\">["._tr('label_recycle_list').']</a>'
                 : '&nbsp;';
             $arrData[] = $arrTmp;
@@ -354,6 +375,27 @@ function createFieldFilter(){
     return $arrFormElements;
 }
 
+function manejarMonitoreo_getList($smarty, $module_name, $local_templates_dir, &$pDB, $arrConf)
+{
+    $respuesta = array(
+        'status'    =>  'success',
+        'message'   =>  '(no message)',
+    );
+
+    $pCampaign_Lists = new paloSantoCampaign_Lists($pDB);
+    $arrResult =$pCampaign_Lists->getCampaign_Lists_Stats();
+
+    if (!is_array($arrResult)) {
+    	$respuesta['status'] = 'error';
+        $respuesta['message'] = $oPaloConsola->errMsg;
+    }
+    else
+    	$respuesta['lists'] = $arrResult;
+
+    $json = new Services_JSON();
+    Header('Content-Type: application/json');
+    return $json->encode($respuesta);
+}
 
 function getAction()
 {
@@ -369,6 +411,8 @@ function getAction()
         return "view";
     else if(getParameter("action")=="edit")
         return "update";
+	else if(getParameter("action")=="getLists")
+        return "getLists";
     else
         return "report"; //cancel
 }

@@ -43,6 +43,8 @@ $arrLangModule=array(
 "grid_column_campaign" => "Campaña",
 "grid_column_file" => "Archivo",
 "grid_column_status" => "Estatus",
+"grid_column_total_calls" => "Total",
+"grid_column_pending_calls" => "Pendientes",
 "grid_column_date" => "Fecha creación",
 
 "label_recycle_list" => "Reciclar lista",
