@@ -42,7 +42,7 @@ php /tmp/new_module/callcenter/setup/installer.php
 rm -rf /tmp/new_module
 
 # Be sure to set shell for user asterisk
-chsh -s /bin/bash asterisk
+chsh -s /bin/bash asterisk 2>&1 >/dev/null
 
 # Add dialer to startup scripts, and enable it by default
 chkconfig --add issabeldialer
