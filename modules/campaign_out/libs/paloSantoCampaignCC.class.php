@@ -516,7 +516,7 @@ FROM campaign_lists cl
 RIGHT JOIN calls c ON cl.id = c.id_list
 LEFT JOIN agent a ON c.id_agent = a.id
 WHERE
-    c.id_list = 1 AND
+    cl.id_campaign = ? AND
     (c.status='Success' OR c.status='Failure' OR c.status='ShortCall' OR c.status='NoAnswer' OR c.status='Abandoned')
 ORDER BY
     telefono ASC
