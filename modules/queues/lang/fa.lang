@@ -2,9 +2,10 @@
 /* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
   Codificación: UTF-8
   +----------------------------------------------------------------------+
-  | Issabel version 0.5                                                  |
+  | Issabel version 4.0                                                  |
   | http://www.issabel.org                                               |
   +----------------------------------------------------------------------+
+  | Copyright (c) 2019 Issabel Foundation                                |
   | Copyright (c) 2006 Palosanto Solutions S. A.                         |
   +----------------------------------------------------------------------+
   | The contents of this file are subject to the General Public License  |
@@ -18,44 +19,49 @@
   | limitations under the License.                                       |
   +----------------------------------------------------------------------+
   | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  | Translate by: Haamed Kouhfallah                                      |
+  | Email: k.haamed@gmail.com                                            |
   +----------------------------------------------------------------------+
-  $Id: es.lang,v 1.7 2007/09/05 00:36:42 alex Exp $ */
-global $arrLangModule;
-$arrLangModule = array(
-    "Ingoing Calls" => "تماس هاي ورودي",
-    "guardar" => "ذخيره",
-    "cancelar" => "لغو",
-    "label_choice" => "انتخاب صف",
-    "Form" => "صف",
-    "nameLabel" => "نام",
-    "nameForm" => "انتخاب صف",
-    "nameFormChoice" => "صف انتخاب شده",
-    "Result" => "نتيجه",
-    "msgResultado" => "موفقيت",
-    "Select Queue" => "انتخاب صف",
-    "Queue List" => "ليست صف",
-    "Name Queue" => "نام صف",
-    "Status" => "وضعيت",
-    "Options" => "گزينه ها",
-    "View" => "نمايش",
-    "Activate" => "فعال نمودن",
-    "Active" => "فعال",
-    "View Queue" => "مشاهده صف",
-    "edit" => "ويرايش",
-    "dasactivate" => "غيرفعال نمودن",
-    "confirm continue" => "تائيد براي ادامه",
-    "Script" => "اسکريپت",
-    "Queue" => "صف:",
-    "Error when connecting to database" => "خطا در هنگام اتصال به ديتابيس",
-    "Desactivate Error" => "خطاي غيرفعال سازي",
-    "Error when desactivating the Queue" => "خطا در هنگام غيرفعال نمودن صف",
-    "Inactive" => "غيرفعال",
-    "Activate Error" => "خطاي فعال سازي",
-    "Error when Activating the Queue" => "خطا در هنگام فعال نمودن صف",
-    "apply_changes" => "اعمال تغييرات",
-    "Edit Queue" => "ويرايش صف",
-    "all" => "همه",
-    "active" => "فعال",
-    "inactive" => "غيرفعال",
+  $Id: fa.lang,v 1.1 2019-11-30 04:08:50 Haamed Kouhfallah k.haamed@gmail.com Exp $
+*/
+global $arrLangModule; 
+ $arrLangModule = array(
+'Ingoing Calls'   => 'تماس هاي ورودي',
+'guardar'         => 'ذخيره',
+'cancelar'        => 'انصراف',
+'label_choice'    => 'انتخاب صف',
+"Form"            => 'صف',
+'nameLabel'       => "نام",
+'nameForm'        => "انتخاب صف",
+'nameFormChoice'  => "صف انتخاب شده",
+'Result'          => "نتيجه",
+'msgResultado'    => "موفقيت",
+'Select Queue'    => "انتخاب صف",
+"Queue List"      => "ليست صف",
+"Name Queue"      => "نام صف",
+"Status"          => "وضعيت",
+"Options"         => "گزينه ها",
+'View'            => "نمايش",
+'Activate'        => "فعال کن",
+'Deactivate'        => "غیر فعال کن",
+'Active'          => "فعال",
+"View Queue"      => "مشاهده صف",
+'edit'            => "ويرايش",
+'dasactivate'     => "غيرفعال نمودن",
+'confirm continue'=> "تائيد براي ادامه",
+"Script"          => "اسکريپت",
+"Name Queue"      => "نام صف",
+"Queue"           => "صف:",
+"Error when connecting to database"       => "خطا در هنگام اتصال به ديتابيس",
+"Desactivate Error"                       => "خطاي غيرفعال سازي",
+"Error when desactivating the Queue"   => "خطا در هنگام غيرفعال نمودن صف",
+'Inactive'       => "غيرفعال",
+'Activate Error'  => "خطاي فعال سازي",
+'Error when Activating the Queue'         => 'خطا در هنگام فعال نمودن صف',
+'apply_changes'   => "اعمال تغييرات",
+'Edit Queue'      => "ويرايش صف",
+'all'             => "همه",
+'active'          => "فعال",
+'inactive'        => "غيرفعال",
 );
 ?>
