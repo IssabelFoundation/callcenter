@@ -14,7 +14,9 @@ NC='\033[0m' # No Color
 VERSION=$(asterisk -rx "core show version" | awk '{print $2}' | cut -d\. -f 1)
 
 if [ "$VERSION" != "11" ]; then
-    echo "${RED}Issabel CallCenter Community Requires Asterisk 11. It most probably fail with other versions.${NC}"
+    echo
+    echo -i "${RED}Issabel CallCenter Community Requires Asterisk 11. It most probably fail with other versions.${NC}"
+    echo
 fi
 
 cd /usr/src
