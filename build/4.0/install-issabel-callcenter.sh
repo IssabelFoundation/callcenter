@@ -1,15 +1,18 @@
 #!/bin/bash
 yum -y install git >/dev/null
 
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
 VERSION=$(asterisk -rx "core show version" | awk '{print $2}' | cut -d\. -f 1)
 
 if [ "$VERSION" != "11" ]; then
-    echo "Issabel CallCenter Community Requires Asterisk 11. Aborting."
+    echo "${RED}Issabel CallCenter Community Requires Asterisk 11. It most probably fail with other versions.${NC}"
 fi
 
 cd /usr/src
 rm -rf callcenter
-git clone https://github.com/IssabelFoundation/callcenter.git callcenter >/dev/null
+git clone https://github.com/IssabelFoundation/callcenter.git callcenter 2>&1 >/dev/null
 cd /usr/src/callcenter
 chown asterisk.asterisk modules/* -R
 cp -pr modules/* /var/www/html/modules
