@@ -134,7 +134,7 @@ class paloSantoCallsDetail
 
         // Construir fragmento completo de sentencia SQL
         $where = array(implode(' AND ', $condSQL), $paramSQL);
-        if ($where[0] != '') $where[0] = ' AND '.$where[0];
+        if ($where[0] != '') $where[0] = ' WHERE '.$where[0];
         return $where;
     }
 
