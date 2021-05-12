@@ -23,7 +23,7 @@
 
 // Número mínimo de muestras para poder confiar en predicciones de marcador
 define('MIN_MUESTRAS', 10);
-define('INTERVALO_REVISION_CAMPANIAS', 3);
+//define('INTERVALO_REVISION_CAMPANIAS', 3);
 
 class CampaignProcess extends TuberiaProcess
 {
@@ -317,8 +317,11 @@ class CampaignProcess extends TuberiaProcess
     {
         // Revisar las campañas cada 3 segundos
         $iTimestamp = time();
-        if ($iTimestamp - $this->_iTimestampUltimaRevisionCampanias >= INTERVALO_REVISION_CAMPANIAS) {
-
+      	if (empty($INTERVALO_REVISION_CAMPANIAS)) {
+			      $INTERVALO_REVISION_CAMPANIAS = $this->_configDB->dialer_entretiempo;
+		    }
+		    if ($iTimestamp - $this->_iTimestampUltimaRevisionCampanias >= $INTERVALO_REVISION_CAMPANIAS) {
+        //if ($iTimestamp - $this->_iTimestampUltimaRevisionCampanias >= INTERVALO_REVISION_CAMPANIAS) {
             /* Se actualiza timestamp de revisión aquí por si no se puede
              * actualizar más tarde debido a una excepción de DB. */
             $this->_iTimestampUltimaRevisionCampanias = $iTimestamp;
