@@ -9,7 +9,7 @@ fi
 
 cd /usr/src
 rm -rf callcenter
-git clone https://github.com/IssabelFoundation/callcenter.git callcenter
+git clone https://github.com/IssabelFoundation/callcenter.git callcenter >/dev/null
 cd /usr/src/callcenter
 chown asterisk.asterisk modules/* -R
 cp -pr modules/* /var/www/html/modules
