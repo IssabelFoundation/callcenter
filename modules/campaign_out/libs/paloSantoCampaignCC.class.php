@@ -511,10 +511,12 @@ SELECT
     c.duration          AS duracion,
     c.uniqueid          AS uniqueid,
     c.failure_cause     AS failure_cause,
-    c.failure_cause_txt AS failure_cause_txt
+    c.failure_cause_txt AS failure_cause_txt,
+    b.recordingfile     AS recordingfile
 FROM campaign_lists cl
 RIGHT JOIN calls c ON cl.id = c.id_list
 LEFT JOIN agent a ON c.id_agent = a.id
+LEFT JOIN call_recording b ON c.uniqueid = b.uniqueid
 WHERE
     cl.id_campaign = ? AND
     (c.status='Success' OR c.status='Failure' OR c.status='ShortCall' OR c.status='NoAnswer' OR c.status='Abandoned')
@@ -540,6 +542,7 @@ SQL_LLAMADAS;
                     'Uniqueid',
                     _tr('Failure Code'),
                     _tr('Failure Cause'),
+		    _tr('Recording File'),
                 ),
                 'DATA'  =>  $datosTelefonos,
             ),
