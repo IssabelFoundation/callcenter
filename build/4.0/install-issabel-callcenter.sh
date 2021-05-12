@@ -15,7 +15,7 @@ VERSION=$(asterisk -rx "core show version" | awk '{print $2}' | cut -d\. -f 1)
 
 if [ "$VERSION" != "11" ]; then
     echo
-    echo -i "${RED}Issabel CallCenter Community Requires Asterisk 11. It most probably fail with other versions.${NC}"
+    echo -e "${RED}Issabel CallCenter Community Requires Asterisk 11. It most probably fail with other versions.${NC}"
     echo
 fi
 
