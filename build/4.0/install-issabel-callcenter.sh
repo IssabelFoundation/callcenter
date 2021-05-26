@@ -26,7 +26,7 @@ cd /usr/src/callcenter
 chown asterisk.asterisk modules/* -R
 cp -pr modules/* /var/www/html/modules
 mkdir -p /opt/issabel/
-cp setup/dialer_process/dialer/ /opt/issabel/
+mv setup/dialer_process/dialer/ /opt/issabel/
 chmod +x /opt/issabel/dialer/dialerd
 mkdir -p /etc/rc.d/init.d/
 mv setup/dialer_process/issabeldialer /etc/rc.d/init.d/
