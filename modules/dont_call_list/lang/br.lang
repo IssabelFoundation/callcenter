@@ -1,0 +1,54 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Issabel version 0.5                                                  |
+  | http://www.issabel.org                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.2 2007/08/09 00:31:28 jmartinez Exp $
+  /*$Id: br.lang,v 1.0 2020/05/23 Prisma Telecom Franca SP - leandro@prismatelecom.com $ */
+  
+global $arrLangModule;
+$arrLangModule=array(
+"Phone List"=>"Lista Telefônica",
+"Number Phone's"=>"Número de telefone",
+"Date Income"=>"Data de Renda",
+"Add"=>"Adicionar",
+"Apply"=>"Aplicar",
+"Status"=>"Status",
+"Upload File"=>"Subir arquivo",
+"Add new Number"=>"Adicionar novo número",
+"SAVE"=>"SALVAR",
+"CANCEL"=>"CANCELAR",
+"Remove"=>"Remover",
+"Result"=>"Resultado",
+"Load File"=>"Carregar Arquivo",
+"Please select any file"=>"Selecione qualquer arquivo",
+"Please enter a number phone"=>"Por favor insira um número de telefone",
+"Number phone is not numeric value"=>"O número de telefone não é um valor numérico",
+"Add Number"=>"Adicionar número",
+"the number already exists"=>"O número já existe",
+"Active" => "Ativo",
+"Inactive" => "Inativo",
+"Desactivate"=>"Desativar",
+"Activate"=>"Ativar",
+'Maximum upload size: %d Mb' => 'Tamanho máximo de upload:% d Mb',
+'Are you sure to remove selected DNC?' => 'Tem certeza de que deseja remover o DNC selecionado?',
+);
+
+
+?>

@@ -1,0 +1,30 @@
+<?php
+/*$Id: br.lang,v 1.0 2020/05/23 Prisma Telecom Franca SP - leandro@prismatelecom.com $ */
+
+global $arrLangModule;
+$arrLangModule=array(
+
+"client"=>"cliente",
+"fileCRM"=>"Arquivo CRM",
+"Select file upload"=>"Selecione o arquivo para fazer o upload",
+"Result"=>"Resultado",
+"Load File"=>"Subir arquivo",
+"Format File"=>"Arquivo de formato",
+"Upload"=>"Upload",
+"File"=>"Arquivo",
+"Error"=>"Erro",
+"Error while loading file"=>"Erro ao carregar arquivo",
+'Invalid CSV File' => 'Arquivo CSV inválido',
+'Invalid phone number'=>'Número de telefone inválido',
+'Line'=>'Linha',
+'Unsupported attribute'=>'Atributo não suportado',
+'Invalid Cedula/RUC'=>'Carteira de Identidade Inválida',
+'Missing or empty name'=>'Nome ausente ou vazio',
+'Missing or empty surname'=>'Sobrenome ausente ou vazio',
+'Download contacts'=>'Baixar contatos',
+'Inserted records'=>'Registros inseridos',
+'Updated records'=>'Registros atualizados',
+'Detected charset'=>'Conjunto de caracteres detectado',
+'"Phone","Identification Card","Name","Last Name"' => '"Telefone", "Cartão de Identificação", "Nome", "Sobrenome" '
+);
+?>

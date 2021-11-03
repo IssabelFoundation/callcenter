@@ -1,0 +1,126 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Issabel version 0.5                                                  |
+  | http://www.issabel.org                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+$Id: br.lang,v 1.0 2020/05/23 10:00:00 Prisma Telecom - Franca SP - leandro@prismatelecom.com $ */
+
+global $arrLangModule;
+$arrLangModule = array(
+'Agent Console' => 'Console Agente',
+'Agent log-in failed!' => 'Falha no login do agente!',
+'Agent login process not started' => 'Processo de login do agente não iniciado',
+'Agent log-in terminated.' => 'O logon do agente foi encerrado.',
+'Agent not authorized for ECCP - ECCP password not set' => 'Agente não autorizado para ECCP - senha ECCP não definida',
+'Agent not found' => 'Agente não encontrado',
+'Agent not handling an incoming call' => 'Agente que não está atendendo uma chamada',
+'Agent Number' => 'Número do agente',
+'Call at end of campaign' => 'Ligar ao finalizar campanha',
+'Call Form' => 'Formulário de Chamada',
+'Call Information' => 'Informações da chamadas',
+'Call Script' => 'Script de chamada',
+'Call successfully scheduled' => 'Chamada agendada com sucesso',
+'Cannot start agent login' => 'Não é possível iniciar o login do agente',
+'Confirm contact' => 'Confirmar contato',
+'Connected to call' => 'Em Ligação',
+'Contact' => 'Contato',
+'Contact successfully confirmed' => 'Contato confirmado com sucesso',
+'Dismiss' => 'Cancelar',
+'End Break' => 'Cancelar Pausa',
+'End date' => 'Data Final',
+'End Hold' => 'Retenção final',
+'End session' => 'Encerrar Sessão',
+'End time' => 'Fim do tempo',
+'Enter' => 'Entrar',
+'Error while confirming contact' => 'Erro ao confirmar o contato',
+'Error while hanging up call' => 'Erro ao desligar a chamada',
+'Error while logging out agent' => 'Erro ao fazer logoff do agente',
+'Error while saving form data' => 'Erro ao salvar os dados do formulário',
+'Error while scheduling call' => 'Erro ao agendar uma chamada',
+'Error while starting break' => 'Erro ao iniciar o pausa',
+'Error while stopping break' => 'Erro ao cancelar pausa',
+'Error while transferring call' => 'Erro ao transferir a chamada',
+'Extension' => 'Ramal',
+'Failed to retrieve agent password' => 'Falha ao recuperar a senha do agente',
+'Form data successfully saved' => 'Dados do formulário salvos com sucesso',
+'Hangup' => 'Desligar',
+'Hold' => 'Aguarde',
+'Invalid agent number' => 'Número de agente inválido',
+'Invalid extension number' => 'Número de ramal inválido',
+'Invalid or incomplete form data' => 'Dados de formulário inválidos ou incompletos',
+'Invalid or incomplete schedule' => 'Agenda inválida ou incompleta',
+'Invalid or missing break ID' => 'ID de intervalo inválido ou ausente',
+'Invalid or missing contact ID' => 'ID de contato inválido ou ausente',
+'Invalid or missing extension to transfer' => 'Extensão inválida ou ausente para transferir',
+'Logging agent in. Please wait...' => 'Agente de logon. Aguarde ...',
+'Names' => 'Nome',
+'No active call' => 'Aguardando Chamadas',
+'No forms available for this call' => 'Nenhum formulário disponível para esta chamada',
+'No information available for this call' => 'Nenhuma informação disponível para esta chamada',
+'(no matching contacts)' => '(no matching contacts)',
+'(No script available)' => '(Nenhum script disponível))',
+'On break' => 'Em Pausa',
+'Phone number' => 'Número de telefone',
+'Please select your agent number and your extension' => 'Selecione seu número de agente e seu ramal',
+'Save data' => 'Salvar Dados',
+'Schedule at date' => 'Agendar',
+'Schedule call' => 'Agendar Chamada',
+'Schedule' => 'Agenda',
+'Schedule to same agent' => 'Programar para o mesmo agente',
+'Select break type' => 'Selecione o tipo de interrupção',
+'Select extension to transfer to' => 'Digite o ramal para a qual deseja transferir',
+'Specified agent already connected to extension' => 'Agente especificado já conectado à extensão',
+'Start and end date are required for date scheduling.' => 'As datas de início e término são necessárias para a programação da data.',
+'Start date' => 'Data Inicial',
+'Start time' => 'Hora Inicial',
+'Take Break' => 'Ativar Pausa',
+'There are no agents available. At least one agent is required for agent login.' => 'Não há agentes disponíveis. Pelo menos um agente é necessário para o login do agente.',
+'There are no extensions available. At least one extension is required for agent login.' => 'Não há extensões disponíveis. Pelo menos uma extensão é necessária para o login do agente.',
+'Transfer' => 'Transferir',
+'Unable to fetch break types' => 'Não foi possível buscar os tipos de quebra',
+'Unable to hangup call' => 'Não foi possível interromper a chamada',
+'Unable to read call information' => 'Não foi possível ler as informações da chamada',
+'Unable to read queue script' => 'Não foi possível ler o script da fila',
+'Unable to save form data' => 'Não foi possível salvar os dados do formulário',
+'Unable to schedule call' => 'Não foi possível agendar a chamada',
+'Unable to set contact' => 'Não foi possível definir o contato',
+'Unable to start break' => 'Não foi possível iniciar o intervalo',
+'Unable to stop break' => 'Não foi possível parar o intervalo',
+'Unable to transfer call' => 'Não foi possível transferir a chamada',
+'(unavailable)' => '(indisponível)',
+'VTiger CRM' => 'VTiger CRM',
+'Welcome to Agent Console' => 'Bem-vindo ao Console de Agente',
+
+'First name' => 'Leandro',
+'Last name' => 'Saltori',
+'National ID' => 'ID Nacional',
+'External site' => 'Site Externo',
+
+'Blind transfer' => 'Transferência Cega',
+'Attended transfer' => 'Transferência Assistida',
+'Password' => 'Senha',
+'Callback Extension' => 'Ramal de Callback ',
+'Agent ' => 'Agente ',
+' Logged in' => ' Logado',
+'Call' => 'Chamada',
+'Information' => 'Informação',
+'Script' => 'Script',
+'Waiting for call'=>'Aguardando Chamada',
+);
+?>
