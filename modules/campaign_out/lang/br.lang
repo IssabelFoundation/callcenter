@@ -120,5 +120,6 @@ $arrLangModule = array(
     "Load Contacts for Campaign" => "Carregar lista para a campanha",
     "Available uploaders" => "Uploaders disponíveis",
     "Options for" => "Opções para",
+    
 );
 ?>
