@@ -1,0 +1,45 @@
+<?php
+/*
+$Id: br.lang,v 1.0 2020/05/23 Prisma Telecom Franca SP - leandro@prismatelecom.com $
+   */
+global $arrLangModule; 
+ $arrLangModule = array(
+'Ingoing Calls'   => 'Ligações Entrada',
+'guardar'         => 'Salvar',
+'cancelar'        => 'Cancelar',
+'label_choice'    => 'Selecione a Fila',
+"Form"            => 'Fila',
+'nameLabel'       => "Nome",
+'nameForm'        => "Selecione a fila",
+'nameFormChoice'  => "Fila selecionada",
+'Result'          => "Resultado",
+'msgResultado'    => "Sucesso",
+'Select Queue'    => "Selecione a fila ",
+"Queue List"      => "Fila Lista",
+"Name Queue"      => "Nome da Fila",
+"Status"          => "Status",
+"Options"         => "Opções",
+'View'            => "Visualizar",
+'Activate'        => "Ativar",
+'Active'          => "Ativo",
+"View Queue"      => "Visualizar Fila",
+'edit'            => "Editar",
+'dasactivate'     => "Desativar",
+'confirm continue'=> "Confirme Prosseguir",
+"Script"          => "Script",
+"Name Queue"      => "Nome da Fila",
+"Queue"           => "Fila :",
+"Error when connecting to database"       => "Erro ao conectar ao banco de dados",
+"Desactivate Error"                       => "Desativar erro",
+"Error when desactivating the Queue"   => "Erro ao desativar a fila",
+'Inactive'       => "Inativo",
+'Activate Error'  => "Ativar erro",
+'Error when Activating the Queue'         => 'Erro ao ativar a fila',
+'apply_changes'   => "Aplicar Mudanças",
+'Edit Queue'      => "Editar Fila",
+'all'             => "Todos",
+'active'          => "Ativo",
+'inactive'        => "Inativo",
+'Change Status'   => 'Alterar Status',
+);
+?>

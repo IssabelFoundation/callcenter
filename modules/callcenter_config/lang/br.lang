@@ -1,0 +1,58 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+   Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Issabel version 1.2                                                  |
+  | http://www.issabel.org                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on "AS IS"     |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  |                                                                      |
+  | Translate by: Alex Villacís Lasso                                    |
+  | Email: a_villacis@palosanto.com                                      |
+  +----------------------------------------------------------------------+
+  $Id: en.lang,v 1.7 2008/02/18 09:49:00 a_villacis Exp $ 
+ /*$Id: br.lang,v 1.0 2020/05/23 Prisma Telecom Franca SP - leandro@prismatelecom.com $ */
+
+global $arrLangModule;
+$arrLangModule=array(
+"Configuration" => "Configuração",
+'Password and confirmation do not match.' => 'A senha e a confirmação não coincidem.',
+'Could not save changes!' => 'Não foi possível salvar as alterações!',
+'Could not commit changes!' => 'Não foi possível confirmar as alterações!',
+'Asterisk Server' => 'Servidor Asterisk ',
+'Asterisk Login' => 'Asterisk Login',
+'Asterisk Password' => 'Asterisk Password',
+'Asterisk Password (confirm)' => 'Asterisk Password (confirm)',
+'Short Call Threshold' => 'Limite de chamada curta',
+'Answering delay' => 'Atraso de atendimento',
+'Enable dialer debug' => 'Habilitar depuração do discador',
+'Dump all received Asterisk events' => 'Despejar todos os eventos do Asterisk recebidos',
+'Running' => 'Running',
+'Stopped' => 'Stopped',
+'Start' => 'Start',
+'Stop' => 'Stop',
+'Internal DB error' => 'Erro interno de banco de dados',
+'Dialer Status' => 'Status do discador',
+'Current Status' => 'Status atual',
+'Enable overcommit of outgoing calls' => 'Habilitar overcommit de chamadas de saída',
+'AMI Session Duration' => 'Duração da sessão AMI (0 para sessão persistente)',
+'Service percent' => 'Porcentagem de serviço',
+'Enable predictive dialer behavior' => 'Habilitar comportamento preditivo do discador',
+'Per-call dial timeout' => 'Tempo limite de discagem por chamada',
+'Agent inactivity timeout' => 'Tempo limite de inatividade do agente',
+'Force more calls per agent' => 'Forçar mais chamadas por agente',
+'Time between calls' => 'Tempo entre chamadas',
+);
+?>

@@ -1,0 +1,37 @@
+<?php
+/*
+$Id: br.lang,v 1.0 2020/08/11 Prisma Telecom Franca SP - leandro@prismatelecom.com $
+*/
+
+global $arrLangModule; 
+ $arrLangModule = array(
+'List Break'     => "Quebra de lista",
+'agent'          => "Agente",
+'break'          => "Quebra de Lista",
+'time_init'      => "Tempo Inicial",
+'time_end'       => "Tempo Final",
+'duration'       => "Duração",
+"Name"           => "Nome",
+'Reports Break'  => "Intervalo de Relatórios",
+'Agent Name'     => "Nome do Agente",
+'Break'          => "Pausa",
+'query'          => "Pequisar",
+"Start Date"    => "Data Inicial",
+"End Date"      => "Data Final",
+'generate file'  => "Gerar Arquivo",
+'Agent Number'   => "No. Agente",
+'Total'          => "Total",
+"Error"                                      => "Erro",
+"Warning"                                    => "Aviso",
+"Error when connecting to database"          => "Erro ao conectar ao banco de dados",
+"Error when creating object paloSantoReportsBreak" => "Erro ao criar paloSantoReportsBreak",
+"Error cargando listado de tipos de breaks"  => "Erro ao carregar lista de tipo de quebras",
+"Error cargando listado de agentes"          => "Erro ao carregar lista de agentes",
+"Error cargando listado de breaks tomados"   => "Erro ao carregar lista de quebras usadas",
+"Debe ingresar una fecha"                    => "Você deve inserir qualquer data",
+"Debe ingresar una fecha valida"             => "Você deve inserir uma data válida",
+"Validation Error"                           => "Erro de Validação",
+"The following fields contain errors"        => "Os campos a seguir contêm erros",
+"No register break in database"              => "Sem quebra de registro no banco de dados",
+);
+?>
