@@ -638,6 +638,23 @@ function manejarSesionActiva_HTML($module_name, &$smarty, $sDirLocalPlantillas, 
         $_SESSION['callcenter']['break_iniciado'] = NULL;
     }
 
+     if (($estado['onhold'])) {
+        $smarty->assign(array(
+            'CLASS_BOTON_HOLD'             =>  'issabel-callcenter-boton-unhold',
+            'CLASS_ESTADO_AGENTE_INICIAL'   =>  'issabel-callcenter-class-estado-unhold',
+            'BTN_HOLD'                     =>  _tr('Unhold'),
+            'TEXTO_ESTADO_AGENTE_INICIAL'   =>  _tr('On Hold').': Holding',
+
+        ));
+    } else {
+        $smarty->assign(array(
+            'CLASS_BOTON_HOLD'             =>  'issabel-callcenter-boton-hold',
+            'BTN_HOLD'                     =>  _tr('Hold'),
+            'CLASS_ESTADO_AGENTE_INICIAL'   =>  'issabel-callcenter-class-estado-ocioso',
+            'TEXTO_ESTADO_AGENTE_INICIAL'   =>  _tr('No active call'),
+        ));
+    }
+
     // Cambios según agente conectado a una llamada versus ocioso
     if (!is_null($estado['callinfo'])) {
         // Información sobre la llamada conectada
@@ -929,6 +946,41 @@ function manejarSesionActiva_agentLogout($module_name, $smarty, $sDirLocalPlanti
     return $json->encode($respuesta);
 }
 
+function manejarSesionActiva_hold($module_name, $smarty, $sDirLocalPlantillas, $oPaloConsola, $estado)
+{
+    // echo "<script>alert('You are in hold function');</script>";
+    $respuesta = array(
+        'action'    =>  'hold',
+        'message'   =>  '(no message)',
+    );
+    $bhold = $oPaloConsola->holdCall();
+    if (!$bhold) {
+        $respuesta['action'] = 'error';
+        $respuesta['message'] = _tr('Error while hanging up call').' - '.$oPaloConsola->errMsg;
+    }
+
+    $json = new Services_JSON();
+    Header('Content-Type: application/json');
+    return $json->encode($respuesta);
+}
+
+function manejarSesionActiva_unhold($module_name, $smarty, $sDirLocalPlantillas, $oPaloConsola, $estado)
+{
+    // echo "<script>alert('You are in hold function');</script>";
+    $respuesta = array(
+        'action'    =>  'unhold',
+        'message'   =>  '(no message)',
+    );
+    $bunhold = $oPaloConsola->unholdCall();
+    if (!$bunhold) {
+        $respuesta['action'] = 'error';
+        $respuesta['message'] = _tr('Error while hanging up call').' - '.$oPaloConsola->errMsg;
+    }
+
+    $json = new Services_JSON();
+    Header('Content-Type: application/json');
+    return $json->encode($respuesta);
+}
 function manejarSesionActiva_hangup($module_name, $smarty, $sDirLocalPlantillas, $oPaloConsola, $estado)
 {
     $respuesta = array(
@@ -1588,7 +1640,7 @@ function construirRespuesta_holdenter()
         'event'         =>  'holdenter',
 
         // Etiquetas a modificar en la interfaz
-        'txt_btn_hold' =>  _tr('End Hold'),
+        'txt_btn_hold' =>  _tr('UnHold'),
     );
 }
 

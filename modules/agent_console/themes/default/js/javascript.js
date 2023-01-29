@@ -48,6 +48,7 @@ $(document).ready(function() {
 
     $('#btn_hangup').button();
     $('#btn_togglebreak').button();
+    $('#btn_hold').button();
     $('#btn_transfer').button();
     $('#btn_vtigercrm').button();
     $('#btn_logout').button();
@@ -103,6 +104,15 @@ $(document).ready(function() {
     $('#btn_hangup').click(do_hangup);
 
     // El siguiente código se ejecuta al hacer click en el botón de break
+    $('#btn_hold').click(function() {
+    	if ($('#btn_hold').hasClass('issabel-callcenter-boton-unhold')) {
+    		do_unhold();
+    	} else {
+    		// Botón está en estado de elegir break
+    		do_hold();
+    	}
+    });
+
     $('#btn_togglebreak').click(function() {
     	if ($('#btn_togglebreak').hasClass('issabel-callcenter-boton-unbreak')) {
     		do_unbreak();
@@ -259,6 +269,7 @@ function apply_ui_styles(uidata)
 {
     if (uidata.no_call) {
         $('#btn_hangup').button('disable');
+        $('#btn_hold').button('disable');
         $('#btn_transfer').button('disable');
 
         /* Esta llamada generalmente se realiza cuando el agente recién carga
@@ -381,6 +392,53 @@ function do_hangup()
         	mostrar_mensaje_error(respuesta['message']);
         	if (estadoCliente.campaign_id != null || estadoCliente.waitingcall)
                 $('#btn_hangup').button('enable');
+        }
+
+        // El cambio de estado de la interfaz se delega a la revisión
+        // periódica del estado del agente.
+	}, 'json')
+	.fail(function() {
+		mostrar_mensaje_error('Failed to connect to server to run request!');
+	});
+}
+
+function do_hold()
+{
+	$.post('index.php?menu=' + module_name + '&rawmode=yes', {
+		menu:		module_name,
+		rawmode:	'yes',
+		action:		'hold'
+	},
+	function (respuesta) {
+		verificar_error_session(respuesta);
+        if (respuesta['action'] == 'error') {
+        	mostrar_mensaje_error(respuesta['message']);
+        	if (estadoCliente.campaign_id != null || estadoCliente.waitingcall)
+                $('#btn_hold').button('enable');
+        }
+
+        // El cambio de estado de la interfaz se delega a la revisión
+        // periódica del estado del agente.
+	}, 'json')
+	.fail(function() {
+		mostrar_mensaje_error('Failed to connect to server to run request!');
+	});
+}
+
+function do_unhold()
+{
+	// $('#btn_hold').button('disable');
+	$.post('index.php?menu=' + module_name + '&rawmode=yes', {
+		menu:		module_name,
+		rawmode:	'yes',
+		action:		'unhold'
+	},
+	function (respuesta) {
+		verificar_error_session(respuesta);
+        if (respuesta['action'] == 'error') {
+        	mostrar_mensaje_error(respuesta['message']);
+        	if (estadoCliente.campaign_id != null || estadoCliente.waitingcall)
+                $('#btn_hold').button('enable');
         }
 
         // El cambio de estado de la interfaz se delega a la revisión
@@ -714,10 +772,18 @@ function manejarRespuestaStatus(respuesta)
 		case 'holdenter':
 			estadoCliente.onhold = true;
 			// TODO
+			$('#btn_hold')
+				.removeClass('issabel-callcenter-boton-hold')
+				.addClass('issabel-callcenter-boton-unhold')
+				.children('span').text(respuesta[i].txt_btn_hold);
 			break;
 		case 'holdexit':
 			estadoCliente.onhold = false;
 			// TODO
+			$('#btn_hold')
+				.removeClass('issabel-callcenter-boton-unhold')
+				.addClass('issabel-callcenter-boton-hold')
+				.children('span').text(respuesta[i].txt_btn_hold);
 			break;
 		case 'agentlinked':
 			// El agente ha recibido una llamada
@@ -725,6 +791,7 @@ function manejarRespuestaStatus(respuesta)
 			estadoCliente.campaign_id = respuesta[i].campaign_id;
 			estadoCliente.callid = respuesta[i].callid;
 			$('#btn_hangup').button('enable');
+			$('#btn_hold').button('enable');
 			$('#btn_transfer').button('enable');
 			$('#issabel-callcenter-cronometro').text(respuesta[i].cronometro);
 			$('#issabel-callcenter-llamada-info')
@@ -767,6 +834,7 @@ function manejarRespuestaStatus(respuesta)
 			estadoCliente.callid = null;
 
 			$('#btn_hangup').button('disable');
+			$('#btn_hold').button('disable');
 	        $('#btn_transfer').button('disable');
 	        if (l_calltype == 'incoming') {
 	            $('#btn_agendar_llamada').button('disable');

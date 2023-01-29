@@ -44,6 +44,7 @@ $arrLangModule = array(
 'End Break' => 'End Break',
 'End date' => 'End date',
 'End Hold' => 'End Hold',
+'UnHold' => 'UnHold',
 'End session' => 'End session',
 'End time' => 'End time',
 'Enter' => 'Enter',
