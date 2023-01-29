@@ -51,6 +51,9 @@
 .issabel-callcenter-class-estado-break {
     background-color: #BD0000;
 }
+.issabel-callcenter-class-estado-hold {
+    background-color: #ef6400;
+}
 
 td.issabel-callcenter-class-estado-esperando,
 td.issabel-callcenter-class-estado-activo {
@@ -123,6 +126,20 @@ td.issabel-callcenter-class-estado-activo {
 */
 }
 
+.issabel-callcenter-boton-hold {
+    /*
+        width: 95pt;
+        height: 30pt;
+        background-color:#094895;
+    */
+}
+.issabel-callcenter-boton-unhold {
+    /*
+        width: 95pt;
+        height: 30pt;
+        background-color:#BD0000;
+    */
+}
 #issabel-callcenter-llamada-paneles {
     position: relative;
     height: 32em;

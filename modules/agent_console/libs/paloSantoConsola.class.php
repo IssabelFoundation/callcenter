@@ -540,6 +540,36 @@ class PaloSantoConsola
         }
     }
 
+    function holdCall()
+    {
+        try {
+            $oECCP = $this->_obtenerConexion('ECCP');
+            $respuesta = $oECCP->hold();
+            if (isset($respuesta->failure)) {
+                $this->errMsg = _tr('Unable to hold call').' - '.$this->_formatoErrorECCP($respuesta);
+                return FALSE;
+            }
+            return TRUE;
+        } catch (Exception $e) {
+            $this->errMsg = '(internal) hold: '.$e->getMessage();
+            return FALSE;
+        }
+    }
+    function unholdCall()
+    {
+        try {
+            $oECCP = $this->_obtenerConexion('ECCP');
+            $respuesta = $oECCP->unhold();
+            if (isset($respuesta->failure)) {
+                $this->errMsg = _tr('Unable to unhold call').' - '.$this->_formatoErrorECCP($respuesta);
+                return FALSE;
+            }
+            return TRUE;
+        } catch (Exception $e) {
+            $this->errMsg = '(internal) unhold: '.$e->getMessage();
+            return FALSE;
+        }
+    }
     /**
      * Método para listar los breaks conocidos en el sistema.
      *

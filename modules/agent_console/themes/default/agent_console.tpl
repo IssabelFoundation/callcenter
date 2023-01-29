@@ -64,6 +64,7 @@
 	    <div id="issabel-callcenter-controles">
 	        <button id="btn_hangup" class="issabel-callcenter-boton-activo">{$BTN_COLGAR_LLAMADA}</button>
 	        <button id="btn_togglebreak" class="{$CLASS_BOTON_BREAK}" >{$BTN_BREAK}</button>
+	        <button id="btn_hold" class="{$CLASS_BOTON_HOLD}" >{$BTN_HOLD}</button>
 	        <button id="btn_transfer" class="issabel-callcenter-boton-activo" >{$BTN_TRANSFER}</button>
             <button id="btn_agendar_llamada" {if $CALLINFO_CALLTYPE != 'outgoing'}disabled="disabled"{/if}>{$BTN_AGENDAR_LLAMADA}</button>
 	        <button id="btn_guardar_formularios">{$BTN_GUARDAR_FORMULARIOS}</button>
