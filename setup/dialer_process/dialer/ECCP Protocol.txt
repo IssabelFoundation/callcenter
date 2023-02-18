@@ -1,0 +1,3118 @@
+ECCP protocol v0.1
+
+revision 5
+Status: Beta
+
+Objective
+---------
+The ECCP protocol is an XML-based protocol whose purpose is to provide a communication API through a TCP port so that external applications can communicate with the call center engine provided by Issabel.
+
+The lack of a communication mechanism between the call center engine and the client applications, which allows the transmission of
+asynchronous events, was one of the motivations for the creation of ECCP. Before ECCP, a client application had to send periodic requests
+to the server to learn of the occurrence of asynchronous events.
+
+On the other hand, it was necessary to standardize the communications protocol with the call center engine with a view to allowing
+scalability and organization.
+
+Conventions used in this document
+---------------------------------
+Throughout most of this document, when referring to "attributes" and "elements", these terms will be related to their definition within the XML
+language.
+
+When the word server (just dry) is mentioned, it will be referring to the call center server, which comes together with the Issabel call center
+module.
+This program is also called "dialerd".
+
+All dates will be in yyyy-mm-dd format and all times will be in hh:mm:ss format. The operating time zone is always the one configured on the
+server running the dialerd program.
+
+The word 'CallCenter' (case sensitive) will be used to refer to Issabel's CallCenter module.
+
+Architecture
+------------
+
+-------------      -----     ---------------------------
+|           |     /     \    |                         |
+| Server    |-----  Red  ----| Client                  |
+| (dialerd) |     \     /    | (Ej. agent console    ) |
+|           |      -----     |                         |
+-------------                ---------------------------
+
+Communications TCP/IP
+---------------------
+
+The communication will be TCP on port 20005.
+
+Sessions
+--------
+The ECCP protocol is session-oriented, having the capacity to support multiple communication sessions, thus being able to serve several client applications at the same time.
+ 
+A session will be established after the client application has successfully authenticated. The session will remain
+active until the client application terminates the session or an inactivity timeout occurs.
+
+The value of the timeout for inactivity will be 5 minutes, after which the server will end the session.
+
+Separation between client and agent
+-----------------------------------
+The server communicates with client applications and it is the client application that manages the entry of agents into the system. A client application can manage one or more agents.
+
+This last thing opens the doors to two scenarios that are explained below.
+
+Scenario 1: Agent consoles connecting directly to the server.
+
+Here each agent console is responsible for managing the entry of a single agent.
+For the server each agent console is seen as a client application.
+
+                         --------------------------------
+                /--------| agent console      (agent 1) |
+               /         --------------------------------
+------------  /          --------------------------------
+| Server   |------------ | agent console      (agent 2) |
+------------  \          --------------------------------
+               \         --------------------------------
+                \--------| agent console      (agent 3) |
+                         --------------------------------
+
+As we can see in the previous example, the server has started 3 sessions, one for each client application, which in this case would be each agent console.
+This scheme is the simplest to implement.
+
+Scenario 2: Agent consoles connecting through an intermediary client application.
+
+Here the intermediary client application is responsible for managing the entry of various agents. In this scenario, from the server's point of view, the intermediary client application is seen as a client application, while the agent consoles are not.
+
+                                                --------------------------------
+                                        /-------| agent console      (agent 1) |
+                                       /        --------------------------------
+-----------   ----------------------  /         --------------------------------
+| Server  |--| intermediary App.   |----------- | agent console      (agent 2) |
+-----------   ----------------------  \         --------------------------------
+                                       \        --------------------------------
+                                        \-------| agent console      (agent 3) |
+                                                --------------------------------
+
+As we see in the previous example, the server has started ONE SESSION instead of three.
+
+In the future we will refer to this intermediary application as *concurrence server*. 
+A concurrence server is useful in several ways. One of them is that Issabel server resources are freed, 
+since the concurrence server can be installed on a remote computer. The Issabel server already does not 
+have to deal with session management for 'client' applications.
+
+The concurrence server can also serve as a caching server to relieve the requests to the Issabel server. 
+For example, you could cache campaign information.
+
+Security considerations
+-----------------------
+To maintain some control over the client applications that connect to the server, this last one will keep a record of IPs
+authorized to connect.
+
+In case a client tries to connect from an unauthorized IP address, the server will simply close the connection
+with a "Connection refused" message and write an error message in the respective log.
+
+Package types
+-------------
+There are three types of packets in the ECCP protocol:
+* event
+* request 
+* response
+
+Each package is represented as a well-formed XML document, whose tags are defined below.
+
+Event
+-----
+An event is generated by an asynchronous event that occurred in the Server.
+Here is its basic syntax:
+<event>
+...
+</event>
+
+IMPORTANT: For future extension of the protocol, additional events can be defined to those described in this
+document, as well as additional labels and attributes on defined events. An ECCP client MUST IGNORE any event that
+it does not know how to handle. Likewise, the client MUST IGNORE any tags or attributes it doesn't know how to handle
+in the event it receives.
+
+Request
+-------
+A request is a message sent by the client application to the server. The server will reply to this message with the
+appropriate response.
+
+An attribute called id is included in the request. This id is nothing more than a string of characters used to identify the
+response. This minimizes the possibility of problems occurring due to rush conditions. The identifier consists of two parts
+joined by a dot: the first part is made up of the UNIX timestamp and the second part is made up of a 6-character random
+integer.
+An example of an identifier is the following:
+1292899827.394772
+
+Here is an example of a request:
+<request id="1292899827.394772">
+...
+</request>
+ 
+Response
+--------
+A request can produce one or more responses. The responses are related to the requests through the request identifier.
+Here is its basic syntax:
+
+<response id=identifier>
+...
+</response>
+
+IMPORTANT: For future extension of the protocol, additional tags and attributes may be defined in defined responses.
+The ECCP client MUST IGNORE any tags or attributes that it does not know how to handle in the response it receives.
+
+Authentication Requests
+---------------------------
+Some of the Request listed in this manual mandate system status updates that must be authorized only for a particular
+agent. When a request requires to be authenticated, the method used is the following: 
+* Each agent is assigned a password known by the server.
+* The "login" request of the application, if successful, returns a random text as content of the "app_cookie" tag. From
+now on this text will be called a cookie.
+* Any request that must be authenticated must have two required arguments, agent_number and agent _hash
+* The agent_number parameter is the name of the agent, such as "Agent/9000"
+* The agent_hash parameter is a value resulting from applying the MD5 hash to the concatenation of the cookie text,
+the agent name, and the agent password, in this order. That is, for the agent Agent/9000 with a password of value
+"asecretkey":
+
+s = cookie + "Agent/9000" + "asecretkey" 
+agent_hash <-- MD5(s)
+
+...where cookie contains the value returned in app_cookie by the login, and the plus sign (+) indicates the 
+string concatenation operation.
+
+Any request that references an agent_hash argument must receive the hash value calculated in the manner indicated above.
+
+error messages
+--------------
+The requests defined in this document may report errors as follows:
+
+<response id=identificador>
+  <failure>
+    <code>XXX</code>
+    <message>Some message</message>
+  </failure>
+</response>
+
+or as follows:
+
+<response id=identificador>
+  <request_response>
+      <failure>
+        <code>XXX</code>
+        <message>Some message</message>
+      </failure>
+  </request_response>
+</response>
+
+The difference between the two methods is that the first method indicates format or protocol errors that occur before the
+specific processing of the request, while the second method indicates an error within the specific processing of the request.
+
+A request is considered failed if it contains the <failure> tag. An error code and a descriptive message are stored within the
+tag. The error code is slightly based on HTTP error codes, but you shouldn't count on this relationship.
+
+The most common error codes are the following:
+
+Error code          Meaning
+400                 malformed request
+401                 Not authorized
+404                 Object not found
+417                 An expected condition fails to be fulfilled
+500                 Internal program error
+501                 Not implemented
+
+
+Common Error Cases
+------------------
+Responses to requests without prior login:
+In case of requests without prior login, the server will respond like this:
+
+<response id=identificador>
+  <failure>
+    <code>401</code>
+    <message>Unauthorized</message>
+  </failure>
+</response>
+
+Responses to malformed requests:
+In case the server cannot understand some requirement, it will respond like this:
+
+<response>
+  <failure>
+    <code>400</code>
+    <message>Bad request</message>
+  </failure>
+</response>
+
+As can be seen, the id attribute is not included.
+
+CallCenter operating model
+--------------------------
+The operating model of the CallCenter system is described below.
+
+This explanation provides a reference to understand the types of requests that are necessary in the ECCP
+protocol, as well as the necessary and optional parameters in each protocol.
+
+The assignment of calls in the CallCenter is implemented through the queues from Asterisk. 
+Each queue is identified by a number, and has two types of actors: agents and calls.
+An agent is an Asterisk extension that has registered as belonging to the queue to receive calls. A call can,
+through orders given to Asterisk via AMI (Asterisk Manager Interface), or via direct dialing to the Asterisk
+central, enter a queue. Upon entering, you will hear music on hold until an agent is released, in which case the
+call will be linked to this agent.
+
+Agents can be of dynamic or static type. Dynamic agents can log in or out of the queue arbitrarily, and are
+almost always real extensions of the central. A static agent always belongs to the queue, even though it may
+be in an unavailable state. For current CallCenter operation, all static agents must be Agent/9000 type channels,
+as opposed to dynamic agents, which are extensions whose channels must be SIP/4321 or IAX2/4321 type
+channels. These strings (Agent/9000, SIP/4321, 1AX2/4321) internally identify the agent that can answer calls.
+Both static and dynamic agents can belong to multiple queues.
+
+A static agent has an associated number, which is independent of the telephone extension used to
+make use of this agent. For example, a queue might have agent 9000, which is used by extension 1064. For
+an extension to use a static agent, it must complete the queue login procedure. In Issabel, the number *8888
+has been configured as the arbitrary queue login. When dialing this number, the extension hears a recording to
+enter the agent number to use. After typing, another recording is played for you to enter the agent's password.
+If the password is entered correctly, the extension enters the queue as an agent, and the extension plays music
+on hold until a call is assigned to it. To end the login to the queue, the extension hangs, or the Agentlogoff
+method of the AMI is executed, indicating the Agent/XXXX channel that you want to end the session.
+
+When logging in and out through the CallCenter, the system audits how long each agent has been
+logged in.
+
+A dynamic agent is an ordinary extension of the SIP or IAX2 type. The logon to the queue consists of a
+QueueAdd to each queue of interest, and does not require a password internally. When added to the queue,
+the extension remains on-hook until a call is assigned, in which case the extension will ring and the agent
+must answer the call. To end the login to the queue, the QueueRemove method of the AMI is executed
+indicating the channel that you want to log off. As with static agents, the system keeps track of how long each
+agent has been logged on.
+
+In the rest of the document, any instance of Agent/XXXX (eg Agent/9000) should be understood to refer to any
+type of agent, whether static or dynamic. Therefore, SIP/4321 or IAX2/4321 are also acceptable.
+
+The CallCenter supports two main modes of operation: outbound campaigns and inbound campaigns. A
+campaign has a queue associated with it, through which the calls associated with this campaign will be
+processed. Both the outgoing campaign and the incoming campaign can be running simultaneously in the
+same central, as long as separate queues are assigned for each function. For an incoming campaign, the
+exchange and the dial plans are configured so that a call coming from abroad ends up in a queue that has
+been registered as reserved for incoming campaigns (Web Interface: Call Center-->Ingoing Calls -->Queues ).
+For an outgoing campaign, a new campaign must be configured (Call Center-->Outgoing Calls-->Campaigns)
+with a list of phone numbers to dial. The system will then dial each of the numbers, associating the queue
+where the agents are waiting as an extension.
+ 
+The system, after accepting the agent's login, begins to dial or wait for calls. For each incoming call, a new record of the call is created in
+the database. For outgoing calls, the call duration time is updated in the database of loaded phones. The system notifies the agent when
+a call has been assigned by Asterisk, and transmits the campaign ID, the associated call ID, the call attributes that have been loaded into
+the database, the associated text that must be recite the agent (the so-called "script" of the campaign), and the IDs of the forms that can
+be used to collect data about the call. The client-side interface collects the data to fill out the form, and transmits it to the CallCenter
+system for storage. (NOTE: the old CallCenter interface does not yet have support for associating forms with an incoming campaign)
+
+In the case of incoming calls, there is a list of contacts identified by telephone number. The system identifies the number via the Caller-ID
+service and attempts to display the contact attributes that correspond to an incoming call. However, it may happen that there are multiple
+contacts that have the same associated telephone number. In this case, the CallCenter transmits the information of all the contacts that match
+the telephone number, and the human agent must confirm which contact was received.
+
+The CallCenter system allows an agent to pause receiving calls as part of a controlled break, also controlled and audited. These
+recesses are called "breaks". When an agent must enter a break, the type of break to use is selected from the interface. Then, at the
+end of the break, the agent indicates it through the interface, and begins to receive calls again.
+
+Events list
+-----------
+
+Event "agentlinked"
+
+This event is generated when an agent has been linked to a call entered into the queue. Internally the Link/Bridge event has been received
+for the call.
+
+Informative elements: 
+* agent_number: Agent that has been linked to the call. This identifier it is in the form 'Agent/9000'.
+* remote_channel: Channel that represents the call that has been linked. Can can be in a variety of formats, but the most 
+  common is PROTOCOL/XXX-YYYY.
+  For example: 'SIP/onetrunk-0000001". 
+* call_type: One of the two values 'incoming' or 'outgoing', to indicate whether the call is incoming or outgoing, respectively. 
+* campaign_id: ID of the campaign in database, an integer. This value is required to identify an outgoing call. 
+  For an incoming call, this value is optional, and can even be omitted, if the incoming call is not associated with a campaign.
+* call_id: Database ID of the call, an integer. With this ID, and the value of call_type (and campaign_id for outgoing calls), 
+  the client code can identify the call to process for forms. 
+* phone: The number that was dialed, or the Caller-ID that was received.
+* status: The status of the call. Usually it is "Success' for outgoing call and "Active' for incoming call. 
+* uniqueid: internal Asterisk ID that identifies the remote call. 
+* datetime_originate: (Only outgoing call) Date and time the call was started call dialing.
+* datetime_originateresponse: (Only outgoing call) Date and time that the received a response from dialing the call.
+* datetime_join: Date and time the call entered the queue. 
+* datetime_linkstart: Date and time the call was linked to the agent. 
+* retries: (Optional) Number of times the call has been retried. 
+* trunk: Trunk through which the call was received. For example:
+  DAHDI/4 or SIP/unatroncal
+* queue: (Only incoming call) Queue that received the call
+* call_attributes: (Optional) Attributes associated with the call in the database. This is a list containing
+  multiple 'attribute' elements. Each attribute element has the following elements: 
+  * label: Text label associated with the attribute 
+  * value: Text value of the attribute 
+  * order: Order in which the attributes are suggested to be displayed
+* matching_contacts: (Optional, incoming call only) List of contacts whose phone number matches the Caller-
+  ID of the call. If there is more than one contact, the interface must use the setcontact request to
+  indicate which contact should be associated with the received call. This element is a list containing multiple
+  'contact' elements. Each contact element has an 'id' attribute that must be used in the setcontact request.
+  Also each contact has multiple 'attribute' elements. Each attribute element contains the following elements:
+  * label: Text label associated with the contact attribute 
+  * value: Text value of the contact attribute 
+  * order: Order in which the contact attributes are suggested to be displayed 
+* call_survey: (Optional) List of forms with the data collected for this call. This element is only present if 
+  data has been previously collected for this call. This element is a list containing multiple 'form' elements. 
+  Each form element has an 'id" attribute that must be used in the saveformdata request. Also each form has 
+  multiple 'field' elements. Each field element has an 'id' attribute that can also be used in the saveformdata request. 
+  The field element also has the following elements: 
+  * label: Label of the form element 
+  * value: Value that was collected in the form
+* campaignlog_id: ID of the campaign log. For campaign monitoring.
+
+NOTE: To find out which forms are applicable to a call that has not been previously filled out, the
+getcampaigninfo request must be used.
+
+Example:
+
+Incoming call:
+<event>
+    <agentlinked>
+        <agent_number>Agent/9000</agent_number>
+        <remote_channel>SIP/1065-00000001</remote_channel>
+        <calltype>incoming</calltype>
+        <call_id>13</call_id>
+        <campaign_id>1</campaign_id>
+        <phone>1065</phone>
+        <status>activa</status>
+        <uniqueid>1296517374.1</uniqueid>
+        <datetime_join>2011-01-31 18:42:55</datetime_join>
+        <datetime_linkstart>2011-01-31 18:42:55</datetime_linkstart>
+        <trunk>SIP/1065</trunk>
+        <queue>8001</queue>
+        <call_attributes>
+            <attribute>
+                <label>first_name</label>
+                <value>User</value>
+                <order>1</order>
+            </attribute>
+            <attribute>
+                <label>last_name</label>
+                <value>Windows</value>
+                <order>2</order>
+            </attribute>
+            <attribute>
+                <label>phone</label>
+                <value>1065</value>
+                <order>3</order>
+            </attribute>
+            <attribute>
+                <label>cedula_ruc</label>
+                <value>0915172176</value>
+                <order>4</order>
+            </attribute>
+        </call_attributes>
+        <matching_contacts>
+            <contact id="2">
+                <attribute>
+                    <label>first_name</label>
+                    <value>User</value>
+                    <order>1</order>
+                </attribute>
+                <attribute>
+                    <label>last_name</label>
+                    <value>Windows</value>
+                    <order>2</order>
+                </attribute>
+                <attribute>
+                    <label>phone</label>
+                    <value>1065</value>
+                    <order>3</order>
+                </attribute>
+                <attribute>
+                    <label>cedula_ruc</label>
+                    <value>0915172176</value>
+                    <order>4</order>
+                </attribute>
+            </contact>
+        </matching_contacts>
+        <call_survey/>
+    </agentlinked>
+</event>
+
+Outgoing call:
+<event>
+    <agentlinked>
+        <agent_number>Agent/9000</agent_number>
+        <remote_channel>Local/1065@from-internal-988d;1</remote_channel>
+        <calltype>outgoing</calltype>
+        <call_id>27</call_id>
+        <campaign_id>5</campaign_id>
+        <phone>1065</phone>
+        <status>Success</status>
+        <uniqueid>1296517619.3</uniqueid>
+        <datetime_originate>2011-01-31 18:46:59</datetime_originate>
+        <datetime_originateresponse>2011-01-31 18:47:07</datetime_originateresponse>
+        <datetime_join>2011-01-31 18:47:07</datetime_join>
+        <datetime_linkstart>2011-01-31 18:47:07</datetime_linkstart>
+        <retries>1</retries>
+        <call_attributes>
+            <attribute>
+                <label>Name</label>
+                <value>Zoila</value>
+                <order>1</order>
+            </attribute>
+            <attribute>
+                <label>Last name</label>
+                <value>Chacha</value>
+                <order>2</order>
+            </attribute>
+            <attribute>
+                <label>Field1</label>
+                <value>cat</value>
+                <order>3</order>
+            </attribute>
+            <attribute>
+                <label>Field2</label>
+                <value>dog</value>
+                <order>4</order>
+            </attribute>
+            <attribute>
+                <label>Field3</label>
+                <value>ape</value>
+                <order>5</order>
+            </attribute>
+        </call_attributes>
+        <call_survey/>
+    </agentlinked>
+</event>
+
+Event "agentunlinked"
+
+This event is generated when the link between an agent and the previously linked call is broken. Internally
+the Hangup event from the remote side has been received.
+
+Informative elements: 
+* agent_number: Agent that has been unlinked from the call. This identifier is in the form 'Agent/9000'.
+* call_type: One of the two values 'incoming' or 'outgoing', to indicate whether the
+call is incoming or outgoing, respectively.
+* campaign_id: (Optional) Campaign database ID, an integer. This value is required to identify an outgoing
+call. For an incoming call, this value is optional, and can even be omitted, if the incoming call is not
+associated with a campaign.
+* call_id: Database ID of the call, an integer. With this ID, and the value of call_type 
+(and campaign_id for outgoing calls), the client code can identify the call to process for forms. 
+* phone: The number that was dialed, or the Caller-ID that was received. 
+* datetime_linkend: Date and time the call was disconnected from the agent. 
+* duration: Duration in seconds of the call. 
+* shortcall: Flag set to 1 if the call is too short according to the system configuration, or 0 if it is a call of normal duration.
+* campaignlog_id: ID of the campaign log. For campaign monitoring.
+
+Example:
+<event>
+    <agentunlinked>
+        <agent_number>Agent/9000</agent_number>
+        <calltype>incoming</calltype>
+        <campaign_id>1</campaign_id>
+        <call_id>13</call_id>
+        <phone>1065</phone>
+        <datetime_linkend>2011-01-31 18:46:59</datetime_linkend>
+        <duration>216</duration>
+        <shortcall>0</shortcall>
+    </agentunlinked>
+</event>
+
+Event "agentloggedin"
+
+This event is generated when the indicated agent has entered the system. Separating this as an event
+allows the response to the loginagent request to return immediately while the agent delays typing the
+password.
+
+Note: this event should not be confused with the loginagent request.
+
+Informative elements:
+* agent: Agent that has been able to logon. This identifier is in the form 'Agent/9000'.
+
+Example:
+<event>
+    <agentloggedin>
+        <agent>Agent/9000</agent>
+    </agentloggedin>
+</event>
+
+Event "agentloggedout"
+
+This event is generated when the indicated agent has been logged out of the system, either by the agent's will
+(logoutagent request), or because the associated extension has been hung up or communication was lost.
+
+Note: this event should not be confused with the logoutagent request.
+
+Informative elements:
+* agent: Agent that has been logged off. This identifier is in the form 'Agent/9000'.
+
+Example:
+<event>
+    <agentloggedout>
+        <agent>Agent/9000</agent>
+    </agentloggedout>
+</event>
+
+Event "agentfailedlogin"
+
+This event is generated when the indicated agent has tried to logon to the system but the attempt has
+failed. One possible cause is that the agent has not entered the queue entry password.
+
+Informative elements:
+* agent: Agent that has tried to logon. This identifier is in the form 'Agent/9000'.
+
+Example:
+<event>
+    <agentfailedlogin>
+        <agent>Agent/9000</agent>
+    </agentfailedlogin>
+</event>
+
+Event "pausestart"
+
+This event is generated when the indicated agent enters a pause or hold.
+
+Information elements: 
+* agent_number: Agent that has gone into pause. This identifier is in the form 'Agent/9000'. 
+* pause_class: One of the 'break' or 'hold' types
+* pause_type: ID of the pause that has been indicated in the pauseagent request.
+  Only present for pause_class equal to break. 
+* pause_name: Name of the pause corresponding to the ID indicated by pause_type.
+  Only present for pause_class equal to break. 
+* pause_start: Date recorded as the start of the pause. Format yyyy-mm-dd hh:mm:ss
+
+Example:
+For break pause start: 
+<event>
+    <pausestart>
+        <agent_number>Agent/9000</agent_number>
+        <pause_class>break</pause_class>
+        <pause_type>2</pause_type>
+        <pause_name>Baño</pause_name>
+        <pause_start>2011-09-30 14:32:17</pause_start>
+    </pausestart>
+</event>
+
+For hold pause start: 
+<event>
+    <pausestart>
+        <agent_number>Agent/9000</agent_number>
+        <pause_class>hold</pause_class>
+        <pause_start>2011-09-30 14:32:17</pause_start>
+    </pausestart>
+</event>
+
+Event "pauseend"
+
+This event is generated when the indicated agent comes out of a pause or hold.
+
+Information elements: 
+* agent_number: Agent that has come out of pause. This identifier is in the form 'Agent/9000'. 
+* pause_class: One of the 'break' or 'hold' types
+* pause_type: ID of the pause that has been indicated in the pauseagent request.
+  Only present for pause_class equal to break. 
+* pause_name: Name of the pause corresponding to the ID indicated by pause_type.
+  Only present for pause_class equal to break. 
+* pause_start: Date recorded as the start of the pause. Format yyyy-mm-dd hh:mm:ss 
+* pause_end: Date recorded as the end of the pause. Format yyyy-mm-dd hh:mm:ss 
+* pause_duration: Pause duration in seconds.
+
+Example:
+
+For break pause end: 
+<event>
+    <pauseend>
+        <agent_number>Agent/9000</agent_number>
+        <pause_class>break</pause_class>
+        <pause_type>2</pause_type>
+        <pause_name>Baño</pause_name>
+        <pause_start>2011-09-30 14:32:17</pause_start>
+        <pause_end>2011-09-30 14:32:26</pause_end>
+        <pause_duration>9</pause_duration>
+    </pauseend>
+</event>
+
+For hold pause end: 
+<event>
+    <pauseend>
+        <agent_number>Agent/9000</agent_number>
+        <pause_class>hold</pause_class>
+        <pause_start>2011-09-30 14:32:17</pause_start>
+        <pause_end>2011-09-30 14:32:26</pause_end>
+        <pause_duration>9</pause_duration>
+    </pauseend>
+</event>
+
+Event "callprogress"
+
+This event is generated to indicate the progress of the call, specifically the state transition of the referenced
+call. This event is not normally generated for all clients. To receive this event, the ECCP client must execute
+the "callprogress" request with the "enable" flag set to 1.
+
+Informational elements: 
+* datetime_entry: Date and time the state transition occurred 
+* campaign_type: Type of the campaign, one of incoming' or 'outgoing' 
+* campaign_id: ID in the database of the campaign to which belongs to the call. This value is always present for 
+  an outgoing call, but may not be present for an incoming call.
+
+* call_id: ID in the database of the call that is referenced in the event. 
+* new_status: The new status the call has reached. The reported events can be one of the following: 
+  Placing: The outgoing call has started to be placed. The only valid parameter is retry.
+  Dialing: The outgoing call has started to be dialed. The values of retry and trunk are known.
+  Ringing: The outgoing call is ringing and is about to connect to the queue. values of uniqueid, retry, trunk are known.
+  OnQueue: The call is in the queue waiting to be assigned to an agent. The values of uniqueid, retry, trunk are known.
+  Failure: the call could not be connected. Valid values are depending on the state in which the fault was detected.
+  OnHold: The call has entered hold. The values of uniqueid, retry, trunk are known.
+  OffHold: The call has come off hold. The values of uniqueid, retry, trunk are known.
+* retry: For outgoing calls, the dial attempt number that corresponds to this state change.
+Always 0 for the incoming call. 
+* uniqueid: Unique Asterisk ID for the call corresponding to the attempt. 
+* trunk: Trunk through which the outgoing call is made, or is received the incoming call. 
+* phone: callerid or dialed phone number
+* queue: number of the queue through which the call is expected to pass
+
+Example:
+For an outgoing call, this Sequence of events can be expected: 
+<event>
+    <callprogress>
+        <datetime_entry>2012-12-14 17:34:34</datetime_entry>
+        <campaign_type>outgoing</campaign_type>
+        <campaign_id>7</campaign_id>
+        <call_id>85</call_id>
+        <new_status>Placing</new_status>
+        <retry>1</retry>
+        <phone>1099</phone>
+        <queue>8000</queue>
+    </callprogress>
+</event>
+<event>
+    <callprogress>
+        <datetime_entry>2012-12-14 17:34:34</datetime_entry>
+        <campaign_type>outgoing</campaign_type>
+        <campaign_id>7</campaign_id>
+        <call_id>85</call_id>
+        <new_status>Dialing</new_status>
+        <retry>1</retry>
+        <trunk>IAX2/1099</trunk>
+        <phone>1099</phone>
+        <queue>8000</queue>
+    </callprogress>
+</event>
+<event>
+    <callprogress>
+        <datetime_entry>2012-12-14 17:34:39</datetime_entry>
+        <campaign_type>outgoing</campaign_type>
+        <campaign_id>7</campaign_id>
+        <call_id>85</call_id>
+        <new_status>Ringing</new_status>
+        <uniqueid>1355524474.28</uniqueid>
+        <retry>1</retry>
+        <trunk>IAX2/1099</trunk>
+        <phone>1099</phone>
+        <queue>8000</queue>
+    </callprogress>
+</event>
+<event>
+    <callprogress>
+        <datetime_entry>2012-12-14 17:34:39</datetime_entry>
+        <campaign_type>outgoing</campaign_type>
+        <campaign_id>7</campaign_id>
+        <call_id>85</call_id>
+        <new_status>OnQueue</new_status>
+        <uniqueid>1355524474.28</uniqueid>
+        <retry>1</retry>
+        <trunk>IAX2/1099</trunk>
+        <phone>1099</phone>
+        <queue>8000</queue>
+    </callprogress>
+</event>
+
+
+Event "queuemembership"
+
+This event is generated when it is detected that the set of service queues to which an agent belongs has
+changed. For static agents, the set of service queues is the same as reported by Asterisk with the "queue
+show" command. For dynamic agents, the set of service queues is the one stored in the Asterisk database
+(astdb), and it is only identical to the set reported by "queue show" when the agent is logged on. For the
+convenience of the reports that consume this event, information on the current status of the affected agent is
+included, in the same format as that available in the "getcampaignstatus" request.
+
+Information elements: 
+* agentchannel: Queue agent channel (usually Agent/NNNN)
+* status: Agent status. Can be 'online', 'offline', 'oncall', 'paused' as described in the response of the
+  'getagentstatus' request
+* callid: ID in the database of the call that the agent answers. 
+  Just this one Defined if the agent is logged in and answering a call.
+* callnumber: Telephone number of the client to which the call is connected. 
+  It is only defined if the agent is logged in and answering a call. 
+* callclient: Channel assigned to the attended client's call. 
+  It is only defined if the agent is logged in and answering a call. 
+* pausename: Name of the pause the agent is in. 
+  It is only set if the agent is paused.
+* pauseid: ID of the pause in which the agent is. 
+  It is only defined if the agent is on pause. 
+* pausestart: Time the pause started, in 24-hour HH:MM:SS format. 
+  It is only set if the agent is paused.
+* dialstart: Time at which the dialing of the call answered by the agent. 
+  Only defined for outbound campaigns, and if the agent is on a call.
+* dialend: Time at which the dialing of the call answered by the agent. 
+  Only defined for outbound campaigns, and if the agent is on a call. 
+* queuestart: Time at which the call handled by the agent entered the queue.
+  Only defined if the agent is on a call.
+* linkstart: Time at which the call was connected to the agent. .
+  Only Defined if the agent is on a call. .
+* trunk: Trunk through which the incoming call is received, or the outgoing call is made. 
+  Only defined if the agent is on a call. 
+* queues: List of queues to which the agent belongs. 
+  This element contains multiple 'queue' elements, which contain the queue identifier.
+
+Example:
+When adding or removing agent from a service queue: 
+<event>
+    <queuemembership>
+        <agent_number>Agent/9000</agent_number>
+        <queues>
+            <queue>8001</queue>
+            <queue>8000</queue>
+        </queues>
+    </queuemembership>
+</event>
+
+List of Requests
+----------------
+Note: To facilitate the readability of this document, the "answers" to each request will also be presented here.
+
+Request "getrequestlist"
+This request serves to list the complete list of all known requests for this version of the program.
+
+Attributes or arguments: 
+None.
+
+Response:
+* requests: Element that contains one or more elements of type request'. Each 'request' element contains the name of
+a request.
+
+Example:
+<request id="2">
+    <getrequestlist/>
+</request> 
+
+Response:
+<response id="2">
+    <getrequestlist_response>
+        <requests>
+            <request>getrequestlist</request>
+            <request>login</request>
+            <request>logout</request>
+            <request>loginagent</request>
+            ...
+            <request>setcontact</request>
+        </requests>
+    </getrequestlist_response>
+</response>
+
+Request "login"
+This request serves to authenticate a client application and allow it to establish a communication session with the
+server. The ECCP server will not transmit any events until the client has completed a successful login with the server.
+
+Attributes or arguments:
+* username: Username assigned to the client
+* password: Password corresponding to the username
+
+Response: 
+* app_cookie: Arbitrary text string that is generated as part of the login.
+  The client must store this string in order to perform the request "loginagent".
+* Key encryption The key is "encrypted" with MD5. The hash is calculated based on a seed, which is a secret shared between the client
+application and the server. In other words, the client application will have to be previously configured to know
+said secret.
+TODO: Shared secret not implemented yet. lt is required to agree on how to use seed. For now key is
+accepted in plaintext, or md5 of the same key.
+
+Example:
+<request id="1">
+    <login>
+        <username>agentconsole</username>
+        <password>agentconsole</password>
+     </login>
+</request>
+Alternatively:
+<request id="1">
+    <login>
+        <username>agentconsole</username>
+        <!-- The hash below is md5 of the string "agentconsole" -->
+        <password>7e53aa92f7566f44f39f3f1842832581</password>
+    </login>
+</request>
+
+Response:
+In case of success: 
+<response id="1">
+    <login_response>
+        <success/>
+        <app_cookie>35d290884ef77a78cc6c0006b7e1d576</app_cookie>
+    </login_response>
+</response>
+
+In case of invalid username or password:
+<response id="1">
+    <login_response>
+        <failure>
+            <code>401</code>
+            <message>Invalid username or password</message>
+        </failure>
+    </login_response>
+</response>
+
+
+Logout Request
+The "logout" request is used to terminate the session between the client application and the server. After
+executing this request, the server will close the TCP session with the client.
+
+Attributes or arguments: 
+This request has no attributes.
+
+Example:
+<request id="1000">
+  <logout></logout>
+</request>
+
+Respuesta:
+<response id="1000">
+    <logout_response>
+        <success/>
+    </logout_response>
+</response>
+(and TCP connection is closed)
+
+Request "filterbyagent"
+This request serves to indicate to the ECCP server that the client is only interested in the events of the
+agent indicated in the request, and that the events associated with other agents should not be sent to this
+session. In this way, the client should not receive events that he is not interested in processing, because they
+are from agents other than the one represented by the client. This filtering only affects events - any request
+that refers to another agent will be answered correctly, even after applying the filter. The filter is local to the
+active session - other concurrent sessions with other clients are not affected.
+
+Attributes or arguments: 
+* agent_number: Agent that is filtered. This identifier is in the form 'Agent/9000'. You can also specify 
+  the 'any' keyword to undo the filter and listen again for events from all agents.
+
+Example:
+To receive events from agent 9000 only: 
+<request id="4">
+    <filterbyagent>
+        <agent_number>Agent/9000</agent_number>
+    </filterbyagent>
+</request>
+
+To receive events from all agents again: 
+<request id="4">
+    <filterbyagent>
+        <agent_number>any</agent_number>
+    </filterbyagent>
+</request>
+
+Answer:
+On success: 
+<response id="1000">
+    <filterbyagent_response>
+        <success/>
+    </filterbyagent_response>
+</response>
+
+In case of agent in unrecognized format: 
+<response id="1">
+    <filterbyagent_response>
+        <failure>
+            <code>417</code>
+            <message>Invalid agent number</message>
+        </failure>
+    </filterbyagent_response>
+</response>
+
+Request "getagentstatus"
+The "getagentstatus" request reports the current availability status of the indicated agent.
+
+Attributes or arguments: 
+* agent_number: Agent to be examine. This identifier is in the form 'Agent/9000".
+
+Response:
+* status: Has one of the following possible values: 
+  offline: Agent is not logged into the queue 
+  online: Agent is logged in, and is idle 
+  oncall: Agent is logged in, and is on a call 
+  paused: Agent is logged in, and it is paused (on break)
+* channel: contains the Asterisk channel used for agent login. 
+* extension: contains the extension (derived from the channel) used for agent login. 
+  If the "channel" and "extension" elements are absent with "status" equal to "offline", the agent is logged out. 
+  If they are present with "status" equal to "offline", the agent is in the process of entering the password to 
+  enter the queue, through the indicated channel and extension. In all other "status" values, the "channel" and
+  "extension" elements are always present. 
+* onhold: 1 if the agent has initiated a hold with the "hold" request, or 0. 
+* pauseinfo: element that contains information about the pause (break) in which the agent is placed. 
+  It is only present in status paused. It contains the following elements: 
+  * pauseid: ID of the pause used in pauseagent 
+  * pausename: Name of the pause corresponding to the ID of pauseid 
+  * pausestart: Date and time corresponding to the start of the pause. 
+  If the date is the same as today's date, only the time is reported. Format [yyyy-mm-dd] hh:mm:ss. 
+* remote_channel: channel of the call that has been linked to the agent. Only present if the agent is on a call. 
+* callinfo: element that contains information about the call linked to the agent.
+  It is only present if the agent is on a call. It contains the following elements: 
+  * calltype: Value of "outgoing" or "incoming" 
+  * campaign_id: ID of the campaign corresponding to the call, or absent if the incoming call does not belong to a campaign. 
+  * callid: ID of the call. 
+  * callnumber: Dialed telephone number (outgoing call) or Caller-ID {outgoing call incoming) corresponding to the linked call. 
+  * dialstart: Date and time in [yyyy-mm-dd] hh:mm:ss format to start dialing the outgoing call. Absent for incoming calls. 
+  * dialend: Date and time in [yyyy-mm-dd] hh:mm:ss format for the end of the outgoing call dialing. Absent for incoming calls. 
+  * queuestart: Date and time in [yyyy-mm-dd] hh:mm:ss format for the entry of the campaign queue call. 
+  * linkstart: Date and time in [yyyy-mm-dd] hh:mm:ss format for linking the call to the agent. 
+  * queuenumber: Queue through which the call was assigned to the agent. It is only present if the call has been assigned via a queue.
+
+Example:
+<request id="4">
+    <getagentstatus>
+        <agent_number>Agent/9000</agent_number>
+    </getagentstatus>
+</request>
+
+Answer:
+In case the agent exists, and is not logged in: 
+<response id="4">
+    <getagentstatus_response>
+        <status>offline</status>
+    </getagentstatus_response>
+</response>
+
+In case the agent exists, and it is logged out and idle: 
+<response id="4">
+    <getagentstatus_response>
+        <status>online</status>
+        <channel>SIP/1064-00000001</channel>
+        <extension>1064</extension>
+        <onhold>0</onhold>
+    </getagentstatus_response>
+</response>
+
+In case the agent exists, and answers an outgoing call, having indicated pause: 
+<response id="4">
+    <getagentstatus_response>
+        <status>paused</status>
+        <channel>SIP/1064-00000021</channel>
+        <extension>1064</extension>
+        <onhold>0</onhold>
+        <pauseinfo>
+            <pauseid>2</pauseid>
+            <pausename>Baño</pausename>
+            <pausestart>17:31:17</pausestart>
+        </pauseinfo>
+        <remote_channel>SIP/1065-00000022</remote_channel>
+        <callinfo>
+            <calltype>outgoing</calltype>
+            <callid>74</callid>
+            <campaign_id>7</campaign_id>
+            <callnumber>1065</callnumber>
+            <dialstart>17:30:16</dialstart>
+            <dialend>17:30:24</dialend>
+            <queuestart>17:30:24</queuestart>
+            <linkstart>17:30:24</linkstart>
+            <queuenumber>8000</queuenumber>
+        </callinfo>
+    </getagentstatus_response>
+</response>
+
+In case the agent does not exist: 
+<response id="4">
+    <getagentstatus_response>
+        <status>offline</status>
+        <failure>
+            <code>417</code>
+            <message>Invalid agent number</message>
+        </failure>
+    </getagentstatus_response>
+</response>
+
+
+Request "getmultipleagentstatus"
+This request is an optimization of the "getagentstatus" request. The main difference is that the
+"getmultipleagentstatus" request allows you to query the status of many agents at the same time. In
+this way, the number of ECCP calls necessary to implement monitoring is reduced.
+
+Attributes or arguments:
+* agents: List of agents for which the agent status report is required. This element contains multiple
+  'agent_number' elements, each of which identifies the agent, in Agent/9000 format.
+
+Response:
+* agents: List of agents for which the current status is reported.
+  This element contains multiple 'agent' elements, which contain the same fields as the
+  getagentstatus_response element of the "getagentstatus" request, except for pauseinfo. In addition, each
+  'agent' element contains the following fields: 
+  * agent_number: Agent identified by the element
+
+See "getagentstatus" for details of the fields.
+
+
+Request "loginagent"
+This request initiates the connection of an extension, under the identity of a specific agent, to a queue. In the
+current implementation, Asterisk initiates a call to the extension, which, when answered, plays a password
+request. When typing the password correctly, the agent is logged in to the queue, and the "agentloggedin"
+event is emitted. If the call is not answered, or if the password is entered incorrectly, the "agentfailedlogin"
+event is emitted. The response to this request indicates only that the call to the agent has been initiated, not
+that the agent has been accepted into the queue. Optionally, a maximum idle interval can be specified. If the
+agent has no activity from a successful login until the interval elapses, the dialer automatically logs out the
+agent.
+
+To keep an agent session active with a timeout, see the pingagent request.
+
+Attributes or arguments: 
+* agent_number: The agent number to logon. This identifier is in the form 'Agent/9000'.
+* agent_hash: Authentication hash for the agent. 
+* extension: The extension number to enter under the agent's identity. 
+* password: (optional) Agent telephone key (not used in the current implementation) 
+* timeout: (optional) Maximum inactivity interval, in seconds.
+
+Example:
+<request id="2">
+    <loginagent>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+        <extension>1064</extension>
+    </loginagent>
+</request>
+
+Answer:
+When the call is dialed and the login process starts:
+<response id="2">
+    <loginagent_response>
+        <status>logging</status>
+    </loginagent_response>
+</response>
+
+On extension error: 
+<response id="2">
+    <loginagent_response>
+        <status>logged-out</status>
+        <failure>
+            <code>417</code>
+            <message>Invalid extension number</message>
+        </failure>
+    </loginagent_response>
+</response>
+
+The "status" element has one of the following possible values: 
+* logging: Call has been dialed and is waiting for a response 
+* logged-in: Agent was previously logged in with ECCP on the same extension 
+* logged-out: The process cannot be started from login. Possible causes:
+  * Indicated agent does not exist
+  * Indicated extension does not exist
+  * Agent already logged in with a means other than ECCP
+  * Agent already logged into a different extension
+
+Request "logoutagent"
+
+This request ends the session of an agent in the queues to which it belongs. After the session
+ends, an "agentlogoff" event is emitted.
+
+Attributes or arguments: 
+* agent_number: The agent number to logon. This identifier is in the form 'Agent/9000'.
+* agent_hash: Authentication hash for the agent.
+
+Example:
+<request id="3">
+    <logoutagent>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+    </logoutagent>
+</request>
+
+Answer:
+In case of agent that exists and is logged in: <response id="3">
+<response id="3">
+    <logoutagent_response>
+        <status>logged-out</status>
+    </logoutagent_response>
+</response>
+
+In case the agent does not exist: 
+<response id="3">
+    <logoutagent_response>
+        <status>logged-out</status>
+        <failure>
+            <code>417</code>
+            <message>Invalid agent number</message>
+        </failure>
+    </logoutagent_response>
+</response>
+
+
+Request "getqueuescript"
+
+This request retrieves the text associated with an inbound campaign queue.
+This text is the one that should be shown to the agent when an incoming call is received in a monitored
+queue, and there is no incoming campaign created that uses the queue in question. If there is an inbound
+campaign, its associated text should be used instead of the one retrieved by this request.
+
+Attributes or arguments: 
+* queue: Queue number for which the script is retrieved.
+
+Response: 
+* script: Free text that must be presented in the graphical interface of the agent.
+
+Example:
+<request id="6">
+    <getqueuescript>
+        <queue>8001</queue>
+    </getqueuescript>
+</request>
+
+Response:
+On success: 
+<response id="6">
+    <getqueuescript_response>
+        <script>Texto a mostrar al agente.</script>
+    </getqueuescript_response>
+</response>
+
+In case of bad queue: 
+<response id="6">
+    <getqueuescript_response>
+        <failure>
+            <code>404</code>
+            <message>Queue not found in incoming queues</message>
+        </failure>
+    </getqueuescript_response>
+</response>
+
+Request "getcampaignlist"
+This request lists all campaigns in the system.
+
+Attributes or arguments: 
+* campaign_type: Optional. If specified, it must be 'incoming' or 'outgoing'.
+  If not specified, all campaigns are read. 
+* status: Optional. If specified, it must be "active, 'inactive', finished".
+* filtername: Optional. If specified, the campaign name will be filtered to contain this text.
+* datetime_start: Optional. The start of the campaign must be the same or later at this date. 
+  Format yyyy-mm-dd.
+* datetime_end: Optional. The end of the campaign must be equal to or later than this date. 
+  Format yyyy-mm-dd.
+* offset: Optional. If specified, limit must also be indicated. Records are returned starting from the indicated
+  number, with the first record being 0. 0 is assumed by default if limit is specified without offset.
+* limit: Optional. If specified, the maximum number of
+  records indicated by the parameter. If not specified, all possible records are returned.
+
+Response: 
+* campaigns: Element containing zero or more 'campaign' elements. Each element 'campaign' contains: 
+  * id: ID of the campaign
+  * type: Campaign type: 'outgoing' or incoming' 
+  * name: Campaign name 
+  * status: One of 'active', 'inactive', 'finished'
+
+Example:
+<request id="6">
+    <getcampaignlist>
+        <campaign_type>outgoing</campaign_type>
+    </getcampaignlist>
+</request>
+
+Answer:
+Outbound Campaign:
+<response id="6">
+    <getcampaignlist_response>
+        <campaigns>
+            <campaign>
+                <id>2</id>
+                <type>outgoing</type>
+                <name>Prueba</name>
+                <status>inactive</status>
+            </campaign>
+            <campaign>
+                <id>2</id>
+                <type>outgoing</type>
+                <name>Prueba 2</name>
+                <status>active</status>
+            </campaign>
+        </campaigns>
+    </getcampaignlist_response>
+</response>
+
+
+Request "getcampaigninfo"
+This request retrieves static information about the campaign. By static information, it is
+understood the information that does not change as a consequence of the progress of the calls belonging to
+the campaign.
+
+Attributes or arguments: 
+* campaign_type: Style of the campaign. One of the values 'incoming','outgoing' 
+* campaign_id: ID of the campaign.
+
+Response:
+* name: Name of the campaign 
+* type: Type of the campaign, one of incoming' or 'outgoing' 
+* startdate: Date from which the campaign is effective.
+* enddate: Date end which the campaign is valid 
+* working_time_starttime: Time from which the campaign is considered active 
+* working_time_endtime: Time end which the gampaign is considered active 
+* queue: Queue used for the campaign
+* retries: (Only outgoing campaigns) Maximum number of retries for the same number 
+* context: (Only outgoing campaigns) Asterisk context from which to dial
+* maxchan: (Only outgoing campaigns) Maximum number of calls to make 
+* trunk: (Optional, only outgoing campaigns) Trunk to use for calls.
+  If not listed, calls are generated via FreePBX dial plan 
+* status: One of the values 'active', 'inactive', 'finished' (outbound campaigns only)
+* urltemplate: If not empty, a template to build a URL to a Web page that should be loaded when the call is
+  connected. The URL template may contain identifiers with names enclosed in braces, such as {HomeAddress},
+  which must be replaced with the true escaped values for each connected call. The available identifiers are the
+  call attribute names (case sensitive), plus the following default call attributes: 
+  {__AGENT_NUMBER__}    Agent channel identifier, for example Agent/9000 
+  {__CALL_TYPE__}       one of the values 'incoming', 'outgoing'
+  {__CAMPAIGN_ID__}     Internal ID of the ongoing campaign
+  {__CALL_ID__}         Internal ID of the currently connected call 
+  {__PHONE__}           Dialed number or Caller-ID of the connected call 
+  {__REMOTE_CHANNEL__}  Channel identifier of the connected call 
+* urlopentype: The recommended way of open the URL indicated by urltemplate: 
+  window:   The URL must open in a new browser window, or equivalent. 
+  embedded: The URL must be opened in an embedded frame within the console. 
+  jsonp:    The URL should be interpreted as Javascript code that should be injected into the Web console. 
+* script: Text to use as the campaign script. NOTE: In the current implementation, the stored text is generated 
+  with an edit widget that adds HTML/CSS styling in this field.
+  The client must be prepared to display such styles, or to filter them and display only the text.
+* forms: Element containing one or more 'form' elements 
+  * form: Element present one or more times. Represents a form that can be used to collect information about the calls associated
+    with the campaign. The element has the following attributes: 
+    * id: Database ID for the form. 
+    * name: Short name of the form 
+    * description: Long description of the form 
+    In addition, the element contains one or more elements: 
+    * field: Information input field for this form.
+    Each field element has the following attributes: 
+    * order: Presentation order of the field 
+    * id: Database ID of the input field 
+    In addition, each field element contains the following elements: 
+    * label: Label associated with the field 
+    * type: One of the following: TEXT TEXTAREA DATE LABEL LIST 
+    * maxsize: (Optional) Specifies the maximum length of the input, in characters
+    * default_value: (Optional) A default value suggested to the client displaying the form. 
+    ATTENTION: this value must be saved as the chosen value, as if it had been entered by the agent.
+    * options: (Optional): Only present when type is LIST. Contains multiple 'value' elements. 
+      * value: One of multiple values that are accepted as input to this field.
+
+
+Example:
+<request id="6">
+    <getcampaigninfo>
+        <campaign_type>outgoing</campaign_type>
+        <campaign_id>4</campaign_id>
+    </getcampaigninfo>
+</request>
+
+Response:
+Outgoing Campaign:
+<response id="6">
+    <getcampaigninfo_response>
+        <name>Campa&#xF1;a de prueba</name>
+        <type>outgoing</type>
+        <startdate>2011-01-14</startdate>
+        <enddate>2011-02-14</enddate>
+        <working_time_starttime>00:00:00</working_time_starttime>
+        <working_time_endtime>23:59:00</working_time_endtime>
+        <queue>8000</queue>
+        <retries>5</retries>
+        <context>from-internal</context>
+        <maxchan>23</maxchan>
+        <status>inactive</status>
+        <script>Prueba ...</script>
+        <forms>
+            <form id="1" name="Prueba" description="Formulario de prueba">
+                <field order="1" id="1">
+                    <label>CampoDeTexto</label>
+                    <type>TEXT</type>
+                    <maxsize>250</maxsize>
+                </field>
+                <field order="2" id="2">
+                    <label>CampoDeLista</label>
+                    <type>LIST</type>
+                    <maxsize>250</maxsize>
+                    <options>
+                        <value>aaa</value>
+                        <value>bbb</value>
+                        <value>ccc</value>
+                    </options>
+                </field>
+                <field order="3" id="3">
+                    <label>CampoDeFecha</label>
+                    <type>DATE</type>
+                    <default_value>2011-01-01</default_value>
+                </field>
+                <field order="4" id="4">
+                    <label>CampoDeTextarea</label>
+                    <type>TEXTAREA</type>
+                    <maxsize>250</maxsize>
+                    <default_value>Un texto bien grande</default_value>
+                </field>
+                <field order="5" id="5">
+                    <label>CampoDeEtiqueta</label>
+                    <type>LABEL</type>
+                </field>
+            </form>
+        </forms>
+    </getcampaigninfo_response>
+</response>
+
+Incoming campaign:
+<response id="7">
+    <getcampaigninfo_response>
+        <name>Prueba campania entrante</name>
+        <type>incoming</type>
+        <startdate>2011-01-20</startdate>
+        <enddate>2011-02-01</enddate>
+        <working_time_starttime>00:00:00</working_time_starttime>
+        <working_time_endtime>23:59:59</working_time_endtime>
+        <queue>8001</queue>
+        <status>active</status>
+        <script>Gatito lindo</script>
+        <forms>
+            <form id="1">
+                <field order="1" id="1">
+                    <label>CampoDeTexto</label>
+                    <type>TEXT</type>
+                    <maxsize>250</maxsize>
+                </field>
+                <field order="2" id="2">
+                    <label>CampoDeLista</label>
+                    <type>LIST</type>
+                    <maxsize>250</maxsize>
+                    <options>
+                        <value>aaa</value>
+                        <value>bbb</value>
+                        <value>ccc</value>
+                    </options>
+                </field>
+                <field order="3" id="3">
+                    <label>CampoDeFecha</label>
+                    <type>DATE</type>
+                    <default_value>2011-01-01</default_value>
+                </field>
+                <field order="4" id="4">
+                    <label>CampoDeTextarea</label>
+                    <type>TEXTAREA</type>
+                    <maxsize>250</maxsize>
+                    <default_value>Un texto bien grande</default_value>
+                </field>
+                <field order="5" id="5">
+                    <label>CampoDeEtiqueta</label>
+                    <type>LABEL</type>
+                </field>
+            </form>
+        </forms>
+    </getcampaigninfo_response>
+</response>
+
+In case of campaign not found: 
+<response id="7">
+    <getcampaigninfo_response>
+        <failure>
+            <code>404</code>
+            <message>Campaign not found</message>
+        </failure>
+    </getcampaigninfo_response>
+</response>
+
+
+Request "getcampaignstatus"
+
+This request retrieves dynamic or volatile information about the campaign.
+This information includes the status of available agents in the active campaign queue, the number of calls in
+the various acknowledged states, and active calls that have not yet been assigned to agents.
+
+Attributes or arguments: 
+* campaign_type: Style of the campaign. One of the values 'incoming','outgoing' 
+* campaign_id: ID of the campaign. 
+* datetime_start: Optional. If specified, statistics involving Calls will be calculated 
+  only with calls made from the indicated date (yyyy-mm-dd)
+
+Response:
+* statuscount: element containing the following attributes:
+  * total: For outgoing calls, this is the total number of calls registered as part of the campaign. 
+  For incoming calls, this is the total number of calls that have been received in the queue so far.
+  * pending: Amount of calls that have not yet been marked in any attempt. 
+  * placing: For outgoing calls, number of calls for which has sent Asterisk the order to generate the call, 
+  but the success or failure of the generation has not yet been received (in the OriginateResponse event). 
+  Not defined for incoming calls.
+  * ringing: For outgoing calls, number of calls for which received notice of successful dialing, but 
+  have not entered the campaign queue yet. 
+  Not defined for incoming calls. 
+  * onqueue: For outgoing or incoming calls, number of connected calls waiting in the
+  queue to be assigned to an agent. 
+  * success: For outgoing or incoming calls, number of calls that were assigned to an agent. 
+  For outbound calls, this count includes calls that have been successfully terminated after being picked up by an agent.
+  *onhold: For outgoing or incoming calls, number of calls that have been put on hold. 
+  * failure: For outgoing calls, number of calls for which dialing has failed at least once. 
+  Not defined for incoming calls.
+  * shortcall: For outgoing calls, number of calls that were assigned to an agent, but 
+  were too short-lived to represent a proper interaction. 
+  Not defined for incoming calls. 
+  * noanswer: For outbound calls, number of calls that were disconnected after being connected 
+  (according to OriginateResponse) but before entering the campaign queue. 
+  Not defined for incoming calls.
+  * abandoned: For outbound and inbound calls, number of calls that were dropped after entering 
+  a queue, but before being assigned to an agent.
+  * finished: For incoming calls, number of calls already finished after being answered by an agent. 
+  Not defined for outgoing calls. 
+  * losttrack: For incoming calls, number of calls that could not be tracked to
+  completion because the dialer was reset. Not defined for outgoing calls.
+* agents: Agents associated with the campaign queue. This element is a list containing multiple 'agent' elements. 
+  Each element contains the following attributes: 
+  * agentchannel: Queue agent channel (usually Agent/NNNN)
+  * status: Agent status. Can be 'online', 'offline', 'oncall', 'paused' 
+  as described in the response of the 'getagentstatus' request
+  * callid: ID in the database of the call that the agent answers. 
+  Just this one defined if the agent is logged in and answering a call.
+  * callnumber: Telephone number of the client to which the call is connected. It is only defined if the agent is
+  logged in and answering a call. 
+  * callclient: Channel assigned to the attended client's call. 
+  lt is only defined if the agent is logged in and answering a call. 
+  * pausename: Name of the pause the agent is in. It is only set if the agent is paused.
+  * pauseid: ID of the pause in which the agent is. It is only defined if the agent is on pause. 
+  * pausestart: Time the pause started, in 24-hour HH:MM:SS format. It is only set if the agent is paused.
+  * dialstart: Time at which the dialing of the call answered by the agent. 
+  Only defined for outbound campaigns, and if the agent is on a call.
+  * dialend: Time at which the dialing of the call answered by the agent. 
+  Only defined for outbound campaigns, and if the agent is on a call. 
+  * queuestart: Time at which the call handled by the agent entered the queue.
+  Only defined if the agent is on a call.
+  * linkstart: Time at which the call was connected to the agent. 
+  Only Defined if the agent is on a call. 
+  * trunk: Trunk through which the incoming call is received, or the outgoing call is made. 
+  Only defined if the agent is on a call.
+* activecalls: Campaign calls that have not yet been assigned to an agent. 
+  This element is a list containing multiple 'activecall' elements.
+  Each element contains the following attributes: 
+  * callid: ID in the database of the call connected to the customer 
+  * callnumber: Telephone number of the call connected to the customer 
+  * callstatus: Status of the campaign call. Can be one of the values: 
+    'Placing' (outbound campaigns only), 
+    'Ringing' (outbound campaigns only), 
+    'OnQueue' {inbound or outbound campaigns)
+  * dialstart: Time at which the dialing of the call started. Only defined for outbound campaigns. 
+  * dialend: Time in which the dialing of the call ended. 
+  Only defined for outbound campaigns, and if the status in 'callstatus' is ringing' or 'onqueue'. 
+  * queuestart: Time at which the call entered the queue.
+  Only defined for outbound campaigns, and if the status in 'callstatus' is 'onqueue'. 
+  * trunk: trunk through which incoming calls are received, or made the outgoing call.
+* stats: Global campaign counters This element contains the following attributes: 
+  * total_sec: Sum of all durations in seconds of all calls completed. 
+  * max_duration: Maximum call duration in the campaign.
+
+Example:
+<request id="7">
+    <getcampaignstatus>
+        <campaign_type>outgoing</campaign_type>
+        <campaign_id>7</campaign_id>
+    </getcampaignstatus>
+</request>
+
+Answer:
+outbound campaign:
+ <response id="7">
+    <getcampaignstatus_response>
+        <statuscount>
+            <total>12</total>
+            <pending>10</pending>
+            <placing>1</placing>
+            <ringing>0</ringing>
+            <onqueue>0</onqueue>
+            <success>2</success>
+            <onhold>0</onhold>
+            <failure>0</failure>
+            <shortcall>0</shortcall>
+            <noanswer>0</noanswer>
+            <abandoned>0</abandoned>
+        </statuscount>
+        <agents>
+            <agent>
+                <agentchannel>Agent/9000</agentchannel>
+                <status>online</status>
+            </agent>
+        </agents>
+        <activecalls>
+            <activecall>
+                <callnumber>1065</callnumber>
+                <callid>65</callid>
+                <callstatus>placing</callstatus>
+                <dialstart>18:24:54</dialstart>
+            </activecall>
+        </activecalls>
+        <stats>
+            <total_sec>34786</total_sec>
+            <max_duration>195</max_duration>
+        </stats>
+    </getcampaignstatus_response>
+</response>
+
+Incoming campaign:
+<response id="3">
+    <getcampaignstatus_response>
+        <statuscount>
+            <total>13</total>
+            <onqueue>0</onqueue>
+            <success>0</success>
+            <onhold>0</onhold>
+            <abandoned>0</abandoned>
+            <finished>12</finished>
+            <losttrack>1</losttrack>
+        </statuscount>
+        <agents>
+            <agent>
+                <agentchannel>Agent/9000</agentchannel>
+                <status>offline</status>
+            </agent>
+        </agents>
+        <activecalls/>
+    </getcampaignstatus_response>
+</response>
+
+In case of campaign not found:
+<response id="7">
+    <getcampaignstatus_response>
+        <failure>
+            <code>404</code>
+            <message>Campaign not found</message>
+        </failure>
+    </getcampaignstatus_response>
+</response>
+
+
+Request "getcampaignqueuewait"
+This request computes a histogram of the number of seconds a call in the chosen campaign takes
+from when it enters the queue to when it is assigned to an agent. The histogram is calculated in 5 second
+intervals up to 30 seconds, plus a category of answered calls after 30 seconds, plus a count of abandoned calls.
+
+Attributes or arguments: 
+* campaign_type: Style of the campaign. One of the values 'incoming','outgoing' 
+* campaign_id: ID of the campaign.
+
+Answer: 
+* histogram: list containing "interval" elements. each interval element contains the following fields: 
+  * lower: Lower Timeout value (inclusive) covered by interval 
+  * upper: Upper timeout value (inclusive) covered by interval. for the last interval, this element is 
+    omitted because it represents calls equal to or greater than 30 seconds. 
+  * count: Number of calls that have fallen within the interval 
+* abandoned: Contains the number of calls that were abandoned, that is, they entered the queue, 
+  but ended before being assigned to an agent.
+
+Example:
+<request id="7">
+    <getcampaignqueuewait>
+        <campaign_type>incoming</campaign_type>
+        <campaign_id>1</campaign_id>
+    </getcampaignqueuewait>
+</request>
+
+Response:
+<response id="3">
+    <getcampaignqueuewait_response>
+        <histogram>
+            <interval>
+                <lower>0</lower>
+                <upper>4</upper>
+                <count>86</count>
+            </interval>
+            <interval>
+                <lower>5</lower>
+                <upper>9</upper>
+                <count>0</count>
+            </interval>
+            <interval>
+                <lower>10</lower>
+                <upper>14</upper>
+                <count>1</count>
+            </interval>
+            <interval>
+                <lower>15</lower>
+                <upper>19</upper>
+                <count>2</count>
+            </interval>
+            <interval>
+                <lower>20</lower>
+                <upper>24</upper>
+                <count>1</count>
+            </interval>
+            <interval>
+                <lower>25</lower>
+                <upper>29</upper>
+                <count>2</count>
+            </interval>
+            <interval>
+                <lower>30</lower>
+                <count>3</count>
+            </interval>
+        </histogram>
+        <abandoned>6</abandoned>
+    </getcampaignqueuewait_response>
+</response>
+
+
+Request "getcallinfo"
+This request retrieves information about a specific call from a campaign. Currently only information that can be read from the
+database is retrieved, and not information about the possible call in progress.
+
+Attributes or arguments: 
+* campaign_type: Type of the campaign, one of incoming' or 'outgoing' 
+* campaign_id: ID in the database of the campaign to which the campaign belongs call. 
+  This value is optional for an incoming call, but is required for an outgoing call.
+* call_id: ID in the database of the call being examine
+
+Response: 
+* agent_number: Agent that has been linked to the call. This identifier is in the form 'Agent/9000'.
+* call_type: One of the two values 'incoming' or 'outgoing', 
+  to indicate whether the call is incoming or outgoing, respectively. 
+* campaign_id: ID of the campaign database, an integer. This value is required to identify an outgoing call. 
+  For an incoming call, this value is optional, and can even be omitted, if the incoming call is not associated with a campaign.
+* call_id: Database ID of the call, an integer. With this ID, and the value of call_type (and campaign_id for outgoing calls), 
+  the client code can identify the call to process for forms. 
+* phone: The number that was dialed, or the Caller-ID that was received.
+* status: The status of the call. Usually it is 'Success' for outgoing call and 'Active' for incoming call. 
+* uniqueid: internal Asterisk ID that identifies the remote call. 
+* datetime_originate: (Only outgoing call) Date and time the call was started call dialing.
+* datetime_originateresponse: (Only outgoing call) Date and time that the received a response from dialing the call.
+* datetime_join: Date and time the call entered the queue. 
+* datetime_linkstart: Date and time the call was linked to the agent. 
+* retries: (Optional) Number of times the call has been retried. 
+* trunk: (Only incoming call) Trunk through which the call was received.
+  For example: DAHDI/4 or SIP/unatroncal 
+* queue: (Incoming call only) Queue that received the call
+* call_attributes: (Optional) Attributes associated with the call in the database. 
+  This is a list containing multiple 'attribute' elements. Each attribute element has the following elements: 
+  * label: Text label associated with the attribute 
+  * value: Text value of the attribute 
+  * order: Order in which the attributes are suggested to be displayed
+* matching_contacts: (Optional, incoming call only) List of contacts whose phone number matches the 
+  Caller-ID of the call. If there is more than one contact, the interface must use the setcontact requirement to
+  indicate which contact should be associated with the received call. 
+  This element is a list containing multiple 'contact' elements. 
+  Each contact element has an 'id' attribute that must be used in the setcontact request.
+  Also each contact has multiple 'attribute' elements. Each attribute element contains the following elements:
+  * label: Text label associated with the contact attribute 
+  * value: Text value of the contact attribute 
+  * order: Order in which the contact attributes are suggested to be displayed 
+* call_survey: (Optional) List of forms with the data collected for this call. 
+  This element is only present if data has been previously collected for this call. 
+  This element is a list containing multiple 'form' elements. 
+  Each form element has an 'id" attribute that must be used in the saveformdata request.
+  Also each form has multiple 'field' elements. Each field element has an 'id attribute that can also be used in the saveformdata request. 
+  The field element also has the following elements: 
+  * label: Label of the form element 
+  * value: Value that was collected in the form
+
+Example:
+<request id="8">
+    <getcallinfo>
+        <campaign_type>outgoing</campaign_type>
+        <campaign_id>5</campaign_id>
+        <call_id>25</call_id>
+    </getcallinfo>
+</request>
+
+Response:
+Outgoing call:
+<response id="8">
+    <getcallinfo_response>
+        <calltype>outgoing</calltype>
+        <call_id>27</call_id>
+        <campaign_id>5</campaign_id>
+        <phone>1065</phone>
+        <status>Success</status>
+        <uniqueid>1296517619.3</uniqueid>
+        <duration>187</duration>
+        <datetime_originate>2011-01-31 18:46:59</datetime_originate>
+        <datetime_originateresponse>2011-01-31 18:47:07</datetime_originateresponse>
+        <datetime_join>2011-01-31 18:47:07</datetime_join>
+        <datetime_linkstart>2011-01-31 18:47:07</datetime_linkstart>
+        <datetime_linkend>2011-01-31 18:50:14</datetime_linkend>
+        <retries>1</retries>
+        <agent_number>Agent/9000</agent_number>
+        <call_attributes>
+            <attribute><label>Nombre</label><value>Zoila</value><order>1</order></attribute>
+            <attribute><label>Apellido</label><value>Chacha</value><order>2</order></attribute>
+            <attribute><label>Campo1</label><value>gato</value><order>3</order></attribute>
+            <attribute><label>Campo2</label><value>perro</value><order>4</order></attribute>
+            <attribute><label>Campo3</label><value>mono</value><order>5</order></attribute>
+        </call_attributes>
+        <call_survey>
+            <form id="1">
+                <field id="1">
+                    <label>CampoDeTexto</label>
+                    <value>Texto de campo de texto</value>
+                </field>
+                <field id="2">
+                    <label>CampoDeLista</label>
+                    <value>bbb</value>
+                </field>
+                <field id="3">
+                    <label>CampoDeFecha</label>
+                    <value>2011-02-01</value>
+                </field>
+                <field id="4">
+                    <label>CampoDeTextarea</label>
+                    <value>Texto de campo de textarea</value>
+                </field>
+            </form>
+        </call_survey>
+    </getcallinfo_response>
+</response>
+
+Incoming call:
+<response id="8">
+    <getcallinfo_response>
+        <calltype>incoming</calltype>
+        <call_id>8</call_id>
+        <campaign_id>1</campaign_id>
+        <phone>1065</phone>
+        <status>terminada</status>
+        <uniqueid>1296256837.24</uniqueid>
+        <duration>205</duration>
+        <datetime_join>2011-01-28 18:20:38</datetime_join>
+        <datetime_linkstart>2011-01-28 18:20:38</datetime_linkstart>
+        <datetime_linkend>2011-01-28 18:24:03</datetime_linkend>
+        <trunk>SIP/1065</trunk>
+        <queue>8001</queue>
+        <agent_number>Agent/9000</agent_number>
+        <call_attributes>
+            <attribute><label>first_name</label><value>Usuario</value><order>1</order></attribute>
+            <attribute><label>last_name</label><value>Windows</value><order>2</order></attribute>
+            <attribute><label>phone</label><value>1065</value><order>3</order></attribute><attribute>
+            <label>cedula_ruc</label><value>0915172176</value><order>4</order></attribute>
+        </call_attributes>
+        <matching_contacts>
+            <contact id="2">
+                <attribute><label>first_name</label><value>Usuario</value><order>1</order></attribute>
+                <attribute><label>last_name</label><value>Windows</value><order>2</order></attribute>
+                <attribute><label>phone</label><value>1065</value><order>3</order></attribute>
+                <attribute><label>cedula_ruc</label><value>0915172176</value><order>4</order></attribute>
+            </contact>
+        </matching_contacts>
+        <call_survey>
+            <form id="1">
+                <field id="1">
+                    <label>CampoDeTexto</label>
+                    <value>Texto de campo de texto</value>
+                </field>
+                <field id="2">
+                    <label>CampoDeLista</label>
+                    <value>bbb</value>
+                </field>
+                <field id="3">
+                    <label>CampoDeFecha</label>
+                    <value>2011-02-01</value>
+                </field>
+                <field id="4">
+                    <label>CampoDeTextarea</label>
+                    <value>Texto de campo de textarea</value>
+                </field>
+            </form>
+        </call_survey>
+    </getcallinfo_response>
+</response>
+
+
+Request "setcontact"
+This request orders the assignment of the Contact ID for the incoming call, in the event that there are
+multiple contacts whose telephone number matches the Caller-ID announced for the incoming call. The call does
+not need to be active at the time of assigning.
+
+Attributes or arguments: 
+* agent_number: Agent that is assigning the contact. This identifier is in the form Agent/9000. 
+* agent_hash: Authentication hash for the agent. 
+* call_id: ID in the database of the call that is assigned to your contact 
+* contact_id: ID in the database of the contact to associate with this call.
+
+Example:
+<request id="10">
+    <setcontact>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+        <call_id>8</call_id>
+        <contact_id>3</contact_id>
+    </setcontact>
+</request>
+
+Answer:
+For success case:
+<response id="10">
+    <setcontact_response>
+        <success/>
+    </setcontact_response>
+</response>
+
+For Contact ID not found: 
+<response id="10">
+    <setcontact_response>
+        <failure>
+            <code>404</code>
+            <message>Contact ID not found</message>
+        </failure>
+    </setcontact_response>
+</response>
+
+For Call ID not found: 
+<response id="10">
+    <setcontact_response>
+        <failure>
+            <code>404</code>
+            <message>Call ID not found</message>
+        </failure>
+    </setcontact_response>
+</response>
+
+
+Request "saveformdata"
+This request orders to store the information collected from the forms, and associates it to a particular call.
+
+Attributes or arguments: 
+* agent_number: Agent that orders to save the data. This identifier is in the form Agent/9000 
+* agent_hash: Authentication hash for the agent. 
+* campaign_type: Type of the campaign, one of 'incoming' or 'outgoing'
+* call_id: Database ID of the call being stored 
+* forms: Collection of multiple form' elements:
+  * form: It has the following attribute:
+    *id: ID in the database of the form to use. This value can be obtained with the getcallinfo and getcampaigninfo calls.
+    It contains multiple 'field' elements: 
+    * field: It has the following attribute: 
+      * id: ID in the database of the form field to use. 
+        This value can be obtained with the getcallinfo and getcampaigninfo calls.
+      Contains as label text the value to be stored in the database.
+
+
+Example:
+<request id="9">
+    <saveformdata>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+        <campaign_type>outgoing</campaign_type>
+        <call_id>27</call_id>
+        <forms>
+            <form id="1">
+                <field id="1">Texto de campo de texto</field>
+                <field id="2">bbb</field>
+                <field id="3">2011-02-01</field>
+                <field id="4">Texto de campo de textarea</field>
+                <field id="5">xxx</field>
+            </form>
+        </forms>
+    </saveformdata>
+</request>
+
+Answer:
+On success: 
+<response id="9">
+    <saveformdata_response>
+        <success/>
+    </saveformdata_response>
+</response>
+
+In case of form not found: 
+<response id="9">
+    <saveformdata_response>
+        <failure>
+            <code>404</code>
+            <message>Form ID not found: 0</message>
+        </failure>
+    </saveformdata_response>
+</response>
+
+In case of field not found: 
+<response id="9">
+    <saveformdata_response>
+        <failure>
+            <code>404</code>
+            <message>Field ID not found in form: 1 - 0</message>
+        </failure>
+    </saveformdata_response>
+</response>
+
+In case of text value too large: 
+<response id="9">
+    <saveformdata_response>
+        <failure>
+            <code>413</code>
+            <message>Form value too large: 1 - 4</message>
+        </failure>
+    </saveformdata_response>
+</response>
+
+In case of invalid LIST field value: 
+<response id="9">
+    <saveformdata_response>
+        <failure>
+            <code>406</code>
+            <message>Value not in list of accepted values: 1 - 2</message>
+        </failure>
+    </saveformdata_response>
+</response>
+
+In case of invalid date format for DATE field: 
+<response id="9">
+    <saveformdata_response>
+        <failure>
+            <code>406</code>
+            <message>Date format not acceptable, must be yyyy-mm-dd or yyyy-mm-dd hh:mm:ss: 1 - 3</message>
+        </failure>
+    </saveformdata_response>
+</response>
+Note: to aid debugging, the form id and field id they produced are appended the error.
+
+
+Request "hold"
+This request is used to put a call on hold. Internally the call is sent to one of the parking extensions. By putting
+the call on hold, the remote party should hear music on hold, and the agent hears the music in the queue, but
+will not receive any more calls.
+
+Attributes or arguments: 
+* agent_number: Agent to be paused. This identifier is in the form 'Agent/9000".
+* agent_hash: Authentication hash for the agent.
+
+Example:
+<request id="11">
+    <hold>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+    </hold>
+</request>
+
+Answer:
+For success case:
+<response id="11">
+    <hold_response>
+        <success/>
+    </hold_response>
+</response>
+
+For agent not found, or not logged in via ECCP: 
+<response id="11">
+    <hold_response>
+        <failure>
+            <code>404</code>
+            <message>Agent not found or not logged in through ECCP</message>
+        </failure>
+    </hold_response>
+</response>
+
+In case FreePBX has not enabled parking support: 
+<response id="11">
+    <hold_response>
+        <failure>
+            <code>500</code>
+            <message>Parked call extension is disabled</message>
+        </failure>
+    </hold_response>
+</response>
+
+For agent that is logged in but not handling a call: 
+<response id="11">
+    <hold_response>
+        <failure>
+            <code>417</code>
+            <message>Agent currenty not handling a call</message>
+        </failure>
+    </hold_response>
+</response>
+
+For Asterisk or database error preventing completion: 
+<response id="11">
+    <hold_response>
+        <failure>
+            <code>500</code>
+            <message>Unable to start agent hold</message>
+        </failure>
+    </hold_response>
+</response>
+
+
+Request "unhold"
+This request is used to retrieve the call that has been placed on hold, and talk to the subscriber again.
+
+Attributes or arguments: 
+* agent_number: Agent to be paused. This identifier is in the form 'Agent/9000".
+* agent_hash: Authentication hash for the agent.
+
+Example:
+<request id="11">
+    <unhold>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+    </unhold>
+</request>
+
+</request>
+
+Answer:
+For success case:
+<response id="11">
+    <unhold_response>
+        <success/>
+    </unhold_response>
+</response>
+
+For agent not found, or not logged in via ECCP: 
+<response id="11">
+    <unhold_response>
+        <failure>
+            <code>404</code>
+            <message>Agent not found or not logged in through ECCP</message>
+        </failure>
+    </unhold_response>
+</response>
+
+In case FreePBX has not enabled parking support: 
+<response id="11">
+    <unhold_response>
+        <failure>
+            <code>500</code>
+            <message>Parked call extension is disabled</message>
+        </failure>
+    </unhold_response>
+</response>
+
+For agent who received a call while on hold: 
+<response id="11">
+    <unhold_response>
+        <failure>
+            <code>417</code>
+            <message>Agent currenty handling a call</message>
+        </failure>
+    </unhold_response>
+</response>
+
+For Asterisk or database error preventing completion: 
+<response id="11">
+    <unhold_response>
+        <failure>
+            <code>500</code>
+            <message>Unable to stop agent hold</message>
+        </failure>
+    </unhold_response>
+</response>
+
+
+Request "transfercall"
+This request is used to transfer the call answered by the agent, to another extension or to another external
+number. When the call is transferred, the agent is free to receive another call, as if the call had been hung up.
+Transferring to another campaign agent, or to a campaign queue is currently not supported.
+
+Attributes or arguments: 
+* agent_number: Agent to be paused. This identifier is in the form 'Agent/9000".
+* agent_hash: Authentication hash for the agent. 
+* extension: Extension number or external number to send the call to.
+
+Example:
+<request id="11">
+    <transfercall>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+        <extension>4321</extension>
+    </transfercall>
+</request>
+
+Answer:
+For success:
+<response id="11">
+    <transfercall_response>
+        <success/>
+    </transfercall_response>
+</response>
+
+For agent not found, or not logged in via ECCP: 
+<response id="11">
+    <transfercall_response>
+        <failure>
+            <code>404</code>
+            <message>Agent not found or not logged in through ECCP</message>
+        </failure>
+    </transfercall_response>
+</response>
+
+
+Request "atxfercall"
+This request is used to transfer the call answered by the agent, to another extension or to another external
+number, with confirmation of the transferred number.
+
+At the time of transferring the call, the agent is connected to the transfer destination number, and if the agent
+uses the hangup request to hang up, he is free to receive another call. Transferring to another campaign
+agent, or to a campaign queue is currently not supported.
+
+Attributes or arguments: 
+* agent_number: Agent to be paused. This identifier is in the form 'Agent/9000".
+* agent_hash: Authentication hash for the agent. 
+* extension: Extension number or external number to send the call to.
+
+Example:
+<request id="11">
+    <atxfercall>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+        <extension>4321</extension>
+    </atxfercall>
+</request>
+
+Answer:
+For success case:
+<response id="11">
+    <atxfercall_response>
+        <success/>
+    </atxfercall_response>
+</response>
+
+For agent not found, or not logged in via ECCP: 
+<response id="11">
+    <atxfercall_response>
+        <failure>
+            <code>404</code>
+            <message>Agent not found or not logged in through ECCP</message>
+        </failure>
+    </atxfercall_response>
+</response>
+
+
+Request "pauseagent"
+This request is used to pause the agent due to a known break.
+The ID to use for the break is obtained with the "getpauses" request.
+
+Attributes or arguments: 
+* agent_number: Agent to be paused. This identifier is in the form 'Agent/9000".
+* agent_hash: Authentication hash for the agent.
+* pause_type: Database ID of the pause (break) to use.
+
+Example:
+<request id="11">
+    <pauseagent>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+        <pause_type>3</pause_type>
+    </pauseagent>
+</request>
+
+Answer:
+For success case:
+<response id="11">
+    <pauseagent_response>
+        <success/>
+    </pauseagent_response>
+</response>
+
+For agent already in another break: 
+<response id="11">
+    <pauseagent_response>
+        <failure>   
+            <code>417</code>
+            <message>Agent already in incompatible break</message>
+        </failure>
+    </pauseagent_response>
+</response>
+
+For invalid break: 
+<response id="11">
+    <pauseagent_response>
+        <failure>
+            <code>404</code>
+            <message>Break ID not found or not active</message>
+        </failure>
+    </pauseagent_response>
+</response>
+
+For agent not found, or not logged in via ECCP: 
+<response id="11">
+    <pauseagent_response>
+        <failure>
+            <code>404</code>
+            <message>Agent not found or not logged in through ECCP</message>
+        </failure>
+    </pauseagent_response>
+</response>
+
+
+Request "unpauseagent"
+This request is used to take the agent out of the pause it was previously placed on with the "pauseagent"
+request.
+
+Attributes or arguments: 
+* agent_number: Agent to be unpaused. This identifier is in the form 'Agent/9000'.
+* agent_hash: Authentication hash for the agent.
+
+Example:
+<request id="12">
+    <unpauseagent>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+    </unpauseagent>
+</request>
+
+Answer:
+For success case:
+<response id="12">
+    <unpauseagent_response>
+        <success/>
+    </unpauseagent_response>
+</response>
+
+
+Request "getpauses"
+This request is used to get the list of breaks that the agent can use to enter an audited break.
+
+Attributes or arguments:
+This request has no attributes:
+
+Response:
+* pause: Multiple element. Contains the following attribute: 
+  * id: ID in the pause database.
+  Contains the following labels: 
+  * name: Short name of the pause 
+  * status: Status of the pause. It can be 'A' for active, 'I' for inactive.
+    Only active pauses should be used. 
+  * type: Type of pause. Currently only pauses of type 'B' (break) are returned. 
+    The 'H' (hold) type pause is reserved for internal use.
+  * description: Long description of the pause.
+
+Example:
+<request id="10"><getpauses /></request>
+
+Response:
+<response id="10">
+    <getpauses_response>
+        <pause id="2">
+            <name>Ba&#xF1;o</name>
+            <status>A</status>
+            <type>B</type>
+            <description>Para ir al ba&#xF1;o</description>
+        </pause>
+        <pause id="3">
+            <name>Almuerzo</name>
+            <status>A</status>
+            <type>B</type>
+            <description>Para salir a comer</description>
+        </pause>
+    </getpauses_response>
+</response>
+
+
+Request "hangup"
+This request commands the call in progress that the agent is answering to be hung up. The agent is
+required to be logged in and have an active call.
+
+Attributes or arguments: 
+* agent_number: Agent to be unpaused. This identifier is in the form 'Agent/9000'.
+* agent_hash: Authentication hash for the agent.
+
+Example:
+<request id="13">
+    <hangup>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+    </hangup>
+</request>
+
+Answer:
+For success case:
+<response id="13">
+    <hangup_response>
+        <success/>
+    </hangup_response>
+</response>
+
+For invalid agent: 
+<response id="13">
+    <hangup_response>
+        <failure>
+            <code>404</code>
+            <message>Specified agent not found</message>
+        </failure>
+    </hangup_response>
+</response>
+
+For agent not answering call, or not logged in: 
+<response id="13">
+    <hangup_response>
+        <failure>
+            <code>417</code>
+            <message>Agent not in call</message>
+        </failure>
+    </hangup_response>
+</response>
+
+For Asterisk error on hangup: 
+<response id="13">
+    <hangup_response>
+        <failure>
+            <code>500</code>
+            <message>Cannot hangup agent call</message>
+        </failure>
+    </hangup_response>
+</response>
+
+
+Request "schedulecall"
+This request attempts to create a new call record in the campaign from the call you are currently on. This
+requirement only works if the agent is answering a call from an outbound campaign. For the rescheduled
+call, it is possible to specify a range of dates (within the date range of the campaign) where the new call
+should be attempted, as well as a range of hours in which the call is attempted (also within the range of hours
+of the campaign). It is also possible to mark the call so that it tries to contact the same agent who answered
+the original call, as long as the "scheduled-call" context is defined in the Asterisk contexts. Optionally (for
+parity with web console capabilities for the agent) it is possible to specify a different number to dial, as well as
+a new contact name.
+
+The attributes that have been defined when loading the calls are inherited when scheduling the call. The
+values collected in forms (if any) for the call ARE NOT INHERITED in the scheduled call.
+
+Attributes or arguments: 
+* agent_number: Agent that is going to schedule the call. This identifier is in the form 'Agent/9000". 
+  The agent is expected to be on an outbound campaign call.
+* agent_hash: Authentication hash for the agent. 
+* schedule: Element that groups the following subelements:
+  * date _init: Date from which scheduled call should be attempted. YYYY MM-DD format. 
+  * date_end: Date until which scheduled call should be attempted. YYYY MM-DD format.
+  * time_init: Start of the time in which the scheduled call is attempted. Format HH:MM:SS.
+  * time_end: End of time in which the scheduled call is attempted. Format HH:MM:SS.
+  If the 'schedule' element is specified, all sub-elements are required.
+  If 'schedule' is not specified, it is assumed that the call can be made at any time within the campaign
+  hours. As an implementation detail, the call will tend to come at the end of all other calls. 
+* sameagent: 1 If is specified, the call will be marked to go to the same agent that answered the original call. This
+  requires mandatorily specifying the schedule with the 'schedule' element. If 'sameagent' is omitted or
+  specified as 0, the call will be routed to any agent available at the time it is made.
+* newphone: If specified, this number will be dialed instead of the number associated with the original call.
+* newcontactname: If specified, the first attribute of the call (assumed to be the contact name) is
+  overwritten with the specified text. 
+  Maintained for compatibility with the web console.
+
+Example:
+<request id="14">
+    <schedulecall>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+        <schedule>
+            <date_init>2011-08-23</date_init>
+            <date_end>2011-08-25</date_end>
+            <time_init>09:25:00</time_init>
+            <time_init>17:30:00</time_init>
+        </schedule>
+        <sameagent>1</sameagent>
+        <newphone>5551234</newphone>
+        <newcontactname>John Doe</newcontactname>
+    </schedulecall>
+</request>
+
+Answer:
+For success: 
+<response id="14">
+    <schedulecall_response>
+        <success/>
+    </schedulecall_response>
+</response>
+
+For invalid agent: 
+<response id="14">
+    <schedulecall_response>
+        <failure>
+            <code>404</code>
+            <message>Specified agent not found</message>
+        </failure>
+    </schedulecall_response>
+</response>
+
+For agent not answering call, or not logged in: 
+<response id="14">
+    <schedulecall_response>
+        <failure>
+            <code>417</code>
+            <message>Agent not in call</message>
+        </failure>
+    </schedulecall_response>
+</response>
+
+For incomplete schedule:
+<response id="14">
+    <schedulecall_response>
+        <failure>
+            <code>400</code>
+            <message>Bad request: incomplete schedule</message>
+        </failure>
+    </schedulecall_response>
+</response>
+
+For non-numeric phone number: 
+<response id="14">
+    <schedulecall_response>
+        <failure>
+            <code>400</code>
+            <message>Bad request: invalid new phone</message>
+        </failure>
+    </schedulecall_response>
+</response>
+
+For invalid date formats in schedule: 
+<response id="14">
+    <schedulecall_response>
+        <failure>
+            <code>400</code>
+            <message>Bad request: invalid date_init</message>
+        </failure>
+    </schedulecall_response>
+</response>
+
+For start date before current date: 
+<response id="14">
+    <schedulecall_response>
+        <failure>
+            <code>400</code>
+            <message>Bad request: date_init before current date</message>
+        </failure>
+    </schedulecall_response>
+</response>
+
+For agent handling non-outgoing call: 
+<response id="14">
+    <schedulecall_response>
+        <failure>
+            <code>417</code>
+            <message>Not in outgoing call</message>
+        </failure>
+    </schedulecall_response>
+</response>
+
+For date outside the range indicated by the campaign:
+<response id="14">
+    <schedulecall_response>
+        <failure>
+            <code>417</code>
+            <message>Supplied date range outside campaign range</message>
+        </failure>
+    </schedulecall_response>
+</response>
+
+For duplicate scheduled call on same date and time and phone number:
+<response id="14">
+    <schedulecall_response>
+        <failure>
+            <code>417</code>
+            <message>Found duplicate scheduled call</message>
+        </failure>
+    </schedulecall_response>
+</response>
+
+
+Request "getagentqueues"
+This request lists the queues to which an agent is subscribed. This information was previously reported
+by the agentloggedin and agentloggedout events but was removed to a separate request for
+implementation efficiency reasons.
+
+Attributes or arguments: 
+* agent_number: Agent to be interrogated. This identifier is in the form 'Agent/9000".
+
+Response:
+* queues: List of queues to which the agent belongs. 
+  This element contains multiple 'queue' elements, each containing a queue to which the agent belongs.
+
+Example:
+<request id="4">
+    <getagentqueues>
+        <agent_number>Agent/9000</agent_number>
+    </getagentqueues>
+</request>
+
+Answer:
+For success case:
+<response id="4">
+    <getagentqueues_response>
+        <queues>
+            <queue>8001</queue>
+            <queue>8000</queue>
+        </queues>
+    </getagentqueues_response>
+</response>
+
+In case the agent does not exist: 
+<response id="4">
+    <getagentqueues_response>
+        <failure>
+            <code>404</code>
+            <message>Specified agent not found</message>
+        </failure>
+    </getagentqueues_response>
+</response>
+
+
+Request "getmultipleagentqueues"
+This request performs a function similar to that of the getagentqueues request. The
+main difference is that the getmultipleagentqueues request allows you to query the
+information of an arbitrary number of agents simultaneously. Use of this request is recommended
+instead of a sequence of calls to getagentqueues when queuing information from multiple agents is required.
+
+Attributes or arguments:
+* agents: List of agents for which the queue membership report is required. 
+  This element contains multiple 'agent_number' elements, each of which identifies the agent, in Agent/9000 format.
+
+Response:
+* agents: List of agents for which queue membership is reported.
+  This element contains multiple 'agent' elements, which contain the following fields: 
+  * agent number: Agent identified by the element
+  * queues: List of queues to which the agent belongs. This element contains multiple 'queue'
+  elements, which contain the queue identifier.
+
+Example:
+<request id="4">
+    <getmultipleagentqueues>
+        <agents>
+            <agent_number>Agent/9000</agent_number>
+            <agent_number>Agent/9001</agent_number>
+        <agents>    
+    </getmultipleagentqueues>
+</request>
+
+Answer:
+For success case:
+<response id="4">
+    <getmultipleagentqueues_response>
+        <agents>
+            <agent>
+                <agent_number>Agent/9000</agent_number>
+                <queues>
+                    <queue>8001</queue>
+                    <queue>8000</queue>
+                </queues>
+            </agent>
+            <agent>
+                <agent_number>Agent/9001</agent_number>
+                <queues>
+                    <queue>8000</queue>
+                </queues>
+            </agent>
+        <agents>
+    </getmultipleagentqueues_response>
+</response>
+
+
+Request "getagentactivitysummary"
+This request lists, for a range of dates, an activity report for each of the active agents. This activity
+report includes the total seconds of all sessions, the total calls received and the total seconds of calls in each
+of the queues, and the start and end of the last session and the last agent pause.
+
+Attributes or arguments: 
+* datetime_start: Starting date of the range, in yyyy-mm-dd format. If omitted, the current date is assumed.
+* datetime_end: End date of the range, in yyyy-mm-dd format. If omitted, it assumes the current date.
+
+Response:
+* agents: List of agents found in the indicated date range. This element contains multiple 'agent'
+elements, which contain the following fields: 
+  * agentchannel: Agent described by the element. This identifier is in the form 'Agent/9000".
+  * agentname: Name of the described agent. 
+  * logintime: Seconds the agent has spent in sessions during the specified interval. Active sessions at the time
+  of the request are not included. 
+  * lastsessionstart: If there is at least one session in the specified interval, 
+  this element indicates the start of the last session, in yyyy-mm-dd hh:mm:ss format.
+  Otherwise it doesn't show up.
+  * lastsessionend: If there is at least one session in the specified interval, and the session has ended, this
+  element indicates the end of the last session, in yyyy-mm-dd hh:mm:ss format. Otherwise it doesn't
+  show up. If the agent is currently in an active session, lastsessionstart will be present, and
+  lastsessionend will NOT be present. 
+  * lastpausestart: If there is at least one pause in the specified interval, this element indicates 
+    the start of the last pause, in yyyy-mm-dd hh:mm:ss format. Otherwise it doesn't show up. 
+    There is no guarantee that the last reported pause is after the last login. 
+  * lastpauseend: If there is at least one pause in the specified interval, and the pause has ended, this element indicates the
+  end of the last pause, in yyyy-mm-dd hh:mm:ss format. Otherwise it doesn't show up. If the agent is
+  currently paused, lastpausestart will be present, and lastpauseend will NOT be present.
+  * callssummary: element that contains two sub-elements, 'incoming' and 'outgoing' depending on the types
+  of campaigns. Each of the elements has zero or more 'queue' elements. Each queue element has an 'id'
+  attribute indicating the number of the queue. In addition to the attribute, there are the following elements:
+    * sec_calls: sum of the time in seconds in attended calls that entered via the indicated queue under the indicated campaign type.
+    * num_calls: number of attended calls that entered through the queue.
+
+Example:
+<request id="4">
+    <getagentactivitysummary>
+        <datetime_start>2010-01-01</datetime_start>
+        <datetime_end>2010-01-02</datetime_end>
+    </getagentactivitysummary>
+</request>
+
+Response:
+<response id="4">
+    <getagentactivitysummary_response>
+        <agents>
+            <agent>
+                <agentchannel>Agent/9000</agentchannel>
+                <agentname>Over 9000!!!</agentname>
+                <logintime>1135</logintime>
+                <lastsessionstart>2010-01-01 11:40:34</lastsessionstart>
+                <lastsessionend>2010-01-01 11:55:22</lastsessionend>
+                <lastpausestart>2010-01-01 11:45:20</lastpausestart>
+                <lastpauseend>2010-01-01 11:46:00</lastpauseend>
+                <callsummary>
+                    <incoming>
+                        <queue id="8001">
+                            <sec_calls>172</sec_calls>
+                            <num_calls>3</num_calls>
+                        </queue>
+                        <queue id="8002">
+                            <sec_calls>20</sec_calls>
+                            <num_calls>1</num_calls>
+                        </queue>
+                    </incoming>
+                    <outgoing>
+                        <queue id="8000">
+                            <sec_calls>515</sec_calls>
+                            <num_calls>7</num_calls>
+                        </queue>
+                    </outgoing>
+                </callsummary>
+            </agent>
+            <agent>
+                <agentchannel>Agent/9001</agentchannel>
+                <agentname>Agente 9001</agentname>
+                <logintime>2031</logintime>
+                <lastsessionstart>2010-01-01 11:40:34</lastsessionstart>
+                <lastsessionend>2010-01-01 11:55:22</lastsessionend>
+                <lastpausestart>2010-01-01 11:45:20</lastpausestart>
+                <lastpauseend>2010-01-01 11:46:00</lastpauseend>
+                <callsummary>
+                    <incoming>
+                        <queue id="8004">
+                            <sec_calls>172</sec_calls>
+                            <num_calls>3</num_calls>
+                        </queue>
+                        <queue id="8005">
+                            <sec_calls>20</sec_calls>
+                            <num_calls>1</num_calls>
+                        </queue>
+                    </incoming>
+                    <outgoing>
+                        <queue id="8000">
+                            <sec_calls>515</sec_calls>
+                            <num_calls>7</num_calls>
+                        </queue>
+                    </outgoing>
+                </callsummary>
+            </agent>
+        </agents>
+    </getagentactivitysummary_response>
+</response>
+
+
+Request "getchanvars"
+This request lists, for the indicated agent, the channel variables defined for the active call that it
+is attending. This request allows to build contexts and/or AGIs that assign channel variables that can then
+be obtained through This request.
+
+Attributes or arguments:
+* agent_number: Agent that is going to schedule the call. This identifier is in the form 'Agent/9000'.
+* agent_hash: Authentication hash for the agent.
+
+Response: 
+* clientchannel: Asterisk channel corresponding to the remote call that is attends. 
+  For example: sip/trunk/5551234-abcdef. This is the channel from which channel variables are
+  reported. 
+* chanvars: List of channel variables found in the calling channel.
+  This element contains multiple 'chanvar' elements, which contain the following fields: 
+  * label: Name of the channel variable
+  * value: Value of the channel variable
+
+Example:
+<request id="14">
+    <getchanvars>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+    </getchanvars>
+</request>
+
+Response:
+<response id="14">
+    <getchanvars_response>
+        <clientchannel>SIP/troncal/5551234-abcdef</clientchannel>
+        <chanvars>
+            <chanvar>
+                <label>AAA</label>
+                <value>xxx</value>
+            </chanvar>
+            <chanvar>
+                <label>BBB</label>
+                <value>yyy</value>
+            </chanvar>
+        </chanvars>
+    </getchanvars_response>
+</response>
+
+
+Request "callprogress"
+This request activates or deactivates the emission of call progress events. By default call progress
+events are disabled, for compatibility with earlier versions of ECCP clients. If a client can make use of the
+events, they must activate them with This request.
+
+Attributes or arguments: 
+* enable: Flag value: 1 to enable, 0 to disable
+
+Example:
+To trigger call progress events: 
+<request id="4">
+    <callprogress>
+        <enable>1</enable>
+    </callprogress>
+</request>
+
+To disable progress events: 
+<request id="4">
+    <callprogress>
+        <enable>0</enable>
+    </callprogress>
+</request>
+
+Answer:
+On success: 
+<response id="4">
+    <callprogress_response>
+        <success/>
+    </callprogress_response>
+</response>
+
+
+Request "campaignlog"
+This request lists the progress events of a certain campaign, in a time interval. If the interval is omitted,
+the current system day is assumed.
+
+Attributes or arguments: 
+* campaign_type: Type of the campaign, one of 'incoming' or 'outgoing' 
+* campaign_id: ID in the database of the campaign to list. For campaigns outgoing, this parameter is required. 
+  For inbound campaigns, this parameter is omitted if events for inbound calls not associated with 
+  a campaign should be listed. 
+* queue: Incoming queue to select. For outbound campaigns, this parameter is ignored. 
+  For inbound campaigns, this parameter selects events associated with inbound calls not associated with an 
+  inbound campaign. If both queue and campaign_id are given, then campaign_id takes precedence and queue is ignored.
+* datetime_start: Starting date of the range, in yyyy-mm-dd format. If omitted, the current date is assumed.
+* datetime_end: End date of the range, in yyyy-mm-dd format. If omitted, it assumes the current date.
+
+Response: 
+* logentries: List of elements of type logentry. Each logentry element has the following fields:
+  * id: internal database ID of the record. 
+  * datetime_entry: Date and time the state transition occurred 
+  * campaign_type: Type of the campaign, one of 'incoming' or 'outgoing' 
+  * campaign_id: ID in the database of the campaign to which the campaign belongs call. 
+    This value is always present for an outgoing call, but may not be present for an incoming call.
+  * call_id: ID in the database of the call that is referenced in the event. 
+  * new_status: The new status the call has reached. The reported events can be one of the following: 
+    Placing: The outgoing call has started to be placed. The only valid parameter is retry.
+    Dialing: The outgoing call has started to be dialed. The values of retry and trunk are known.
+    Ringing: The outgoing call is ringing and is about to connect to the queue, 
+    The values of uniqueid, retry, trunk are known.
+    OnQueue: The call is in the queue waiting to be assigned to an agent. 
+    The values of uniqueid, retry, trunk are known.
+    Failure: the call could not be connected. Valid values are depending on the state in which the fault was detected.
+    OnHold: The call has entered hold. The values of uniqueid are known, retry, trunk.
+    OffHold: The call has come off hold. The values of uniqueid are known, retry, trunk.
+    Success: the call has been connected to an agent 
+    Hangup: the call has been disconnected from the agent.
+    ShortCall: The call was too short in duration for an interaction with the agent. 
+  * retry: For outgoing calls, the dial attempt number that corresponds to this state change. 
+    Always 0 for the incoming call. 
+  * uniqueid: Unique Asterisk ID for the call corresponding to the attempt. 
+  * trunk: Trunk through which the outgoing call is made, or the incoming call is received.
+  * phone: callerid or dialed phone number
+  * queue: number of the queue through which the call is expected to go through 
+  * agentchannel: Agent channel that answered the call. Only valid for Success, Hangup, ShortCall states. 
+  * duration: Duration of the call, in seconds. Only valid for states Hangup and ShortCall.
+The fields are essentially identical to those in the callprogress event, except for id, agentchannel.
+The Success state corresponds to the agentlinked event, and the Hangup/ShortCall state corresponds to the
+agentunlinked event.
+
+Example:
+<request id="4">
+    <campaignlog>
+        <campaign_type>outgoing</campaign_type>
+        <campaign_id>9</campaign_id>
+        <datetime_start>2010-01-01</datetime_start>
+        <datetime_end>2013-01-02</datetime_end>
+    </campaignlog>
+</request>
+
+Response:
+On success: 
+<response id="4">
+<campaignlog_response>
+  <logentries>
+    <logentry>
+      <id>168</id>
+      <datetime_entry>2013-01-07 12:02:23</datetime_entry>
+      <phone>1065</phone>
+      <queue>8000</queue>
+      <campaign_type>outgoing</campaign_type>
+      <campaign_id>9</campaign_id>
+      <call_id>111</call_id>
+      <new_status>Placing</new_status>
+      <retry>2</retry>
+    </logentry>
+    <logentry>
+      <id>169</id>
+      <datetime_entry>2013-01-07 12:02:24</datetime_entry>
+      <phone>1065</phone>
+      <queue>8000</queue>
+      <campaign_type>outgoing</campaign_type>
+      <campaign_id>9</campaign_id>
+      <call_id>111</call_id>
+      <new_status>Dialing</new_status>
+      <retry>2</retry>
+      <trunk>SIP/1065</trunk>
+    </logentry>
+    <logentry>
+      <id>170</id>
+      <datetime_entry>2013-01-07 12:02:26</datetime_entry>
+      <phone>1065</phone>
+      <queue>8000</queue>
+      <campaign_type>outgoing</campaign_type>
+      <campaign_id>9</campaign_id>
+      <call_id>111</call_id>
+      <new_status>Ringing</new_status>
+      <retry>2</retry>
+      <uniqueid>1357578143.3</uniqueid>
+      <trunk>SIP/1065</trunk>
+    </logentry>
+    <logentry>
+      <id>171</id>
+      <datetime_entry>2013-01-07 12:02:26</datetime_entry>
+      <phone>1065</phone>
+      <queue>8000</queue>
+      <campaign_type>outgoing</campaign_type>
+      <campaign_id>9</campaign_id>
+      <call_id>111</call_id>
+      <new_status>OnQueue</new_status>
+      <retry>2</retry>
+      <uniqueid>1357578143.3</uniqueid>
+      <trunk>SIP/1065</trunk>
+    </logentry>
+    <logentry>
+      <id>172</id>
+      <datetime_entry>2013-01-07 12:02:29</datetime_entry>
+      <phone>1065</phone>
+      <queue>8000</queue>
+      <campaign_type>outgoing</campaign_type>
+      <campaign_id>9</campaign_id>
+      <call_id>111</call_id>
+      <new_status>Success</new_status>
+      <retry>2</retry>
+      <uniqueid>1357578143.3</uniqueid>
+      <trunk>SIP/1065</trunk>
+      <agentchannel>SIP/1064</agentchannel>
+    </logentry>
+    <logentry>
+      <id>173</id>
+      <datetime_entry>2013-01-07 12:03:24</datetime_entry>
+      <phone>1065</phone>
+      <queue>8000</queue>
+      <campaign_type>outgoing</campaign_type>
+      <campaign_id>9</campaign_id>
+      <call_id>111</call_id>
+      <new_status>OnHold</new_status>
+      <retry>2</retry>
+      <uniqueid>1357578143.3</uniqueid>
+      <trunk>SIP/1065</trunk>
+      <agentchannel>SIP/1064</agentchannel>
+    </logentry>
+    <logentry>
+      <id>174</id>
+      <datetime_entry>2013-01-07 12:03:38</datetime_entry>
+      <phone>1065</phone>
+      <queue>8000</queue>
+      <campaign_type>outgoing</campaign_type>
+      <campaign_id>9</campaign_id>
+      <call_id>111</call_id>
+      <new_status>OffHold</new_status>
+      <retry>2</retry>
+      <uniqueid>1357578204.7</uniqueid>
+      <trunk>SIP/1065</trunk>
+      <agentchannel>SIP/1064</agentchannel>
+    </logentry>
+    <logentry>
+      <id>175</id>
+      <datetime_entry>2013-01-07 12:03:57</datetime_entry>
+      <phone>1065</phone>
+      <queue>8000</queue>
+      <campaign_type>outgoing</campaign_type>
+      <campaign_id>9</campaign_id>
+      <call_id>111</call_id>
+      <new_status>Hangup</new_status>
+      <retry>2</retry>
+      <uniqueid>1357578204.7</uniqueid>
+      <trunk>SIP/1065</trunk>
+      <duration>88</duration>
+      <agentchannel>SIP/1064</agentchannel>
+    </logentry>
+  </logentries>
+</campaignlog_response>
+</response>
+
+
+Request "getincomingqueuelist"
+This request lists the incoming queues available in the system.
+
+Attributes or arguments: 
+* offset: Optional. If specified, limit must also be indicated. Records are returned starting from the 
+  indicated number, with the first record being 0. 0 is assumed by default if limit is specified without offset.
+* limit: Optional. If specified, the maximum number of records indicated by the parameter. 
+  If not specified, all possible records are returned.
+
+Response:
+* queues: list of elements of type queue. Each queue element has the following fields: 
+  * id: Internal identification ID of the incoming queue 
+  * queue: Number of the incoming queue 
+  * status: One of the values "active' or 'inactive'
+
+Example:
+<request id="4">
+<getincomingqueuelist />
+</request> 
+
+Response:
+<response id="4">
+<getincomingqueuelist_response>
+  <queues>
+    <queue>
+      <id>1</id>
+      <queue>8001</queue>
+      <status>active</status>
+    </queue>
+    <queue>
+      <id>2</id>
+      <queue>6000</queue>
+      <status>active</status>
+    </queue>
+    <queue>
+      <id>4</id>
+      <queue>11627</queue>
+      <status>inactive</status>
+    </queue>
+  </queues>
+</getincomingqueuelist_response>
+</response>
+
+
+Request "getincomingqueuestatus"
+This request retrieves dynamic or volatile information about the indicated incoming queue. This
+information includes the status of available agents in the active campaign queue, the number of calls in the
+various acknowledged states, and active calls that have not yet been assigned to agents.
+In this aspect, This request is similar to getcampaignstatus. However, this request returns
+information about calls that entered the queue but were not assigned as belonging to an inbound campaign.
+
+Attributes or arguments: 
+* queue: Number of the incoming queue 
+* datetime_ start: Optional. If specified, statistics involving Calls will be calculated only with 
+  calls made from the indicated date (yyyy-mm-dd)
+
+Response:
+* statuscount: element containing the following attributes:
+  * total: Total calls that have been received so far in the queue. 
+  * onqueue: Number of connected calls waiting in the queue to be assigned to an agent. 
+  * success: Number of calls that were assigned to an agent.
+  * onhold: For outgoing or incoming calls, number of calls that have been put on hold.
+  * abandoned: Number of calls that were disconnected after having entered a queue, but before being 
+    assigned to an agent.
+  * finished: Number of calls already finished after being answered by an agent.
+  * losttrack: For incoming calls, number of calls that failed  be watched through to 
+    completion because the scoreboard was reset. 
+* agents: Agents associated with the campaign queue. 
+  This element is a list containing multiple 'agent' elements. 
+  Each element contains the following attributes: 
+  * agentchannel: Queue agent channel (usually Agent/NNNN)
+  * status: Agent status. Can be 'online', 'offline', 'oncall', 'paused' 
+    as described in the response of the 'getagentstatus' request
+  * callid: ID in the database of the call that the agent answers. Just this one Defined if the agent 
+    is logged in and answering a call.
+  * callnumber: Telephone number of the client to which the call is connected. 
+    It is only defined if the agent is logged in and answering a call. 
+  * callclient: Channel assigned to the attended client's call. 
+      lt is only defined if the agent is logged in and answering a call. 
+  * pausename: Name of the pause the agent is in. It is only set if the agent is paused.
+  * pauseid: ID of the pause in which the agent is. It is only defined if the agent is on pause. 
+  * pausestart: Time the pause started, in 24-hour HH:MM:SS format. 
+    lt is only set if the agent is paused. 
+  * queuestart: Time at which the call handled by the agent entered the queue. 
+      Only defined if the agent is on a call.
+  * linkstart: Time at which the call was connected to the agent. 
+    Only Defined if the agent is on a call.
+  * trunk: Trunk through which incoming calls are received. 
+    Only defined if the agent is on a call.
+* activecalls: Campaign calls that have not yet been assigned to an agent. 
+  This element is a list containing multiple 'activecall' elements. 
+  Each element contains the following attributes: 
+  * callid: ID in the database of the call connected to the customer 
+  * callnumber: Telephone number of the call connected to the customer 
+  * callstatus: Status of the campaign call. 
+    can be one of the values 'OnQueue' {incoming or outgoing campaigns) 
+  * queuestart: Time at which the call entered the queue. 
+    Only defined for outbound campaigns, and if the status in 'callstatus' is 'onqueue'. 
+  * trunk: trunk through which incoming calls are received, or made the outgoing call.
+* stats: Global queue counters This element contains the following attributes: 
+  * total_sec: Sum of all durations in seconds of all completed calls. 
+  * max_duration: Maximum duration of calls in the queue.
+
+Example:
+<request id="7">
+    <getincomingqueuestatus>
+        <queue>8001</queue>
+    </getincomingqueuestatus>
+</request>
+
+Answer:
+Outbound campaign:
+<response id="7">
+<getincomingqueuestatus_response>
+  <statuscount>
+    <total>29</total>
+    <onqueue>1</onqueue>
+    <success>0</success>
+    <onhold>0</onhold>
+    <abandoned>2</abandoned>
+    <finished>22</finished>
+    <losttrack>4</losttrack>
+  </statuscount>
+  <agents>
+    <agent>
+      <agentchannel>Agent/9003</agentchannel>
+      <status>offline</status>
+    </agent>
+    <agent>
+      <agentchannel>Agent/9000</agentchannel>
+      <status>offline</status>
+    </agent>
+    <agent>
+      <agentchannel>SIP/1064</agentchannel>
+      <status>offline</status>
+    </agent>
+  </agents>
+  <activecalls>
+    <activecall>
+      <callnumber>1064</callnumber>
+      <callid>229</callid>
+      <callstatus>OnQueue</callstatus>
+      <queuestart>17:50:28</queuestart>
+      <trunk>SIP/1064</trunk>
+    </activecall>
+  </activecalls>
+    <stats>
+        <total_sec>34786</total_sec>
+        <max_duration>195</max_duration>
+    </stats>
+</getincomingqueuestatus_response>
+</response>
+
+
+Request "pingagent"
+This request resets the inactivity counter for a specific agent.
+If the login inactivity interval feature is used, this request should be called regularly to indicate that
+the client is still active.
+
+Attributes or arguments:
+* agent_number: Agent that is going to schedule the call. This identifier is in the form 'Agent/9000'.
+* agent_hash: Authentication hash for the agent.
+
+Example:
+<request id="14">
+    <pingagent>
+        <agent_number>Agent/9000</agent_number>
+        <agent_hash>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</agent_hash>
+    </pingagent>
+</request>
+
+Response:
+<response id="14">
+    <pingagent_response>
+        <success/>
+    </pingagent_response>
+</response>
