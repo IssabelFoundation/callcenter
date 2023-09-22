@@ -540,10 +540,11 @@ class Llamada
         if (!in_array($this->tipo_llamada, array('outgoing')))
             return FALSE;
 
+        $this->status = 'Placing';
         // Notificar el progreso de la llamada
         $paramProgreso = array(
             'datetime_entry'                    =>  date('Y-m-d H:i:s', $timestamp),
-            'new_status'                        =>  'Placing',
+            'new_status'                        =>  $this->status,
             'retry'                             =>  $retry,
             'trunk'                             =>  $trunk,
             'id_campaign_'.$this->tipo_llamada  =>  $this->campania->id,
