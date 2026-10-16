@@ -335,6 +335,8 @@ class AMIClientConn extends MultiplexConn
     // Implementación de wait_response para compatibilidad con phpagi-asmanager
     private function wait_response()
     {
+        $iMaxWait = 30;
+        $iWaitStart = time();
         while (!is_null($this->sKey) && is_null($this->_response)) {
             $this->multiplexSrv->procesarActividad(1);
 
@@ -350,6 +352,12 @@ class AMIClientConn extends MultiplexConn
                 }
             }
             $this->_listaEventos = $t;
+
+            if ((time() - $iWaitStart) > $iMaxWait) {
+                if (!is_null($this->oLogger))
+                    $this->oLogger->output('WARN: '.__METHOD__.' AMI response timeout ('.$iMaxWait.'s), skipping');
+                return NULL;
+            }
         }
         if (!is_null($this->_response)) {
             $r = $this->_response;
@@ -543,8 +551,8 @@ class AMIClientConn extends MultiplexConn
     private function _emulate_sync_response($paquete)
     {
         if (!is_null($this->_response)) {
-            $this->oLogger->output("ERR: '.__METHOD__.' segundo Response sobreescribe primer Response no procesado: ".
-                print_r($this->_response, 1));
+            if (!is_null($this->oLogger))
+                $this->oLogger->output("WARN: ".__METHOD__." segundo Response, primer Response descartado");
         }
         $this->_response = $paquete;
     }
@@ -651,16 +659,17 @@ class AMIClientConn extends MultiplexConn
         } elseif (isset($parameters['Response'])) {
             if (count($this->_queue_requests) <= 0) {
                 if (!is_null($this->oLogger)) {
-                    $this->oLogger->output('ERR: '.__METHOD__.' se pierde respuesta porque no hay callback encolado: '.
-                        print_r($parameters, TRUE));
+                    $this->oLogger->output('WARN: '.__METHOD__.' response sin callback - ignorando');
                 }
-                return FALSE;
+                return TRUE;
             }
 
             $callback_info = array_shift($this->_queue_requests);
             if (!is_null($callback_info[0])) {
                 if (!is_null($this->oLogger))
-                    $this->oLogger->output('ERR: '.__METHOD__.' petición head NO ha sido enviada: '.$callback_info[0]);
+                    $this->oLogger->output('WARN: '.__METHOD__.' petición head NO ha sido enviada, enviando siguiente');
+                $this->_send_next_request();
+                return TRUE;
             }
             $handler = $callback_info[1];
             $handler_params = $callback_info[2];

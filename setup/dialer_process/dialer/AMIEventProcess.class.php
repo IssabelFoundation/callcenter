@@ -749,6 +749,12 @@ class AMIEventProcess extends TuberiaProcess
             return;
         }
 
+        if (is_null($this->_ami)) {
+            $this->_log->output('ERR: '.__METHOD__." AMI connection not ready, originate cancelled (actionid=$sActionID)");
+            $this->_tuberia->enviarRespuesta($sFuente, FALSE);
+            return;
+        }
+
         // Luego de llamar a este método, el status debería haber cambiado a Placing
         $r = $llamada->marcarLlamada($this->_ami, $sFuente, $iTimeoutOriginate,
             $iTimestampInicioOriginate, $sContext, $sCID, $sCadenaVar, $retry,
