@@ -6,31 +6,45 @@
  |___|___/___/\__,_|_.__/ \___|_|
 ```
 
-Issabel is an open source distribution and GUI for Unified Communications systems forked from Elastix&copy;
+# Issabel Call Center
 
-It uses the [Asterisk©](http://www.asterisk.org/ "Asterisk Home Page") open source PBX software as its core.
+> [!IMPORTANT]
+> **This repository is archived and no longer maintained.**
+>
+> The original Issabel Call Center module is no longer under active development. No further updates, bug fixes, or security patches will be provided in this repository.
+>
+> ### Community-maintained alternative
+>
+> Active community development continues in the following repository:
+>
+> **[ISSABELPBX / callcenter-issabel5](https://github.com/ISSABELPBX/callcenter-issabel5)**
+>
+> Users and developers interested in an actively maintained version of the Issabel Call Center module are encouraged to visit the community project.
+>
+> Please note that this is an independent, community-maintained project and is not officially maintained by the original repository maintainers.
 
-Call Center
-----
+---
 
-Call Center module for Issabel.
+## About
 
+Issabel is an open-source distribution and graphical user interface for Unified Communications systems, originally forked from Elastix.
 
-License
-----
+It uses the Asterisk open-source PBX software as its core.
 
-GPLv2 or Later
+## Call Center
 
->This program is free software; you can redistribute it and/or
->modify it under the terms of the GNU General Public License
->as published by the Free Software Foundation; either version 2
->of the License, or (at your option) any later version.
+This repository contains the original Call Center module for Issabel.
 
->This program is distributed in the hope that it will be useful,
->but WITHOUT ANY WARRANTY; without even the implied warranty of
->MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
->GNU General Public License for more details.
+**Project status:** Archived / Unmaintained.
 
->You should have received a copy of the GNU General Public License
->along with this program; if not, write to the Free Software
->Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+The source code remains available for historical reference and under the terms of its original license.
+
+## License
+
+GPLv2 or later.
+
+This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program. If not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
