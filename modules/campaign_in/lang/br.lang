@@ -1,0 +1,124 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Issabel version 0.5                                                  |
+  | http://www.issabel.org                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.2 2007/08/09 00:31:28 jmartinez Exp $ 
+    $Id: br.lang,v 1.0 2020/05/23 Prisma Telecom Franca SP - leandro@prismatelecom.com $ */ 
+global $arrLangModule;
+$arrLangModule=array(
+"Outgoing Campaigns" => "Campanhas de saída",
+"Campaigns" => "Campanhas",
+"New Campaign" => "Nova campanha",
+"Campaigns List" => "Lista de Campanhas",
+"View Campaign" => "Ver campanha",
+"Create New Campaign" => "Criar nova campanha",
+"Name Campaign" => "Nome",
+"Start Date" => "Data Inicio",
+"End Date" => "Data Termino",
+"Start Time" => "Hora Inicio",
+"End Time" => "Hora Final",
+"Retries" => "Tentativas",
+"Trunk" => "Tronco",
+"Queue" => "Fila",
+"Context"=>"Contexto",
+"Script"=>"Script",
+"Form"=>"Formulario",
+"Completed Calls" => "Chamadas concluídas",
+"Average Time" => "Tempo médio",
+"File name" => "Nome do arquivo",
+"Unable to parse start date specification" => "Não é possível analisar a especificação da data de início",
+"Unable to parse end date specification" => "Incapaz de analisar a especificação da data de término",
+"Unable to parse start time specification" => "Não é possível analisar a especificação da hora de início",
+"Unable to parse end time specification" => "Não é possível analisar a especificação do horário de término",
+"Campaign ID is not valid" => "ID da campanha não é válido",
+"Name Campaign can't be empty" => "A campanha de nomes não pode estar vazia",
+"Trunk can't be empty" => "O tronco não pode estar vazio",
+"Context can't be empty" => "O contexto não pode estar vazio",
+"Retries must be numeric" => "As tentativas devem ser numéricas",
+"Queue can't be empty" => "A fila não pode estar vazia",
+"Invalid Start Date"=>"Data de início inválida",
+"Invalid End Date" => "Data Final Inválida",
+"Invalid Start Time" => "Hora de início inválida",
+"Invalid End Time" => "Hora de Fim Inválida",
+"Start Date must be greater than End Date" => "A data de início deve ser posterior à data de término",
+"Name Campaign already exists" => "Nome da campanha já existe",
+"Invalid Campaign ID" => "ID de campanha inválida",
+"Invalid CSV File" => "Arquivo CSV inválido",
+"Element without phone number" => "Elemento sem número de telefone",
+"Edit Campaign" => "Editar campanha",
+"Error when Activating the Campaign" => "Erro ao ativar a campanha",
+"Error when eliminating the Campaign" => "Erro ao eliminar a campanha",
+"Start Time must be greater than End Time" => "A hora de início deve ser maior que a hora de término",
+"Invalid number" => "Número inválido",
+"Invalid CSV File Line" => "Linha de arquivo CSV inválida ",
+"CSV Data" => "Dados CSV",
+"Phone Customer" => "Telefone",
+"Name Customer" => "Nome do cliente",
+"Status Call"=>"Chamada de status",
+"Status"=>"Status",
+"Options"=>"Opções",
+"Success" => "Sucesso",
+"Failure" => "Fracasso",
+"ShortCall" => "Chamada Curta",
+"Error when deleting the Campaign" => "Erro ao excluir a campanha",
+"This campaign have calls done"=>"Esta campanha tem ligações feitas",
+"Delete Error"=>"Apagar Erro",
+"Error when deleting the Campaign" => "Erro ao excluir a campanha",
+"This campaign have calls done"=>"Esta campanha tem ligações feitas",
+"There aren't form selected"=>"Não existem formulários selecionados",
+"To rapair is necesary delete agent from configuration file. Do you want to continue?"=>"Para reparar é necessário deletar o agente do arquivo de configuração. Você quer continuar?",
+"To rapair is necesary add an agent in configuration file. Do you want to continue?"=>"Para reparar é necessário adicionar um agente no arquivo de configuração. Você quer continuar?",
+"Error when desactivating the Campaign" => "Erro ao desativar a campanha",
+"Desactivate" => "Desativar", //Bruno agrego
+"Activate Error" => "Desativar", //Bruno agrego
+"Desactivate Error" => "Desativar erro", //Bruno agrego
+"Campaign ID is not valid" => "ID da campanha não é válido",
+"Queue must be numeric"=> "A fila deve ser numérica",
+"Queue is being used, choose other one"=>"A fila está sendo usada, escolha outra",
+"Address"=>"AEndereço",
+"Date & Time"=>"Data hora",
+"Duration"=>"Duração (Seg) ",
+"Are you sure you wish to delete campaign?"=>"Tem certeza de que deseja excluir a campanha?",
+"Finish"=>"Terminar",
+"Active"=>"Ativo",
+"All"=>"Tudo",
+"Inactive"=>"Inativo",
+"Range Date" => "Data de Intervalo ",
+"Start" => "Inicio",
+"End" => "Fim",
+"Schedule per Day" => "Programação por dia",
+"Start time" => "Hora de início",
+"End time" => "Fim do tempo",
+'Max. used channels' => 'Máx. canais usados',
+'View'=>'Visualizar',
+'Activate' => 'Ativar',
+'Campaign state'  => 'Status da campanha',
+'With selection' => 'Com seleção',
+'Call File' => 'Arquivo de Chamada',
+'By Dialplan' => 'By Dialplan',
+'Manage Trunks'=>'Gerenciar Troncos',
+'Manage Queues'=>'Gerenciar Filas',
+'Manage Forms'=>'Gerenciar formulários',
+'External URLs' => 'URLs Externas',
+'Manage External URLs' => 'Gerenciar URLs Externas',
+'Change Status' => 'Alterar status',
+'(No external URL)'=>'(Sem URL externo)',
+);
+?>

@@ -1,0 +1,29 @@
+<?php
+/*$Id: br.lang,v 1.0 2020/05/23 Prisma Telecom Franca SP - leandro@prismatelecom.com $ */
+
+global $arrLangModule;
+$arrLangModule = array(
+    "Calls per Agent"  => "Chamadas por Agente",
+    "Start Date"    => "Data de início",
+    "End Date"      => "Data final",
+    "Query"         => "Consulta",
+    "No.Agent"      => "No. Agente",
+    "Agent"         => "Agente",
+    "Queue"         => "Fila",
+    "Type"          => "Typo",
+    "Column"        => "Coluna",
+    "Text"          => "Texto",
+    "Error"         => "Erro",
+    "Transfer"      => "Transferir",
+    "Duration"      => "Duração",
+    "Average"       => "Média",
+    "Total"         => "Total",
+    "Call longest"  => "Chamada mais longa",
+    "Calls answered" => "Chamadas atendidas",
+    "Error when connecting to database"    => "Erro ao conectar ao banco de dados",
+    "Debe ingresar una fecha"   => "Por favor insira uma data.",
+    "Debe ingresar una fecha valida"    => "Por favor insira uma data válida.",
+    'Total'         => 'Total',
+);
+
+?>

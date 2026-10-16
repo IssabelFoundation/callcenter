@@ -1,0 +1,19 @@
+<?php
+/*$Id: br.lang,v 1.0 2020/05/23 Prisma Telecom Franca SP - leandro@prismatelecom.com $ */
+global $arrLangModule; 
+ $arrLangModule = array(
+"List Calls"     => "Lista Ligações",
+"Queue"          => "Fila",
+"Successful"     => "Bem-sucedida",
+"Left"           => "Abandonada",
+"Time Hopes"     => "Tempo Espera",
+"Find"           => "Achar",
+"Date Init"      => "Data Inicio",
+"Date End"       => "Data Final",
+"Total Calls"    => "Total Ligações",
+"Error"          => "Erro",
+"Total"          => "Total",
+"Error when connecting to database"          => "Erro quando conectando para base de dados",
+"Error when creating object paloSantoReportsCalls" => "Erro quando criando objeto paloSantoReportsCalls",
+);
+?>

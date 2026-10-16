@@ -1,0 +1,28 @@
+<?php
+/*$Id: br.lang,v 1.0 2020/05/23 Prisma Telecom Franca SP - leandro@prismatelecom.com $ */
+global $arrLangModule;
+$arrLangModule=array(
+"Form List"=>"Lista de Formulários ",
+"Form Name" => "Nome",
+"Form Description" => "Descrição",
+"Status"=>"Status",
+"Options"=>"Opções",
+"List Item"=>"Lista Item",
+"Type"=>"Modelo",
+"Preview"=>"Antevisão",
+"All"=>"Tudo",
+"Active"=>"Ativo",
+"Inactive"=>"Inativo",
+"Type Label"=>"Modelo Rótulo",
+"Type Text"=>"Digite o Texto",
+"Type List"=>"Modelo Lista",
+"Type Date"=>"Modelo Encontro",
+"Type Text Area"=>"Modelo Text Área",
+"View Form"=>"Visualizar Forma",
+"Cancel"=>"Cancelar",
+"Form"=>"Forma",
+"Forms" => "Formulários",
+);
+
+
+?>

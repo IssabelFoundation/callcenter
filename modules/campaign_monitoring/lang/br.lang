@@ -1,0 +1,124 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Issabel version 0.5                                                  |
+  | http://www.issabel.org                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+$Id: br.lang,v 1.0 2020/05/23 - Prisma Telecom Franca SP - leandro@prismatelecom.com $ */
+global $arrLangModule;
+$arrLangModule=array(
+'Campaign'
+    =>  'Campanha',
+'Start date'
+    =>  'Data Inicial',
+'End date'
+    =>  'Data Final',
+'Schedule'
+    =>  'Horário',
+'Queue'
+    =>  'Numero da Fila',
+'Retries'
+    =>  'Tentativas',
+'Total calls'
+    =>  'Total Ligações',
+'Pending calls'
+    =>  'Ligações Pendentes',
+'Failed calls'
+    =>  'Failed calls',
+'Short calls'
+    =>  'Short calls',
+'Connected calls'
+    =>  'Connected calls',
+'Placing calls'
+    =>  'Placing calls',
+'Ringing calls'
+    =>  'Ringing calls',
+'Queued calls'
+    =>  'Queued calls',
+'Pending calls'
+    =>  'Pending calls',
+'Abandoned calls'
+    =>  'Abandoned calls',
+'Unanswered calls'
+    =>  'Unanswered calls',
+'Finished calls'
+    =>  'Finished calls',
+'Lost track'
+    =>  'Lost track',
+'Agents'
+    =>  'Agents',
+'Free'
+    =>  'Free',
+'Busy'
+    =>  'Busy',
+'Not Logged In'
+    =>  'Not Logged In',
+'Break'
+    =>  'Break',
+'Agent'
+    =>  'Agent',
+'Phone Number'
+    =>  'Phone Number',
+'Trunk'
+    =>  'Trunk',
+'Status'
+    =>  'Status',
+'Since'
+    =>  'Since',
+'View campaign log'
+    =>  'Exibir log da campanha ',
+'Placing'   =>  'Placing',
+'Dialing'   =>  'Discando',
+'Ringing'   =>  'Tocando',
+'OnQueue'   =>  'Na Fila',
+'online'    =>  'Disponivel',
+'offline'   =>  'Logout',
+'oncall'    =>  'Ocupado',
+'paused'    =>  'Em Pausa',
+'LOG_FMT_PLACING'
+    =>  'Placing phone call to {phone} (retry {retry})',
+'LOG_FMT_DIALING'
+    =>  'Dialing {phone}, trunk is {trunk} ...',
+'LOG_FMT_RINGING'
+    =>  'Ringing {phone}, waiting for answer ...',
+'LOG_FMT_ONQUEUE'
+    =>  'Phone call to {phone} connected to queue {queue}, waiting for agent ...',
+'LOG_FMT_SUCCESS'
+    =>  'Phone call to {phone} handled by agent {agentchannel}',
+'LOG_FMT_HANGUP'
+    =>  'Phone call to {phone} disconnected from agent {agentchannel}, duration was {duration}',
+'LOG_FMT_ONHOLD'
+    =>  'Agent {agentchannel} put call to {phone} on hold',
+'LOG_FMT_OFFHOLD'
+    =>  'Agent {agentchannel} took call to {phone} off hold',
+'LOG_FMT_FAILURE'
+    =>  'Phone call to {phone} failed to be placed',
+'LOG_FMT_ABANDONED'
+    =>  'Phone call to {phone} on queue {queue} disconnected and was never handled',
+'LOG_FMT_SHORTCALL'
+    =>  'Short phone call to {phone} disconnected from agent {agentchannel}, duration was {duration}',
+'LOG_FMT_NOANSWER'
+    =>  'Phone call to {phone} disconnected before entering queue',
+'outgoing'  =>  'Campanha Saida',
+'incoming'  =>  'Campanah entrada',
+'incomingqueue' =>  'Fila de entrada',
+'N/A' => 'N/A', /* Not Available */
+'Previous 100 entries' => 'Vizualizar 100 entradas anteriores',
+'Hold'=>'Aguarde',
+);
+?>

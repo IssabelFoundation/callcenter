@@ -27,7 +27,7 @@ USE `call_center`;
 --
 CREATE TABLE IF NOT EXISTS `agent` (
   `id` int(10) unsigned NOT NULL auto_increment,
-  `type` enum('Agent','SIP','IAX2') NOT NULL default 'Agent',
+  `type` enum('Agent','SIP','PJSIP','IAX2') NOT NULL default 'Agent',
   `number` varchar(40) NOT NULL,
   `name` varchar(250) NOT NULL,
   `password` varchar(250) NOT NULL,

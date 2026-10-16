@@ -1,0 +1,56 @@
+<?php
+/*
+$Id: br.lang,v 1.0 2020/08/11 Prisma Telecom Franca SP - leandro@prismatelecom.com $
+   */
+
+global $arrLangModule;
+$arrLangModule = array(
+    "Time conecction of agents"  => "Time connection of agents",
+    "Start Date"    => "Data Inicial",
+    "End Date"      => "Data Final",
+    "Query"         => "Consulta",
+    "No.Agent"      => "No. Agente",
+    "Agent"         => "Agente",
+    "Queue"         => "Fila",
+    "Type"          => "Tipo",
+    "Column"        => "Coluna",
+    "Text"          => "Texto",
+    "Error"         => "Erro",
+    "Transfer"      => "Transfer",
+    "Duration"      => "Duração",
+    "Average"       => "Média",
+    "Total"         => "Total",
+    "Call longest"  => "Chamada mais longa",
+    "Calls answered" => "Chamadas atendidas",
+    "Error when connecting to database"    => "Erro ao conectar ao banco de dados",
+    "Debe ingresar una fecha"   => "Você deve inserir uma data",
+    "Debe ingresar una fecha valida"    => "Você deve inserir uma data válida",
+
+
+    'Conecction Data'=>'Dados de Conexão',
+    'First Conecction'=>'Primeira Conexão',
+    'Last Conecction'=>'Última Desconexão',
+    'Time Conecction'=>'Tempo de Conexão',
+    'Count Conecction'=>'Contagem de Conexão',
+    'Calls Entry'=>'Chamadas recebidas',
+    'Reason No Ready'=>'Motivo Não Disponível',
+    'Break'=>'Pausa',
+    'Bathroom'=>'Banheiro',
+    'Call'=>'Ligar',
+    'Count Calls Entry'=>'Contagem de chamadas recebidas ',
+    'Calls/h'=>'Chamadas / h',
+    'Time Call Entry'=>'ITempo das chamadas recebidas',
+    'Average Calls Entry'=>'Média de chamadas recebidas',
+
+    'Porcent compare whit time not ready'=> 'Porcentagem de tempo não disponível',
+    'Count'=>'Contar',
+    'Hour'=>'Hora',
+    'Monitored'=>    'Monitorou',
+    'Unmonitored'=>    'Não monitorado',
+    'Monitored only'=> 'Monitorado apenas',
+    "There aren't records to show"=> "Não há registros para mostrar",
+    "Agent name" => "Nome do agente",
+
+);
+
+?>

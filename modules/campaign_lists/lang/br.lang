@@ -1,0 +1,94 @@
+<?php
+  /* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Issabel version {ISSBEL_VERSION}                                               |
+  | http://www.issabel.org                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2017 Issabel Foundation                                |
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: en.lang,v 1.1 2018-09-25 02:09:20 Nestor Islas nestor_islas@outlook.com Exp $ 
+  $Id: br.lang,v 1.0 2020/05/23 Prisma Telecom Franca SP - leandro@prismatelecom.com $ */
+
+global $arrLangModule;
+$arrLangModule=array(
+"success_title_deleted" => "Sucesso",
+"success_message_deleted" => "A lista foi excluída com sucesso",
+"error_title_deleted" => "Erro",
+"error_message_deleted" => "Erro ao deletar a lista",
+"error_title_activate_status" => "Erro",
+"error_message_activate_status" => "Erro ao ativar a lista",
+"success_title_activate_status" => "Sucesso",
+"success_message_activate_status" => "Sucesso ao ativar a lista",
+"error_title_deactivate_status" => "Erro",
+"error_message_deactivate_status" => "Erro ao desativar a lista",
+"success_title_deactivate_status" => "Sucesso",
+"success_message_deactivate_status" => "Sucesso ao desativar a lista",
+
+"lists_grid_title" => "Listas de Campanha",
+"grid_column_id" => "ID",
+"grid_column_name" => "Nome",
+"grid_column_type" => "Tipo",
+"grid_column_campaign" => "Campanha",
+"grid_column_file" => "Arquivo",
+"grid_column_status" => "Status",
+"grid_column_total_calls" => "Total",
+"grid_column_pending_calls" => "Pendente",
+"grid_column_date" => "Data de criação",
+
+"label_recycle_list" => "Lista de reciclagem",
+"label_new_list" => "Crie uma nova lista",
+
+"label_change_status_cb" => "Alterar status",
+"label_cb_activate" => "Ativar",
+"label_cb_deactivate" => "Desativar",
+
+"error_title_view_list" => "Erro",
+"view_list_title" => "Lista",
+
+"label_monday" => "Segunda-feira",
+"label_tuesday" => "Terça-feira",
+"label_wednesday" => "Quarta-feira",
+"label_thursday" => "Quinta-feira",
+"label_friday" => "Sexta-feira",
+"label_saturday" => "Sábado",
+"label_sunday" => "Domingo",
+"label_successful_week_calls" => "Chamadas bem-sucedidas por dia",
+
+"label_pending_calls" => "Pendente",
+"label_paused_calls" => "Em pausa",
+"label_sent_calls" => "Enviei",
+"label_answered_calls" => "Atendidas",
+"label_no_answer_calls" => "Não Atendidas",
+"label_failed_calls" => "Fracassada",
+"label_abandoned_calls" => "Abandonadas",
+"label_short_calls" => "Curtas",
+"label_bar_chart" => "# Chamadas",
+
+"label_required_field" => "Campo obrigatório",
+"label_cancel" => "Cancelar",
+"label_save" => "Salve ",
+"label_options" => "Opções para",
+"label_available_uploaders" => "Uploaders disponíveis",
+"label_sel_campaign" => "Selecione uma campanha",
+"label_list_name" => "Lista de nomes",
+"label_load_contacts" => "Carregar contatos",
+"label_search" => "Procurar",
+
+"label_delete_message" => "Tem certeza de que deseja excluir a lista?",
+"label_delete_list" => "Excluir"
+);
+?>

@@ -1,0 +1,94 @@
+<?php
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
+  Codificación: UTF-8
+  +----------------------------------------------------------------------+
+  | Issabel version 0.5                                                  |
+  | http://www.issabel.org                                               |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2006 Palosanto Solutions S. A.                         |
+  +----------------------------------------------------------------------+
+  | The contents of this file are subject to the General Public License  |
+  | (GPL) Version 2 (the "License"); you may not use this file except in |
+  | compliance with the License. You may obtain a copy of the License at |
+  | http://www.opensource.org/licenses/gpl-license.php                   |
+  |                                                                      |
+  | Software distributed under the License is distributed on an "AS IS"  |
+  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
+  | the License for the specific language governing rights and           |
+  | limitations under the License.                                       |
+  +----------------------------------------------------------------------+
+  | The Initial Developer of the Original Code is PaloSanto Solutions    |
+  +----------------------------------------------------------------------+
+  $Id: es.lang,v 1.2 2007/08/09 00:31:28 jmartinez Exp $ 
+  $Id: br.lang,v 1.0 2020/05/23 Prisma Telecom Franca SP - leandro@prismatelecom.com $ 
+  */
+global $arrLangModule;
+$arrLangModule=array(
+"Desactivate" => "Desativar",  
+"New Field" => "New Field",   
+"Add Field" => "Adicionar campo",   
+"Update Field" => "Campo de atualização",  
+"Are you sure you wish to delete form?"=>"Tem certeza de que deseja excluir o formulário?",
+"Form Name" => "Nome",  
+"Form Description" => "Descrição",    
+"Field Name" => "Nome do Campo",  
+"CSV Column" => "Coluna CSV", 
+"Column Number" => "Número da Coluna",  
+"Lines Number" => "Número de Linhas",  
+"Field Validation" => "Validação de Campo",  
+"Order" => "Pedido",  
+"List Item" => "Item da lista ", 
+"Add Item" => "Adicionar","Adicionar Item" => "Adicionar",
+"Remove Item" => "Retirar","Remover Item" => "Retirar", 
+"New Form" => "Nova forma","Novo formulário" => "Nova forma", 
+"View Form" => "Ver Formulário","Ver Formulário" => "Ver Formulário", 
+"Edit Form" => "Editar Formulário","Editar Formulário" => "Editar Formulário",  
+"Activate" => "Ativar","Ativar" => "Ativar",
+"Form List" => "Lista de Formulários","Lista de Formulários" => "Lista de Formulários", 
+"Form Designer" => "Form Designer",
+"Create New Form" => "Criar novo formulário ",
+"Activate Error" => "Ativar erro", 
+"Error when Activating the form" => "Erro ao ativar o formulário ",
+"Error when deleting the Form"=>“Erro ao deletar o Formulário”,
+"This field is been used by any campaign"=>"Este campo está sendo usado por qualquer campanha",
+"This form is been used by any campaign"=>"Este formulário está sendo usado por qualquer campanha",
+"Add Field Successfully" => "Adicionar campo com sucesso",
+"Field could not be added in the Form" => "Campo não pode ser adicionado no Formulário", 
+"Form could not be added" => "Não foi possível adicionar o formulário",  
+"Values Field" => "Valores",   
+"Form could not be cancelled" => "O formulário não pôde ser cancelado",
+"Error Id Form" => "Formulário de Id de Erro ",  
+"Error Form Name is empty" => "O nome do formulário de erro está vazio",
+"Error Field Name is empty" => "O nome do campo de erro está vazio",  
+"Error List is empty" =>"Lista de erros está vazia",
+"Error in Order is empty or is not numeric" => "O erro no pedido está vazio ou não é numérico ",
+"Order already exists" => "O pedido já existe",
+"Edit Field" => "Editar Campo ",  
+"Update Field Successfully" => "Campo atualizado com sucesso", 
+"Field could not be updated in the Form" => "Field could not be updated in the Form",
+"Form could not be updated" => "Não foi possível atualizar o formulário",
+"Desactivate Error" => "Desativar erro",  
+"Error when eliminating the form" => “Erro ao eliminar o formulário”,
+"Delete Field Successfully" =>  "Campo excluído com sucesso",
+"Type Label" => "Instrução",  
+"TEXT" => "Texto",  
+"LABEL" => "Instrução", 
+"TEXTAREA" => "Área de Texto",
+"LIST" => "Lista",  
+"DATE" => "Encontro",  
+"Type Label"=>"Rótulo de tipo",
+"Type Text"=>"Digite o Texto",
+"Type List"=>"Lista de Tipos",
+"Type Date"=>"Digite a data",
+"Type Text Area"=>"Digite a área de texto",
+"Type" => "Modelo",
+"Status" => "Status",
+"Active" => "Ativo",
+"Inactive" => "Inativo",
+"View" => "Visualizar",
+"All" => "Tudo",
+'No Data Found'=>'Nenhum dado encontrado',
+'Drag and drop to reorder fields'=>'Arrastar e soltar para reordenar os campos',
+'new field'=>'novo campo',
+);
+?>
